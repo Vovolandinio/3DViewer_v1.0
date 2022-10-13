@@ -38,6 +38,7 @@
     font: 12px;
     min-width: 10em;
     padding: 3px;
+    color: #191970;
 }
 </string>
     </property>
@@ -154,6 +155,7 @@
     font: 12px;
     min-width: 10em;
     padding: 3px;
+    color: #191970;
 }
 </string>
     </property>
@@ -270,6 +272,7 @@
     font: 12px;
     min-width: 10em;
     padding: 3px;
+    color: #191970;
 }
 </string>
     </property>
@@ -289,6 +292,9 @@
      </item>
      <item row="4" column="0" colspan="2">
       <widget class="QSlider" name="zoom_slider">
+       <property name="value">
+        <number>10</number>
+       </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -320,7 +326,7 @@
      <item row="4" column="2">
       <widget class="QLineEdit" name="zoom_line">
        <property name="text">
-        <string>0</string>
+        <string>1</string>
        </property>
       </widget>
      </item>
@@ -345,6 +351,7 @@
     font: 12px;
     min-width: 10em;
     padding: 3px;
+    color: #191970;
 }
 </string>
     </property>
@@ -390,13 +397,25 @@
       </widget>
      </item>
      <item row="6" column="0">
-      <widget class="QLineEdit" name="vertices_red"/>
+      <widget class="QLineEdit" name="vertices_red">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
      </item>
      <item row="6" column="1">
-      <widget class="QLineEdit" name="vertices_green"/>
+      <widget class="QLineEdit" name="vertices_green">
+       <property name="text">
+        <string>255</string>
+       </property>
+      </widget>
      </item>
      <item row="6" column="2">
-      <widget class="QLineEdit" name="vertices_blue"/>
+      <widget class="QLineEdit" name="vertices_blue">
+       <property name="text">
+        <string>255</string>
+       </property>
+      </widget>
      </item>
      <item row="4" column="0" colspan="3">
       <widget class="QLabel" name="vertices_color_label">
@@ -407,15 +426,27 @@
      </item>
      <item row="3" column="0" colspan="2">
       <widget class="QRadioButton" name="vertices_square">
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Квадраты</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
      <item row="2" column="0" colspan="2">
       <widget class="QRadioButton" name="vertices_circle">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="text">
         <string>Круги</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -447,6 +478,7 @@
     font: 12px;
     min-width: 10em;
     padding: 3px;
+    color: #191970;
 }
 </string>
     </property>
@@ -462,7 +494,11 @@
       </widget>
      </item>
      <item row="5" column="2">
-      <widget class="QLineEdit" name="edges_blue"/>
+      <widget class="QLineEdit" name="edges_blue">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
      </item>
      <item row="4" column="2">
       <widget class="QLabel" name="edges_blue_label">
@@ -475,7 +511,11 @@
       </widget>
      </item>
      <item row="5" column="0">
-      <widget class="QLineEdit" name="edges_red"/>
+      <widget class="QLineEdit" name="edges_red">
+       <property name="text">
+        <string>255</string>
+       </property>
+      </widget>
      </item>
      <item row="4" column="0">
       <widget class="QLabel" name="edges_red_label">
@@ -488,7 +528,11 @@
       </widget>
      </item>
      <item row="5" column="1">
-      <widget class="QLineEdit" name="edges_green"/>
+      <widget class="QLineEdit" name="edges_green">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
      </item>
      <item row="4" column="1">
       <widget class="QLabel" name="edges_green_label">
@@ -512,6 +556,9 @@
        <property name="text">
         <string>Сплошной</string>
        </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item row="2" column="0" colspan="2">
@@ -523,7 +570,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="widget_3" native="true">
+   <widget class="Scene" name="widget_3" native="true">
     <property name="geometry">
      <rect>
       <x>550</x>
@@ -552,6 +599,7 @@
     font: 12px;
     min-width: 10em;
     padding: 3px;
+    color: #191970;
 }
 </string>
     </property>
@@ -577,6 +625,9 @@
       <widget class="QRadioButton" name="proection_parallel">
        <property name="text">
         <string>Параллельная</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -650,6 +701,14 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Scene</class>
+   <extends>QWidget</extends>
+   <header>scene.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
