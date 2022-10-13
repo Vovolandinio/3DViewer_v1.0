@@ -5,6 +5,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    this->setWindowTitle("3D Viewer");
     ui->setupUi(this);
     int RANGE_MAX = 25000;
     int ROTATE_MAX = 36000;
