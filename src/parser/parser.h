@@ -6,14 +6,17 @@
 #define INC_3DVIEWER_V1_0_PARSER_H
 #include <stdio.h>
 
+bool notEOF = true;
 
 typedef struct Indexes {
-    unsigned int V;
-    unsigned int F;
+    unsigned int indexV;
+    unsigned int indexF;
     float* array;
     unsigned int* vertexes;
 } index;
 
-
+void initialize(index *structure);
+void parser_v(FILE *file, index* src);
+void parser_f(FILE *file, index* src);
 
 #endif //SRC/PARSER/INC_3DVIEWER_V1_0_PARSER_H
