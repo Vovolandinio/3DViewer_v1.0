@@ -13,9 +13,10 @@ void main_parser(const char* filename, index* src) {
     if ((file = fopen(filename, "r")) == NULL){
         printf("Cannot open file");
     } else {
+        char buffer = '0';
+        char c = fgetc(file);
         while(notEOF) {
-            char buffer = '0';
-            char c = fgetc(file);
+
             if (buffer == 'f' && c = ' ')
                 parser_f(file, src);
             if (buffer == 'v' && c = ' ')
