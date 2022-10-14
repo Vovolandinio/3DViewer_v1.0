@@ -20,11 +20,11 @@ typedef struct Indexes {
     unsigned int indexF;
     float* array;
     unsigned int* vertexes;
-    polygon_t polygon[10];
+    polygon_t *polygon;
 } index;
 
 void initialize(index *structure);
 void parser_v(FILE *file, index* src);
-void parser_f(FILE *file, index* src);
+void parser_f(FILE *file, polygon_t* polygon);
 
 #endif //SRC/PARSER/INC_3DVIEWER_V1_0_PARSER_H
