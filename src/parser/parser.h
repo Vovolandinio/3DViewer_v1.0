@@ -5,6 +5,7 @@
 #ifndef INC_3DVIEWER_V1_0_PARSER_H
 #define INC_3DVIEWER_V1_0_PARSER_H
 #include <stdio.h>
+#include <stdlib.h>
 
 bool notEOF = true;
 
@@ -18,7 +19,7 @@ typedef struct Indexes {
     unsigned int indexF;
     float* array;
     unsigned int* vertexes;
-    polygon_t polygon;
+    polygon_t *polygon;
 } index;
 
 void initialize(index *structure);
