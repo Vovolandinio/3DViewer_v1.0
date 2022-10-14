@@ -5,14 +5,22 @@
 #ifndef INC_3DVIEWER_V1_0_PARSER_H
 #define INC_3DVIEWER_V1_0_PARSER_H
 #include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
 
-bool notEOF = true;
+// bool notEOF = true;
+
+typedef struct facets {
+	int *vertexes;
+	int numbers_of_vertexes_in_facets;
+} polygon_t;
 
 typedef struct Indexes {
     unsigned int indexV;
     unsigned int indexF;
     float* array;
     unsigned int* vertexes;
+    polygon_t polygon[10];
 } index;
 
 void initialize(index *structure);
