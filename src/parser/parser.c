@@ -24,7 +24,6 @@ void main_parser(const char* filename, index* src) {
         char buffer = '0';
         char c = '\0';
         while((c = fgetc(file)) != EOF) {
-            printf("meow\n");
             if (c == 'f' && buffer == '0')
                 parser_f(file, src);
             if (c == 'v' && buffer == '0')
@@ -39,9 +38,23 @@ void parser_v(FILE *file, index* src){
 
 }
 
+int count_verticies_fun(FILE *file) {
+    int count = 0;
+    char cc[256] = "";
+    while((fgets(cc, 256, file)) != NULL) {
+        int i = 0;
+        while(cc[i] != '\0') {
+            if (cc[i] == ' ')
+                count++;
+            i++;
+        }
+    }
+    return count;
+}
+
 void parser_f(FILE *file, index* src){
     char c = '\0';
-    int count_verticies = 0;
+    int count_verticies = 0; // count_verticies_fun(file);
     src->polygon->vertexes = (int *) calloc(6, sizeof(int));
     while((c = fgetc(file)) != '\n') {
         if (c != ' ') {
@@ -54,16 +67,14 @@ void parser_f(FILE *file, index* src){
             while(i-- > 0)
                 number_verticies += (str[i] - '0') * pow(10, i);
             
-            if (count_verticies > 2) src->polygon->vertexes = (int *) calloc(1, sizeof(int));
             src->polygon->vertexes[count_verticies] = number_verticies;
             count_verticies++;
-            
             if (c == '\n' || c == EOF) break;
         }
     }
     src->polygon->numbers_of_vertexes_in_facets = count_verticies;
-    // for(int i = 0; i < count_verticies; i++)
-    //     printf("count_verticies = %d: number_verticies = %d\n", i, src->polygon->vertexes[i]);
+    for(int i = 0; i < count_verticies; i++)
+        printf("count_verticies = %d: number_verticies = %d\n", i, src->polygon->vertexes[i]);
 }
 
 
