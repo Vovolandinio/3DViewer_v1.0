@@ -6,6 +6,9 @@
 #define INC_3DVIEWER_V1_0_PARSER_H
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <bootstrap.h>
+
 
 bool notEOF = true;
 
