@@ -21,13 +21,10 @@ void main_parser(const char* filename, index* src) {
             if (buffer == 'v' && c = ' ')
                 parser_v(file, src);
         }
-
+        fclose(file);
     }
-    }
-
-
-    fclose(file);
 }
+
 
 void parser_v(FILE *file, index* src){
 
