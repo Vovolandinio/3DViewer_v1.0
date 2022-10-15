@@ -2,6 +2,7 @@
 
 
 static void parser_v(FILE *file, index* src);
+static polygon_t parser_f(FILE *file, index* src);
 
 void initialize(index *structure) {
     structure->indexV = 0;
@@ -26,11 +27,14 @@ void main_parser(const char* filename, index* src) {
         src->array = (float *)calloc(1, sizeof(float));
         while((c = fgetc(file)) != EOF) {
             if (c == 'f' && buffer == '0') {
+                src->polygon->vertexes = (unsigned *) realloc(src->polygon->vertexes, 100);
                 *(src->polygon + count_fields) = parser_f(file, src);
                 count_fields++;
             }
-//             if (c == 'v' && buffer == '0')
-//             parser_v(file, src);
+            
+            if (c == 'v' && buffer == '0')
+            parser_v(file, src);
+
         }
         src->indexF = count_fields;
         if(!src->indexV) free(src->array);
@@ -40,18 +44,20 @@ void main_parser(const char* filename, index* src) {
 }
 
 
-//static void parser_v(FILE *file, index* src) {
-//     if(src->array != NULL) {
-//         src->array = (float*)realloc(src->array, (src->indexV + 3) * sizeof(float));
-//         for (size_t i = 0; i < 0; i++) {
-//             src->array[src->indexV + i];
-//         }
-//         fscanf(file, "%f %f %f", &src->array[src->indexV], &src->array[src->indexV + 1], &src->array[src->indexV + 2]);
-//     src->indexV += 3;
-//     } else {
-//         printf("Memory error");
-//     }
-// }
+
+static void parser_v(FILE *file, index* src) {
+    if(src->array != NULL) {
+        src->array = (float*)realloc(src->array, (src->indexV + 3) * sizeof(float));
+        for (size_t i = 0; i < 3; i++) {
+            src->array[src->indexV + i];
+        }
+        fscanf(file, "%f %f %f", &src->array[src->indexV], &src->array[src->indexV + 1], &src->array[src->indexV + 2]);
+    src->indexV += 3;
+    } else {
+        printf("Memory error");
+    }
+}
+
 
 
 static polygon_t parser_f(FILE *file, index* src) {
@@ -88,9 +94,11 @@ int main() {
     const char filename[50] = "test.obj";
     index src;
     main_parser(filename, &src);
-//     for (int i = 0; i < src.indexV; i++)
-//         for (int j = 0; j < 3; j++)
-//             printf("!count_array = %d: number_verticies = %d\n", j, src.vertexes[j]);
+    for (int i = 0; i < src.indexV; i++) {
+        for (int j = 0; j < 3; j++)
+            printf("!count_array = %d: number_verticies = %f\n", i, (src.array + i)[j]);
+        printf("\n");
+    }
 
     for (int i = 0; i < src.indexF; i++)
         for (int j = 0; j < (src.polygon + i)->numbers_of_vertexes_in_facets; j++)

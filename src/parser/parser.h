@@ -10,7 +10,7 @@
 #include <bootstrap.h>
 
 
-bool notEOF = true;
+// bool notEOF = true;
 
 typedef struct facets {
     unsigned *vertexes;
@@ -27,7 +27,7 @@ typedef struct Indexes {
 } index;
 
 void initialize(index *structure);
-static void parser_v(FILE *file, index* src);
-static polygon_t parser_f(FILE *file, index* src);
+// static void parser_v(FILE *file, index* src);
+// static polygon_t parser_f(FILE *file, index* src);
 
 #endif //SRC/PARSER/INC_3DVIEWER_V1_0_PARSER_H
