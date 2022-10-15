@@ -52,13 +52,13 @@ static void parser_v(FILE *file, index* src) {
             src->array[src->indexV + i];
         }
         fscanf(file, "%f %f %f", &src->array[src->indexV], &src->array[src->indexV + 1], &src->array[src->indexV + 2]);
-    src->indexV += 3;
+        for (size_t i = 0; i < 3; i++)
+            if (fabs(src->array[src->indexV + i]) > src->maxV) src->maxV = fabs(src->array[src->indexV + i]);
+        src->indexV += 3;
     } else {
         printf("Memory error");
     }
 }
-
-
 
 static polygon_t parser_f(FILE *file, index* src) {
     char c = '\0';
@@ -94,14 +94,14 @@ int main() {
     const char filename[50] = "test.obj";
     index src;
     main_parser(filename, &src);
-    for (int i = 0; i < src.indexV; i++) {
-        for (int j = 0; j < 3; j++)
-            printf("!count_array = %d: number_verticies = %f\n", i, (src.array + i)[j]);
-        printf("\n");
-    }
 
-    for (int i = 0; i < src.indexF; i++)
-        for (int j = 0; j < (src.polygon + i)->numbers_of_vertexes_in_facets; j++)
-            printf("!count_verticies = %u: number_verticies = %u\n", i, (src.polygon + i)->vertexes[j]);
+for (int i = 0; i < src.indexV; i++) {
+    printf("!count_array = %d: number_verticies = %f\n", i, (src.array)[i]);
+
+}
+
+//    for (int i = 0; i < src.indexF; i++)
+//        for (int j = 0; j < (src.polygon + i)->numbers_of_vertexes_in_facets; j++)
+//            printf("!count_verticies = %u: number_verticies = %u\n", i, (src.polygon + i)->vertexes[j]);
     return 0;
 }
