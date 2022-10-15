@@ -31,8 +31,10 @@ void main_parser(const char* filename, index* src) {
                 *(src->polygon + count_fields) = parser_f(file, src);
                 count_fields++;
             }
+            
             if (c == 'v' && buffer == '0')
             parser_v(file, src);
+
         }
         src->indexF = count_fields;
         if(!src->indexV) free(src->array);
@@ -40,6 +42,7 @@ void main_parser(const char* filename, index* src) {
         fclose(file);
     }
 }
+
 
 
 static void parser_v(FILE *file, index* src) {
@@ -54,6 +57,7 @@ static void parser_v(FILE *file, index* src) {
         printf("Memory error");
     }
 }
+
 
 
 static polygon_t parser_f(FILE *file, index* src) {
