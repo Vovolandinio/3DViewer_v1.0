@@ -1,10 +1,9 @@
 #include "parser.h"
 
+static void parser_v(FILE *file, test* src);
+static polygon_t parser_f(FILE *file, test* src);
 
-static void parser_v(FILE *file, index* src);
-static polygon_t parser_f(FILE *file, index* src);
-
-void initialize(index *structure) {
+void initialize(test *structure) {
     structure->indexV = 0;
     structure->indexF = 0;
     structure->array = NULL;
@@ -14,7 +13,7 @@ void initialize(index *structure) {
 }
 
 
-void main_parser(const char* filename, index* src) {
+void main_parser(const char* filename, indexes* src) {
     initialize(src);
     FILE *file;
     if ((file = fopen(filename, "r")) == NULL){
@@ -45,7 +44,7 @@ void main_parser(const char* filename, index* src) {
 
 
 
-static void parser_v(FILE *file, index* src) {
+static void parser_v(FILE *file, indexes* src) {
     if(src->array != NULL) {
         src->array = (float*)realloc(src->array, (src->indexV + 3) * sizeof(float));
         for (size_t i = 0; i < 3; i++) {
@@ -60,7 +59,7 @@ static void parser_v(FILE *file, index* src) {
     }
 }
 
-static polygon_t parser_f(FILE *file, index* src) {
+static polygon_t parser_f(FILE *file, indexes* src) {
     char c = '\0';
     int count_verticies = 1;
     polygon_t polygoncopy;
@@ -89,19 +88,19 @@ static polygon_t parser_f(FILE *file, index* src) {
     return polygoncopy;
 }
 
-
-int main() {
-    const char filename[50] = "test.obj";
-    index src;
-    main_parser(filename, &src);
-
-for (int i = 0; i < src.indexV; i++) {
-    printf("!count_array = %d: number_verticies = %f\n", i, (src.array)[i]);
-
-}
-
-//    for (int i = 0; i < src.indexF; i++)
-//        for (int j = 0; j < (src.polygon + i)->numbers_of_vertexes_in_facets; j++)
-//            printf("!count_verticies = %u: number_verticies = %u\n", i, (src.polygon + i)->vertexes[j]);
-    return 0;
-}
+//
+//int main() {
+//    const char filename[50] = "test.obj";
+//    indexes src;
+//    main_parser(filename, &src);
+//
+//for (int i = 0; i < src.indexV; i++) {
+//    printf("!count_array = %d: number_verticies = %f\n", i, (src.array)[i]);
+//
+//}
+//
+////    for (int i = 0; i < src.indexF; i++)
+////        for (int j = 0; j < (src.polygon + i)->numbers_of_vertexes_in_facets; j++)
+////            printf("!count_verticies = %u: number_verticies = %u\n", i, (src.polygon + i)->vertexes[j]);
+//    return 0;
+//}
