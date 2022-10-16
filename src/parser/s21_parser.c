@@ -15,7 +15,7 @@ void initialize(indexes *structure) {
 }
 
 void count_numbers_in_file(indexes* src, int count_fields) {
-    src->indexF += (src->polygon + count_fields)->numbers_of_vertexes_in_facets +
+    src->maxF += (src->polygon + count_fields)->numbers_of_vertexes_in_facets +
         (src->polygon + count_fields)->numbers_of_vertexes_in_facets * src->polygon->is_normal +
         (src->polygon + count_fields)->numbers_of_vertexes_in_facets * src->polygon->is_texture;
 }
@@ -29,16 +29,17 @@ void main_parser(const char* filename, indexes* src) {
         char buffer = '0';
         char c = '0';
         int count_fields = 0;
-        src->polygon = (polygon_t *)calloc(1, sizeof(polygon_t));
+        src->polygon = (polygon_t *)malloc(1000 * sizeof(polygon_t));
+        for (int i = 0; i < 100; i ++) {
+            (src->polygon + i)->vertexes = (unsigned *)malloc(100 * sizeof(unsigned));
+            (src->polygon + i)->texture_coordinates = (unsigned *)malloc(100 * sizeof(unsigned));
+            (src->polygon + i)->normal = (unsigned *)malloc(100 * sizeof(unsigned));
+        } 
         src->array = (float *)calloc(1, sizeof(float));
         while((c = fgetc(file)) != EOF) {
             if (c == 'f' && buffer == '0') {
-                src->polygon->vertexes = (unsigned *) realloc(src->polygon->vertexes, 1000);
-                src->polygon->texture_coordinates = (unsigned *) realloc(src->polygon->texture_coordinates, 1000);
-                src->polygon->normal = (unsigned *) realloc(src->polygon->normal, 1000);
                 *(src->polygon + count_fields) = parser_f(file, src);
                 count_numbers_in_file(src, count_fields);
-                printf("%d\n", src->indexF);
                 count_fields++;
             }
             if (c == 'v' && buffer == '0')
@@ -48,6 +49,7 @@ void main_parser(const char* filename, indexes* src) {
         if(!src->indexV) free(src->array);
         if(!src->indexF) free(src->polygon);
         fclose(file);
+        src->indexF = count_fields;
     }
 }
 
@@ -95,6 +97,12 @@ static polygon_t parser_f(FILE *file, indexes* src) {
     polygoncopy.normal = NULL;
     polygoncopy.is_texture = 0; // no texture
     polygoncopy.is_normal = 0; // no normal
+
+
+    polygoncopy.vertexes = (unsigned *) malloc(3 * sizeof(unsigned));
+    polygoncopy.normal = (unsigned *) malloc(3 * sizeof(unsigned));
+    polygoncopy.texture_coordinates = (unsigned *) malloc(3 * sizeof(unsigned));
+
     while((c = fgetc(file)) != EOF) {
         if (c != ' ' && c != 'f' && c != '\n') {
             unsigned number_verticies = get_number(file, &c);
@@ -134,9 +142,9 @@ int main() {
     const char filename[50] = "test.obj";
     indexes src;
     main_parser(filename, &src);
-    printf("%d\n", src.maxF);
-    // for (int i = 0; i < src.indexV; i++)
-    //    printf("!count_array = %d: number_verticies = %f\n", i, (src.array)[i]);
+
+    for (int i = 0; i < src.indexV; i++)
+       printf("!count_array = %d: number_verticies = %f\n", i, (src.array)[i]);
 
     for (int i = 0; i < src.indexF; i++) {
         for (int j = 0; j < (src.polygon + i)->numbers_of_vertexes_in_facets; j++) {
