@@ -9,6 +9,7 @@ class Scene : public QOpenGLWidget
 {
 public:
     Scene( QWidget *parent = 0 );
+    void change_color();
 
 private:
     void initializeGL();

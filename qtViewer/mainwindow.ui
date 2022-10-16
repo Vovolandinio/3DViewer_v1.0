@@ -483,50 +483,6 @@
 </string>
     </property>
     <layout class="QGridLayout" name="gridLayout_5">
-     <item row="0" column="0" colspan="3">
-      <widget class="QLabel" name="edges_label">
-       <property name="text">
-        <string>Линии</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="2">
-      <widget class="QLineEdit" name="edges_blue">
-       <property name="text">
-        <string>0</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="2">
-      <widget class="QLabel" name="edges_blue_label">
-       <property name="text">
-        <string>Синий</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="0">
-      <widget class="QLineEdit" name="edges_red">
-       <property name="text">
-        <string>255</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="edges_red_label">
-       <property name="text">
-        <string>Красный</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
      <item row="5" column="1">
       <widget class="QLineEdit" name="edges_green">
        <property name="text">
@@ -534,10 +490,10 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
-      <widget class="QLabel" name="edges_green_label">
+     <item row="0" column="0" colspan="3">
+      <widget class="QLabel" name="edges_label">
        <property name="text">
-        <string>Зеленый</string>
+        <string>Линии</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -551,6 +507,40 @@
        </property>
       </widget>
      </item>
+     <item row="2" column="0" colspan="2">
+      <widget class="QRadioButton" name="edges_dashed">
+       <property name="text">
+        <string>Штриховой</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="2">
+      <widget class="QLineEdit" name="edges_blue">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="edges_red_label">
+       <property name="text">
+        <string>Красный</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QLabel" name="edges_blue_label">
+       <property name="text">
+        <string>Синий</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
      <item row="1" column="0" colspan="2">
       <widget class="QRadioButton" name="edges_solid">
        <property name="text">
@@ -561,10 +551,27 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0" colspan="2">
-      <widget class="QRadioButton" name="edges_dashed">
+     <item row="5" column="0">
+      <widget class="QLineEdit" name="edges_red">
        <property name="text">
-        <string>Штриховой</string>
+        <string>255</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLabel" name="edges_green_label">
+       <property name="text">
+        <string>Зеленый</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="2">
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>кнопачка</string>
        </property>
       </widget>
      </item>

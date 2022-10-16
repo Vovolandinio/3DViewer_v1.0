@@ -14,7 +14,7 @@ Scene::Scene( QWidget *parent ) :
 void Scene::initializeGL()
 {
     // Black background
-    glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
+    glClearColor( 1.0f, 1.0f, 1.0f, 1.0f );
 
     // Set drawing color to green
     glColor3f( 0.0f, 1.0f, 0.0f );
@@ -118,4 +118,9 @@ void Scene::keyPressEvent( QKeyEvent *event )
     }
 
     update();
+}
+
+void Scene::change_color() {
+    glClearColor( 1.0f, 0.0f, 0.0f, 1.0f );
+    paintGL();
 }
