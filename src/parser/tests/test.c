@@ -3,11 +3,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../parser.h"
+#include "../s21_parser.h"
 
 START_TEST(parser_array) {
     indexes a;
-    main_parser("parser/tests/cube.obj", &a);
+    main_parser("parser/tests/cub.obj", &a);
     ck_assert_float_eq_tol(a.array[0], 0, 1e-6);
     ck_assert_float_eq_tol(a.array[1], 0, 1e-6);
     ck_assert_float_eq_tol(a.array[2], 0, 1e-6);
