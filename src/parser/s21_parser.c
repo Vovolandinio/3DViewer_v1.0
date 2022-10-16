@@ -11,8 +11,14 @@ void initialize(indexes *structure) {
     structure->vertexes = 0;
     structure->polygon = NULL;
     structure->maxV = 0;
+    structure->maxF = 0;
 }
 
+void count_numbers_in_file(indexes* src, int count_fields) {
+    src->indexF += (src->polygon + count_fields)->numbers_of_vertexes_in_facets +
+        (src->polygon + count_fields)->numbers_of_vertexes_in_facets * src->polygon->is_normal +
+        (src->polygon + count_fields)->numbers_of_vertexes_in_facets * src->polygon->is_texture;
+}
 
 void main_parser(const char* filename, indexes* src) {
     initialize(src);
@@ -31,12 +37,14 @@ void main_parser(const char* filename, indexes* src) {
                 src->polygon->texture_coordinates = (unsigned *) realloc(src->polygon->texture_coordinates, 1000);
                 src->polygon->normal = (unsigned *) realloc(src->polygon->normal, 1000);
                 *(src->polygon + count_fields) = parser_f(file, src);
+                count_numbers_in_file(src, count_fields);
+                printf("%d\n", src->indexF);
                 count_fields++;
             }
             if (c == 'v' && buffer == '0')
-            parser_v(file, src);
+                parser_v(file, src);
+            
         }
-        src->indexF = count_fields;
         if(!src->indexV) free(src->array);
         if(!src->indexF) free(src->polygon);
         fclose(file);
@@ -86,6 +94,7 @@ static polygon_t parser_f(FILE *file, indexes* src) {
     polygoncopy.texture_coordinates = NULL;
     polygoncopy.normal = NULL;
     polygoncopy.is_texture = 0; // no texture
+    polygoncopy.is_normal = 0; // no normal
     while((c = fgetc(file)) != EOF) {
         if (c != ' ' && c != 'f' && c != '\n') {
             unsigned number_verticies = get_number(file, &c);
@@ -94,6 +103,7 @@ static polygon_t parser_f(FILE *file, indexes* src) {
             if (c == '/') {
                 c = fgetc(file);
                 if (c == '/') {
+                    polygoncopy.is_normal = 1;
                     c = fgetc(file);
                     unsigned normal = get_number(file, &c);
                     polygoncopy.normal = (unsigned *) realloc(polygoncopy.normal, (count_verticies * sizeof (unsigned )));
@@ -110,7 +120,6 @@ static polygon_t parser_f(FILE *file, indexes* src) {
                     polygoncopy.normal[count_verticies - 1] = normal;
                 }
             }
-            // printf("%d\n", polygoncopy.is_texture);
             count_verticies++;
             if (c == '\n' || c == EOF)
                 break;
@@ -121,21 +130,22 @@ static polygon_t parser_f(FILE *file, indexes* src) {
 }
 
 
-// int main() {
-//     const char filename[50] = "test.obj";
-//     indexes src;
-//     main_parser(filename, &src);
-//     for (int i = 0; i < src.indexV; i++)
-//        printf("!count_array = %d: number_verticies = %f\n", i, (src.array)[i]);
+int main() {
+    const char filename[50] = "test.obj";
+    indexes src;
+    main_parser(filename, &src);
+    printf("%d\n", src.maxF);
+    // for (int i = 0; i < src.indexV; i++)
+    //    printf("!count_array = %d: number_verticies = %f\n", i, (src.array)[i]);
 
-//     for (int i = 0; i < src.indexF; i++) {
-//         for (int j = 0; j < (src.polygon + i)->numbers_of_vertexes_in_facets; j++) {
-//             printf("!count_verticies = %d: number_verticies = %u\n", i, (src.polygon + i)->vertexes[j]);
-//             printf("!count_verticies = %d: normal = %d\n", i, (src.polygon + i)->normal[j]);
-//             if ((src.polygon + i)->is_texture)
-//                 printf("!count_verticies = %d: texture_coordinates = %d\n", i, (src.polygon + i)->texture_coordinates[j]);
-//         }
-//     }
+    for (int i = 0; i < src.indexF; i++) {
+        for (int j = 0; j < (src.polygon + i)->numbers_of_vertexes_in_facets; j++) {
+            printf("!count_verticies = %d: number_verticies = %u\n", i, (src.polygon + i)->vertexes[j]);
+            printf("!count_verticies = %d: normal = %d\n", i, (src.polygon + i)->normal[j]);
+            if ((src.polygon + i)->is_texture)
+                printf("!count_verticies = %d: texture_coordinates = %d\n", i, (src.polygon + i)->texture_coordinates[j]);
+        }
+    }
 
-//     return 0;
-// }
+    return 0;
+}
