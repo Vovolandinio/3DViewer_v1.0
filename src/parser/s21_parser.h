@@ -15,6 +15,9 @@
 typedef struct facets {
     unsigned *vertexes;
     unsigned numbers_of_vertexes_in_facets;
+    unsigned *texture_coordinates;
+    unsigned is_texture;
+    unsigned *normal;
 } polygon_t;
 
 typedef struct Indexes {
