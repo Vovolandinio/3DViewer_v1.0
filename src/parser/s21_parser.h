@@ -27,9 +27,9 @@ typedef struct Indexes {
     float* array;
     unsigned int* vertexes;
     polygon_t *polygon;
-} index;
+} indexes;
 
-void initialize(index *structure);
+void initialize(indexes *structure);
 // static void parser_v(FILE *file, index* src);
 // static polygon_t parser_f(FILE *file, index* src);
 
