@@ -46,16 +46,21 @@ void main_parser(const char* filename, indexes* src) {
 
 static void parser_v(FILE *file, indexes* src) {
     if(src->array != NULL) {
+        char c = '\0';
+        if ((c = fgetc(file)) == 'n') c = fgetc(file);
         src->array = (float*)realloc(src->array, (src->indexV + 3) * sizeof(float));
         for (size_t i = 0; i < 3; i++) {
-            src->array[src->indexV + i];
+            src->array[src->indexV + i] = 0;
         }
         fscanf(file, "%f %f %f", &src->array[src->indexV], &src->array[src->indexV + 1], &src->array[src->indexV + 2]);
-    src->indexV += 3;
+        for (size_t i = 0; i < 3; i++)
+            if (fabs(src->array[src->indexV + i]) > src->maxV) src->maxV = fabs(src->array[src->indexV + i]);
+        src->indexV += 3;
     } else {
         printf("Memory error");
     }
 }
+
 
 unsigned get_number(FILE *file, char *c) {
     int number_verticies = 0, i = 0, k = 0;
@@ -105,7 +110,7 @@ static polygon_t parser_f(FILE *file, indexes* src) {
                     polygoncopy.normal[count_verticies - 1] = normal;
                 }
             }
-            printf("%d\n", polygoncopy.is_texture);
+            // printf("%d\n", polygoncopy.is_texture);
             count_verticies++;
             if (c == '\n' || c == EOF)
                 break;
