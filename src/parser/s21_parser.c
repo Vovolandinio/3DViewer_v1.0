@@ -38,7 +38,6 @@ unsigned long count_fields_in_file(const char *filename, unsigned long *count_nu
     }
     return count;
 }
-}
 
 
 void main_parser(const char* filename, indexes* src) {
