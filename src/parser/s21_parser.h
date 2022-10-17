@@ -32,6 +32,7 @@ typedef struct Indexes {
 } indexes;
 
 void initialize(indexes *structure);
+void main_parser(const char* filename, indexes* src);
 // static void parser_v(FILE *file, index* src);
 // static polygon_t parser_f(FILE *file, index* src);
 

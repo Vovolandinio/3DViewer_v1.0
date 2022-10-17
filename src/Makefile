@@ -28,3 +28,10 @@ test: parser/tests/test.c $(HEADER) $(OBJECTS_GCOV)
 $(OBJECTS_GCOV): $(OBJ_GCOV_DIR)%.o: parser%.c $(HEADER)
 	@mkdir -p obj_gcov
 	$(CC) -o $@ -c $<
+
+clean:
+	rm -rf obj_gcov
+	rm -rf test *gcda *gcno
+	rm -rf out
+	rm -rf *.dSYM
+

@@ -1,6 +1,4 @@
 #include "s21_parser.h"
-
-
 static void parser_v(FILE *file, indexes* src);
 static polygon_t parser_f(FILE *file, indexes* src);
 
@@ -40,6 +38,8 @@ unsigned long count_fields_in_file(const char *filename, unsigned long *count_nu
     }
     return count;
 }
+}
+
 
 void main_parser(const char* filename, indexes* src) {
     initialize(src);
@@ -61,7 +61,6 @@ void main_parser(const char* filename, indexes* src) {
         while((c = fgetc(file)) != EOF) {
             if (c == 'f' && buffer == '0') {
                 *(src->polygon + count_fields) = parser_f(file, src);
-                count_numbers_in_file(src, count_fields);
                 count_fields++;
             }
             if (c == 'v' && buffer == '0')
@@ -72,9 +71,9 @@ void main_parser(const char* filename, indexes* src) {
         if(!src->indexF) free(src->polygon);
         fclose(file);
         src->indexF = count_fields_file;
+
     }
 }
-
 
 static void parser_v(FILE *file, indexes* src) {
     if(src->array != NULL) {
@@ -92,7 +91,6 @@ static void parser_v(FILE *file, indexes* src) {
         printf("Memory error");
     }
 }
-
 
 unsigned get_number(FILE *file, char *c) {
     int number_verticies = 0, i = 0, k = 0;
@@ -120,7 +118,6 @@ static polygon_t parser_f(FILE *file, indexes* src) {
     polygoncopy.is_texture = 0; // no texture
     polygoncopy.is_normal = 0; // no normal
 
-
     polygoncopy.vertexes = (unsigned *) malloc(3 * sizeof(unsigned));
     polygoncopy.normal = (unsigned *) malloc(3 * sizeof(unsigned));
     polygoncopy.texture_coordinates = (unsigned *) malloc(3 * sizeof(unsigned));
@@ -134,6 +131,7 @@ static polygon_t parser_f(FILE *file, indexes* src) {
                 c = fgetc(file);
                 if (c == '/') {
                     polygoncopy.is_normal = 1;
+
                     c = fgetc(file);
                     unsigned normal = get_number(file, &c);
                     polygoncopy.normal = (unsigned *) realloc(polygoncopy.normal, (count_verticies * sizeof (unsigned )));
@@ -158,6 +156,7 @@ static polygon_t parser_f(FILE *file, indexes* src) {
     polygoncopy.numbers_of_vertexes_in_facets = count_verticies - 1;
     return polygoncopy;
 }
+
 
 
 int main() {
