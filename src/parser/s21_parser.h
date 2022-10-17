@@ -17,13 +17,15 @@ typedef struct facets {
     unsigned numbers_of_vertexes_in_facets;
     unsigned *texture_coordinates;
     unsigned is_texture;
+    unsigned is_normal;
     unsigned *normal;
 } polygon_t;
 
 typedef struct Indexes {
     unsigned int indexV;
     unsigned int maxV;
-    unsigned int indexF;
+    unsigned long indexF;
+    unsigned int maxF;
     float* array;
     unsigned int* vertexes;
     polygon_t *polygon;

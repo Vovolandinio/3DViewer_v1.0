@@ -1,5 +1,4 @@
 #include "s21_parser.h"
-
 static void parser_v(FILE *file, indexes* src);
 static polygon_t parser_f(FILE *file, indexes* src);
 
@@ -10,39 +9,71 @@ void initialize(indexes *structure) {
     structure->vertexes = 0;
     structure->polygon = NULL;
     structure->maxV = 0;
+    structure->maxF = 0;
+}
+
+void count_numbers_in_file(indexes* src, int count_fields) {
+    src->maxF += (src->polygon + count_fields)->numbers_of_vertexes_in_facets +
+        (src->polygon + count_fields)->numbers_of_vertexes_in_facets * src->polygon->is_normal +
+        (src->polygon + count_fields)->numbers_of_vertexes_in_facets * src->polygon->is_texture;
+}
+
+unsigned long count_fields_in_file(const char *filename, unsigned long *count_numbers) {
+    unsigned long count = 0;
+    char c = '\0';
+    FILE *file;
+    if ((file = fopen(filename, "r")) == NULL){
+        printf("Cannot open file");
+    } else {
+        while((c = fgetc(file)) != EOF) {
+            if (c == 'f')
+                count++;
+            while (c != '\n') {
+                c = fgetc(file);
+                if (c == ' ')
+                    count_numbers++;
+            }
+        }
+        fclose(file);
+    }
+    return count;
+}
 }
 
 
 void main_parser(const char* filename, indexes* src) {
     initialize(src);
     FILE *file;
+    unsigned long count_numbers = 0, count_fields_file = count_fields_in_file(filename, &count_numbers);
     if ((file = fopen(filename, "r")) == NULL){
         printf("Cannot open file");
     } else {
         char buffer = '0';
         char c = '0';
-        int count_fields = 0;
-        src->polygon = (polygon_t *)calloc(1, sizeof(polygon_t));
+        unsigned long count_fields = 0;
+        src->polygon = (polygon_t *)malloc(count_fields_file * sizeof(polygon_t));
+        for (int i = 0; i < 100; i ++) {
+            (src->polygon + i)->vertexes = (unsigned *)malloc(1000 * sizeof(unsigned));
+            (src->polygon + i)->texture_coordinates = (unsigned *)malloc(1000 * sizeof(unsigned));
+            (src->polygon + i)->normal = (unsigned *)malloc(1000 * sizeof(unsigned));
+        } 
         src->array = (float *)calloc(1, sizeof(float));
         while((c = fgetc(file)) != EOF) {
             if (c == 'f' && buffer == '0') {
-                src->polygon->vertexes = (unsigned *) realloc(src->polygon->vertexes, 1000);
-                src->polygon->texture_coordinates = (unsigned *) realloc(src->polygon->texture_coordinates, 1000);
-                src->polygon->normal = (unsigned *) realloc(src->polygon->normal, 1000);
                 *(src->polygon + count_fields) = parser_f(file, src);
                 count_fields++;
             }
             if (c == 'v' && buffer == '0')
                 parser_v(file, src);
+            
         }
-        src->indexF = count_fields;
         if(!src->indexV) free(src->array);
         if(!src->indexF) free(src->polygon);
         fclose(file);
+        src->indexF = count_fields_file;
+
     }
 }
-
-
 
 static void parser_v(FILE *file, indexes* src) {
     if(src->array != NULL) {
@@ -85,6 +116,12 @@ static polygon_t parser_f(FILE *file, indexes* src) {
     polygoncopy.texture_coordinates = NULL;
     polygoncopy.normal = NULL;
     polygoncopy.is_texture = 0; // no texture
+    polygoncopy.is_normal = 0; // no normal
+
+    polygoncopy.vertexes = (unsigned *) malloc(3 * sizeof(unsigned));
+    polygoncopy.normal = (unsigned *) malloc(3 * sizeof(unsigned));
+    polygoncopy.texture_coordinates = (unsigned *) malloc(3 * sizeof(unsigned));
+
     while((c = fgetc(file)) != EOF) {
         if (c != ' ' && c != 'f' && c != '\n') {
             unsigned number_verticies = get_number(file, &c);
@@ -93,6 +130,8 @@ static polygon_t parser_f(FILE *file, indexes* src) {
             if (c == '/') {
                 c = fgetc(file);
                 if (c == '/') {
+                    polygoncopy.is_normal = 1;
+
                     c = fgetc(file);
                     unsigned normal = get_number(file, &c);
                     polygoncopy.normal = (unsigned *) realloc(polygoncopy.normal, (count_verticies * sizeof (unsigned )));
@@ -116,4 +155,28 @@ static polygon_t parser_f(FILE *file, indexes* src) {
     }
     polygoncopy.numbers_of_vertexes_in_facets = count_verticies - 1;
     return polygoncopy;
+}
+
+
+
+int main() {
+    const char filename[50] = "symphysis.obj";
+    indexes src;
+    main_parser(filename, &src);
+
+    // for (int i = 0; i < src.indexV; i++)
+    //    printf("!count_array = %d: number_verticies = %f\n", i, (src.array)[i]);
+
+    printf("%lu\n", src.indexF);
+    for (unsigned long i = 0; i < src.indexF + 2; i++) {
+        for (unsigned long j = 0; j < (src.polygon + i)->numbers_of_vertexes_in_facets; j++) {
+            printf("!count_verticies = %lu: number_verticies = %u\n", i, (src.polygon + i)->vertexes[j]);
+            if ((src.polygon + i)->is_normal)
+                printf("!count_verticies = %lu: normal = %d\n", i, (src.polygon + i)->normal[j]);
+            if ((src.polygon + i)->is_texture)
+                printf("!count_verticies = %lu: texture_coordinates = %d\n", i, (src.polygon + i)->texture_coordinates[j]);
+        }
+    }
+
+    return 0;
 }
