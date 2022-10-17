@@ -24,7 +24,7 @@ typedef struct facets {
 typedef struct Indexes {
     unsigned int indexV;
     unsigned int maxV;
-    unsigned int indexF;
+    unsigned long indexF;
     unsigned int maxF;
     float* array;
     unsigned int* vertexes;

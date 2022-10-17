@@ -20,16 +20,22 @@ void count_numbers_in_file(indexes* src, int count_fields) {
         (src->polygon + count_fields)->numbers_of_vertexes_in_facets * src->polygon->is_texture;
 }
 
-int count_fields_in_file(const char *filename) {
-    int count = 0, count_numbers = 0;
+unsigned long count_fields_in_file(const char *filename, unsigned long *count_numbers) {
+    unsigned long count = 0;
     char c = '\0';
     FILE *file;
     if ((file = fopen(filename, "r")) == NULL){
         printf("Cannot open file");
     } else {
-        while((c = fgetc(file)) != EOF)
+        while((c = fgetc(file)) != EOF) {
             if (c == 'f')
                 count++;
+            while (c != '\n') {
+                c = fgetc(file);
+                if (c == ' ')
+                    count_numbers++;
+            }
+        }
         fclose(file);
     }
     return count;
@@ -38,13 +44,13 @@ int count_fields_in_file(const char *filename) {
 void main_parser(const char* filename, indexes* src) {
     initialize(src);
     FILE *file;
-    int count_fields_file = count_fields_in_file(filename);
+    unsigned long count_numbers = 0, count_fields_file = count_fields_in_file(filename, &count_numbers);
     if ((file = fopen(filename, "r")) == NULL){
         printf("Cannot open file");
     } else {
         char buffer = '0';
         char c = '0';
-        int count_fields = 0;
+        unsigned long count_fields = 0;
         src->polygon = (polygon_t *)malloc(count_fields_file * sizeof(polygon_t));
         for (int i = 0; i < 100; i ++) {
             (src->polygon + i)->vertexes = (unsigned *)malloc(1000 * sizeof(unsigned));
@@ -65,7 +71,7 @@ void main_parser(const char* filename, indexes* src) {
         if(!src->indexV) free(src->array);
         if(!src->indexF) free(src->polygon);
         fclose(file);
-        src->indexF = count_fields;
+        src->indexF = count_fields_file;
     }
 }
 
@@ -155,19 +161,21 @@ static polygon_t parser_f(FILE *file, indexes* src) {
 
 
 int main() {
-    const char filename[50] = "minicooper.obj";
+    const char filename[50] = "symphysis.obj";
     indexes src;
     main_parser(filename, &src);
 
-    for (int i = 0; i < src.indexV; i++)
-       printf("!count_array = %d: number_verticies = %f\n", i, (src.array)[i]);
+    // for (int i = 0; i < src.indexV; i++)
+    //    printf("!count_array = %d: number_verticies = %f\n", i, (src.array)[i]);
 
-    for (int i = 0; i < src.indexF - 1; i++) {
-        for (int j = 0; j < (src.polygon + i)->numbers_of_vertexes_in_facets; j++) {
-            printf("!count_verticies = %d: number_verticies = %u\n", i, (src.polygon + i)->vertexes[j]);
-            printf("!count_verticies = %d: normal = %d\n", i, (src.polygon + i)->normal[j]);
+    printf("%lu\n", src.indexF);
+    for (unsigned long i = 0; i < src.indexF + 2; i++) {
+        for (unsigned long j = 0; j < (src.polygon + i)->numbers_of_vertexes_in_facets; j++) {
+            printf("!count_verticies = %lu: number_verticies = %u\n", i, (src.polygon + i)->vertexes[j]);
+            if ((src.polygon + i)->is_normal)
+                printf("!count_verticies = %lu: normal = %d\n", i, (src.polygon + i)->normal[j]);
             if ((src.polygon + i)->is_texture)
-                printf("!count_verticies = %d: texture_coordinates = %d\n", i, (src.polygon + i)->texture_coordinates[j]);
+                printf("!count_verticies = %lu: texture_coordinates = %d\n", i, (src.polygon + i)->texture_coordinates[j]);
         }
     }
 
