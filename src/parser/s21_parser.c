@@ -20,20 +20,36 @@ void count_numbers_in_file(indexes* src, int count_fields) {
         (src->polygon + count_fields)->numbers_of_vertexes_in_facets * src->polygon->is_texture;
 }
 
+int count_fields_in_file(const char *filename) {
+    int count = 0, count_numbers = 0;
+    char c = '\0';
+    FILE *file;
+    if ((file = fopen(filename, "r")) == NULL){
+        printf("Cannot open file");
+    } else {
+        while((c = fgetc(file)) != EOF)
+            if (c == 'f')
+                count++;
+        fclose(file);
+    }
+    return count;
+}
+
 void main_parser(const char* filename, indexes* src) {
     initialize(src);
     FILE *file;
+    int count_fields_file = count_fields_in_file(filename);
     if ((file = fopen(filename, "r")) == NULL){
         printf("Cannot open file");
     } else {
         char buffer = '0';
         char c = '0';
         int count_fields = 0;
-        src->polygon = (polygon_t *)malloc(1000 * sizeof(polygon_t));
+        src->polygon = (polygon_t *)malloc(count_fields_file * sizeof(polygon_t));
         for (int i = 0; i < 100; i ++) {
-            (src->polygon + i)->vertexes = (unsigned *)malloc(100 * sizeof(unsigned));
-            (src->polygon + i)->texture_coordinates = (unsigned *)malloc(100 * sizeof(unsigned));
-            (src->polygon + i)->normal = (unsigned *)malloc(100 * sizeof(unsigned));
+            (src->polygon + i)->vertexes = (unsigned *)malloc(1000 * sizeof(unsigned));
+            (src->polygon + i)->texture_coordinates = (unsigned *)malloc(1000 * sizeof(unsigned));
+            (src->polygon + i)->normal = (unsigned *)malloc(1000 * sizeof(unsigned));
         } 
         src->array = (float *)calloc(1, sizeof(float));
         while((c = fgetc(file)) != EOF) {
@@ -139,14 +155,14 @@ static polygon_t parser_f(FILE *file, indexes* src) {
 
 
 int main() {
-    const char filename[50] = "test.obj";
+    const char filename[50] = "minicooper.obj";
     indexes src;
     main_parser(filename, &src);
 
     for (int i = 0; i < src.indexV; i++)
        printf("!count_array = %d: number_verticies = %f\n", i, (src.array)[i]);
 
-    for (int i = 0; i < src.indexF; i++) {
+    for (int i = 0; i < src.indexF - 1; i++) {
         for (int j = 0; j < (src.polygon + i)->numbers_of_vertexes_in_facets; j++) {
             printf("!count_verticies = %d: number_verticies = %u\n", i, (src.polygon + i)->vertexes[j]);
             printf("!count_verticies = %d: normal = %d\n", i, (src.polygon + i)->normal[j]);
