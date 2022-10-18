@@ -30,8 +30,6 @@ unsigned long count_fields_in_file(const char *filename, unsigned long *count_nu
                 count++;
             while (c != '\n') {
                 c = fgetc(file);
-                if (c == ' ')
-                    count_numbers++;
             }
         }
         fclose(file);
@@ -45,29 +43,32 @@ int create_array_of_polygons(indexes* src, const char* filename) {
     src->polygon = (polygon_t *)malloc((count_fields_file + 1) * sizeof(polygon_t));
     if (src->polygon)
         for (int i = 0; i < count_fields_file + 1; i ++) {
-            (src->polygon + i)->vertexes = (unsigned *)malloc((count_numbers + 1) * sizeof(unsigned));
-            (src->polygon + i)->texture_coordinates = (unsigned *)malloc((count_numbers + 1) * sizeof(unsigned));
-            (src->polygon + i)->normal = (unsigned *)malloc((count_numbers + 1) * sizeof(unsigned));
+            (src->polygon + i)->vertexes = (unsigned *)malloc(3 * sizeof(unsigned));
+            (src->polygon + i)->texture_coordinates = (unsigned *)malloc(3 * sizeof(unsigned));
+            (src->polygon + i)->normal = (unsigned *)malloc(3 * sizeof(unsigned));
         }
     else
         code = 1;
+    src->indexF = count_fields_file;
+    printf("count numbers: %lu\n", count_numbers);
     return code;
 }
 
-// void remove_array_of_polygons(indexes* src) {
-//     for (unsigned long i = src->indexF + 1; i >= 0; i--) {
-//         free((src->polygon + i)->vertexes);
-//         if ((src->polygon + i)->is_texture)
-//             free((src->polygon + i)->texture_coordinates);
-//         if ((src->polygon + i)->is_normal)
-//             free((src->polygon + i)->normal);
-//     }
-// }
+void remove_array_of_polygons(indexes* src) {
+    for (unsigned long i = src->indexF - 1; i >= 0; i--) {
+            free((src->polygon + i)->vertexes);
+        // if ((src->polygon + i)->is_texture)
+        //     free((src->polygon + i)->texture_coordinates);
+        // if ((src->polygon + i)->is_normal)
+        //     free((src->polygon + i)->normal);
+
+    }
+    // free(src->polygon);
+}
 
 void main_parser(const char* filename, indexes* src) {
     initialize(src);
     FILE *file;
-    unsigned long count_numbers = 0, count_fields_file = count_fields_in_file(filename, &count_numbers);
     if ((file = fopen(filename, "r")) == NULL){
         printf("Cannot open file");
     } else {
@@ -89,7 +90,6 @@ void main_parser(const char* filename, indexes* src) {
         if(!src->indexV) free(src->array);
         if(!src->indexF) free(src->polygon);
         fclose(file);
-        src->indexF = count_fields_file;
     }
 }
 
@@ -186,7 +186,7 @@ int main() {
     for (int i = 0; i < src.indexV; i++)
        printf("!count_array = %d: number_verticies = %f\n", i, (src.array)[i]);
 
-    for (unsigned long i = 0; i < src.indexF + 2; i++) {
+    for (unsigned long i = 0; i < src.indexF + 1; i++)
         for (unsigned long j = 0; j < (src.polygon + i)->numbers_of_vertexes_in_facets; j++) {
             printf("!count_verticies = %lu: number_verticies = %u\n", i, (src.polygon + i)->vertexes[j]);
             if ((src.polygon + i)->is_normal)
@@ -194,7 +194,7 @@ int main() {
             if ((src.polygon + i)->is_texture)
                 printf("!count_verticies = %lu: texture_coordinates = %d\n", i, (src.polygon + i)->texture_coordinates[j]);
         }
-    }
+
     // remove_array_of_polygons(&src);
 
     return 0;
