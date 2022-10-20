@@ -4,6 +4,7 @@
 #include <QMouseEvent>
 #include <QOpenGLWidget>
 #include <QTimer>
+#include <QtOpenGL>
 
 class DScene : public QOpenGLWidget {
  public:

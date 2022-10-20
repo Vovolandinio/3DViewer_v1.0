@@ -76,9 +76,9 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_pushButton_clicked()
-{
-    ui->widget_3->change_color();
-    this->setStyleSheet("background-color: white;");
-}
+//void MainWindow::on_pushButton_clicked()
+//{
+//    ui->widget_3->change_color();
+//    this->setStyleSheet("background-color: white;");
+//}
 

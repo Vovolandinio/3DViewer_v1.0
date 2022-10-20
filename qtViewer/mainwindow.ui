@@ -577,7 +577,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="Scene" name="widget_3" native="true">
+   <widget class="DScene" name="widget_3" native="true">
     <property name="geometry">
      <rect>
       <x>550</x>
@@ -710,9 +710,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Scene</class>
+   <class>DScene</class>
    <extends>QWidget</extends>
-   <header>scene.h</header>
+   <header location="global">dscene.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -23,7 +23,7 @@
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QWidget>
-#include "scene.h"
+#include <dscene.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -96,7 +96,7 @@ public:
     QLineEdit *edges_red;
     QLabel *edges_green_label;
     QPushButton *pushButton;
-    Scene *widget_3;
+    DScene *widget_3;
     QWidget *proection_widget;
     QGridLayout *gridLayout_6;
     QRadioButton *proection_central;
@@ -486,7 +486,7 @@ public:
 
         gridLayout_5->addWidget(pushButton, 6, 2, 1, 1);
 
-        widget_3 = new Scene(centralwidget);
+        widget_3 = new DScene(centralwidget);
         widget_3->setObjectName(QString::fromUtf8("widget_3"));
         widget_3->setGeometry(QRect(550, 20, 1251, 1051));
         proection_widget = new QWidget(centralwidget);
