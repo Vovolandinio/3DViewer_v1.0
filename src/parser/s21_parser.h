@@ -14,7 +14,7 @@
 
 typedef struct facets {
     unsigned *vertexes;
-    unsigned numbers_of_vertexes_in_facets;
+    int numbers_of_vertexes_in_facets;
     unsigned *texture_coordinates;
     unsigned is_texture;
     unsigned is_normal;
@@ -24,12 +24,14 @@ typedef struct facets {
 typedef struct Indexes {
     unsigned int indexV;
     unsigned int maxV;
-    unsigned long indexF;
-    unsigned int maxF;
+    int indexF;
+    int maxF;
     float* array;
     unsigned int* vertexes;
     polygon_t *polygon;
 } indexes;
+
+
 
 void initialize(indexes *structure);
 void main_parser(const char* filename, indexes* src);
