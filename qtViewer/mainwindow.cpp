@@ -76,9 +76,8 @@ MainWindow::~MainWindow()
 }
 
 
-//void MainWindow::on_pushButton_clicked()
-//{
-//    ui->widget_3->change_color();
-//    this->setStyleSheet("background-color: white;");
-//}
+void MainWindow::on_action_open_file_triggered()
+{
+    QFileDialog::getOpenFileName(this, "Выбрать файл для открытия", QDir::homePath(), "Text Files (*.obj)");
+}
 
