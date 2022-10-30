@@ -22,10 +22,10 @@
    <widget class="DScene" name="widget_3" native="true">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>10</y>
-      <width>1091</width>
-      <height>1051</height>
+      <x>630</x>
+      <y>30</y>
+      <width>1001</width>
+      <height>1061</height>
      </rect>
     </property>
    </widget>
@@ -272,19 +272,6 @@
 </string>
        </property>
        <layout class="QGridLayout" name="gridLayout_3">
-        <item row="1" column="0">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
         <item row="4" column="0" colspan="2">
          <widget class="QSlider" name="zoom_slider">
           <property name="value">
@@ -292,6 +279,13 @@
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="QLineEdit" name="zoom_line">
+          <property name="text">
+           <string>1</string>
           </property>
          </widget>
         </item>
@@ -318,14 +312,47 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="2">
-         <widget class="QLineEdit" name="zoom_line">
-          <property name="text">
-           <string>1</string>
+        <item row="1" column="0">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-         </widget>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="pushButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QWidget {
+    background-color: #7FFFD4;
+    border-style: outset;
+    border-width: 1px;
+    border-radius: 5px;
+    border-color: #2F4F4F;
+    font: 12px;
+    min-width: 10em;
+    padding: 3px;
+    color: #191970;
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Открыть файл</string>
+       </property>
       </widget>
      </item>
      <item row="5" column="0">
@@ -605,27 +632,6 @@
          </widget>
         </item>
        </layout>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="pushButton">
-       <property name="styleSheet">
-        <string notr="true">QWidget {
-    background-color: #7FFFD4;
-    border-style: outset;
-    border-width: 1px;
-    border-radius: 5px;
-    border-color: #2F4F4F;
-    font: 12px;
-    min-width: 10em;
-    padding: 3px;
-    color: #191970;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>Open file</string>
-       </property>
       </widget>
      </item>
     </layout>

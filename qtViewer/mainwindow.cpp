@@ -78,12 +78,17 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_action_open_file_triggered()
 {
-    QFileDialog::getOpenFileName(this, "Выбрать файл для открытия", QDir::homePath(), "Text Files (*.obj)");
+   QString file = QFileDialog::getOpenFileName(this, "Выбрать файл для открытия", QDir::homePath(), "Text Files (*.obj)");
+   if (file.isEmpty()) return;
+// Здесь будет наш парсер.
+
 }
 
 
 void MainWindow::on_pushButton_clicked()
 {
-    QFileDialog::getOpenFileName(this, "Выбрать файл для открытия", QDir::homePath(), "Text Files (*.obj)");
-}
+    QString file = QFileDialog::getOpenFileName(this, "Выбрать файл для открытия", QDir::homePath(), "Text Files (*.obj)");
+    if (file.isEmpty()) return;
+// Здесь будет наш парсер.
 
+}
