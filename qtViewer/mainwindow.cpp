@@ -1,6 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QFileDialog>
+#include <QColorDialog>
+
+
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow) {
 
     ui->setupUi(this);
@@ -104,4 +108,41 @@ void MainWindow::on_pushButton_clicked()
 
 }
 
+
+
+void MainWindow::on_move_apply_clicked()
+{
+    double move_x = ui->movex_line->text().toDouble();
+    double move_y = ui->movey_line->text().toDouble();
+    double move_z = ui->movez_line->text().toDouble();
+    for (int i = 0; i < ui->widget_3->vertex_count*3; i+=3) {
+        ui->widget_3->vertex_array[i] += move_x/100;
+        ui->widget_3->vertex_array[i+1] += move_y/100;
+        ui->widget_3->vertex_array[i+2] += move_z/100;
+    }
+    ui->movex_line->setText("0");
+    ui->movey_line->setText("0");
+    ui->movez_line->setText("0");
+    ui->widget_3->update();
+}
+
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    QColor color = QColorDialog::getColor(Qt::white, this, "Choose color");
+//      if (color.isValid()) {
+//        ui->OGLwidget->lineColor = color;
+//        updateUiColors();
+//      }
+}
+
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    QColor color = QColorDialog::getColor(Qt::white, this, "Choose color");
+      if (color.isValid()) {
+        ui->widget_3->lineColor = color;
+        ui->widget_3->update();
+      }
+}
 

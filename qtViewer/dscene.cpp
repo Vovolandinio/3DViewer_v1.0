@@ -32,7 +32,6 @@ QOpenGLShaderProgram * DScene::initialize_shaders() {
       prog->addShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShaderSource);
       prog->bindAttributeLocation("position", 0);
       prog->link();
-      prog->bind();
 
       return prog;
 }
@@ -42,24 +41,28 @@ void DScene::initializeGL() {
   //включаем буфер глубины для отображения Z-координаты
   glEnable(GL_DEPTH_TEST);
 
+  lineColor.setRgb(255,255,255);
+
   prog = initialize_shaders();
+
+  vertex_count = 4;
+  vertex_array = new float[3 * vertex_count];
+  float buff_vertex[] = {-0.5, 0, -0.5, 0.5, 0, -0.5, 0, 0.5, -0.5, 0, -0.5, -1};
+  for (int i = 0; i < vertex_count * 3; i++) {
+      vertex_array[i] = buff_vertex[i];
+  }
+
+  lines_count = 6;
+  unsigned int buff_lines[] = {0,1,1,2,2,0,0,3,1,3,2,3};
+  lines_array = new unsigned int[2*lines_count];
+  for (int i = 0; i < 2*lines_count; i++) {
+      lines_array[i] = buff_lines[i];
+  }
 }
 
 void DScene::paintGL() {
-    vertex_count = 4;
-    vertex_array = new float[3 * vertex_count];
-    float buff_vertex[] = {-0.5, 0, -0.5, 0.5, 0, -0.5, 0, 0.5, -0.5, 0, 0, -1};
-    for (int i = 0; i < vertex_count * 3; i++) {
-        vertex_array[i] = buff_vertex[i];
-    }
 
-    lines_count = 12;
-    unsigned int buff_lines[] = {0,1,1,2,2,0,0,3,1,3,2,3};
-    lines_array = new unsigned int[lines_count];
-    for (int i = 0; i < lines_count; i++) {
-        lines_array[i] = buff_lines[i];
-    }
-
+    prog->bind();
 
     QOpenGLBuffer vbo(QOpenGLBuffer::VertexBuffer);
     vbo.create();
@@ -74,14 +77,14 @@ void DScene::paintGL() {
     ibo.create();
     ibo.bind();
     ibo.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-    ibo.allocate(lines_array, sizeof(unsigned int) * lines_count);
+    ibo.allocate(lines_array, sizeof(unsigned int) * 2*lines_count);
 
 
     glClear( GL_COLOR_BUFFER_BIT );
-    QVector3D lineColorV = {0.5, 0.5, 1};
+    lineColorV = {lineColor.redF(), lineColor.greenF(), lineColor.blueF()};
     prog->setUniformValue(prog->uniformLocation("color"), lineColorV);
 
-    glDrawElements(GL_LINES, lines_count, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_LINES, 2*lines_count, GL_UNSIGNED_INT, 0);
 
   }
 

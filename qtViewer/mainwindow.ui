@@ -91,6 +91,13 @@
         </item>
         <item row="4" column="0" colspan="2">
          <widget class="QPushButton" name="pushButton_2">
+          <property name="styleSheet">
+           <string notr="true">QPushButton:pressed {
+	background-color: #FF6347;
+	border: 1px solid gray;
+	padding: 5px;
+}</string>
+          </property>
           <property name="text">
            <string>Выбрать цвет...</string>
           </property>
@@ -155,6 +162,13 @@
         </item>
         <item row="3" column="0" colspan="2">
          <widget class="QPushButton" name="pushButton_3">
+          <property name="styleSheet">
+           <string notr="true">QPushButton:pressed {
+	background-color: #FF6347;
+	border: 1px solid gray;
+	padding: 5px;
+}</string>
+          </property>
           <property name="text">
            <string>Выбрать цвет...</string>
           </property>
@@ -393,6 +407,13 @@
         </item>
         <item row="4" column="0" colspan="4">
          <widget class="QPushButton" name="rotate_apply">
+          <property name="styleSheet">
+           <string notr="true">QPushButton:pressed {
+	background-color: #FF6347;
+	border: 1px solid gray;
+	padding: 5px;
+}</string>
+          </property>
           <property name="text">
            <string>Применить</string>
           </property>
@@ -458,6 +479,13 @@
         </item>
         <item row="4" column="0" colspan="4">
          <widget class="QPushButton" name="move_apply">
+          <property name="styleSheet">
+           <string notr="true">QPushButton:pressed {
+	background-color: #FF6347;
+	border: 1px solid gray;
+	padding: 5px;
+}</string>
+          </property>
           <property name="text">
            <string>Применить</string>
           </property>

@@ -10,6 +10,15 @@ class DScene : public QOpenGLWidget {
  public:
   DScene(QWidget *parent = 0);
 
+  float * vertex_array;
+
+  int vertex_count = 0;
+  unsigned int * lines_array;
+  int lines_count = 0;
+
+  QColor lineColor;
+  QColor verticleColor;
+
  private:
   void initializeGL();
   void paintGL();
@@ -21,11 +30,14 @@ class DScene : public QOpenGLWidget {
   GLfloat xRot;
   GLfloat yRot;
 
-  float * vertex_array;
 
-  int vertex_count = 0;
-  unsigned int * lines_array;
-  int lines_count = 0;
+
+  QOpenGLBuffer vbo;
+  QOpenGLBuffer ibo;
+
+  QVector3D lineColorV = {0.5, 0.5, 1};
+
+
 
 
 };
