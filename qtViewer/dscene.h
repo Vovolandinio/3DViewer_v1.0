@@ -18,6 +18,16 @@ class DScene : public QOpenGLWidget {
 
   QColor lineColor;
   QColor verticleColor;
+  QColor backgroundColor;
+
+  int verticles_paint = 0;
+  float verticles_size = 10;
+
+  int lines_paint = 0;
+  float lines_size = 1;
+
+
+
 
  private:
   void initializeGL();
@@ -27,17 +37,12 @@ class DScene : public QOpenGLWidget {
   QOpenGLShaderProgram * initialize_shaders();
   QOpenGLShaderProgram * prog = NULL;
 
-  GLfloat xRot;
-  GLfloat yRot;
-
-
 
   QOpenGLBuffer vbo;
   QOpenGLBuffer ibo;
 
-  QVector3D lineColorV = {0.5, 0.5, 1};
-
-
+  QVector3D lineColorV = {1, 1, 1};
+  QVector3D verticleColorV = {1, 0, 0};
 
 
 };

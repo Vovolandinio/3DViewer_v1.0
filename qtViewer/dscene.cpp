@@ -5,7 +5,7 @@
 #define GL_PI 3.1415f
 
 DScene::DScene(QWidget *parent)
-    : QOpenGLWidget(parent), xRot(0.0f), yRot(0.0f) {
+    : QOpenGLWidget(parent) {
   this->setFocusPolicy(Qt::StrongFocus);
 }
 
@@ -42,6 +42,8 @@ void DScene::initializeGL() {
   glEnable(GL_DEPTH_TEST);
 
   lineColor.setRgb(255,255,255);
+  verticleColor.setRgb(255,0,0);
+  backgroundColor.setRgb(0,0,0);
 
   prog = initialize_shaders();
 
@@ -62,7 +64,10 @@ void DScene::initializeGL() {
 
 void DScene::paintGL() {
 
+    glClearColor(backgroundColor.redF(),backgroundColor.greenF(),backgroundColor.blueF(),1);
+
     prog->bind();
+
 
     QOpenGLBuffer vbo(QOpenGLBuffer::VertexBuffer);
     vbo.create();
@@ -84,8 +89,23 @@ void DScene::paintGL() {
     lineColorV = {lineColor.redF(), lineColor.greenF(), lineColor.blueF()};
     prog->setUniformValue(prog->uniformLocation("color"), lineColorV);
 
+    if (lines_paint) {
+        glEnable(GL_LINE_STIPPLE);
+        glLineStipple(3, 0x00FF);
+    }
+    glLineWidth(lines_size);
     glDrawElements(GL_LINES, 2*lines_count, GL_UNSIGNED_INT, 0);
 
+    if (lines_paint) glDisable(GL_LINE_STIPPLE);
+
+    if (verticles_paint) {
+        verticleColorV = {verticleColor.redF(), verticleColor.greenF(), verticleColor.blueF()};
+        prog->setUniformValue(prog->uniformLocation("color"), verticleColorV);
+        glPointSize(verticles_size);
+        if (verticles_paint == 1) glEnable(GL_POINT_SMOOTH);
+        glDrawArrays(GL_POINTS,0, vertex_count);
+        if (verticles_paint == 1) glDisable(GL_POINT_SMOOTH);
+    }
   }
 
 void DScene::resizeGL(int w, int h) {

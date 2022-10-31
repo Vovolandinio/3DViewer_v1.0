@@ -126,22 +126,87 @@ void MainWindow::on_move_apply_clicked()
     ui->widget_3->update();
 }
 
-
+// Меняет цвет вершин
 void MainWindow::on_pushButton_2_clicked()
 {
     QColor color = QColorDialog::getColor(Qt::white, this, "Choose color");
-//      if (color.isValid()) {
-//        ui->OGLwidget->lineColor = color;
-//        updateUiColors();
-//      }
+      if (color.isValid()) {
+        ui->widget_3->verticleColor = color;
+        ui->widget_3->update();
+      }
 }
 
-
+// меняет цвет линий
 void MainWindow::on_pushButton_3_clicked()
 {
     QColor color = QColorDialog::getColor(Qt::white, this, "Choose color");
       if (color.isValid()) {
         ui->widget_3->lineColor = color;
+        ui->widget_3->update();
+      }
+}
+
+
+void MainWindow::on_vertices_no_clicked()
+{
+    ui->widget_3->verticles_paint = 0;
+    ui->widget_3->update();
+}
+
+
+void MainWindow::on_vertices_circle_clicked()
+{
+    ui->widget_3->verticles_paint = 1;
+    ui->widget_3->update();
+}
+
+
+void MainWindow::on_vertices_square_clicked()
+{
+    ui->widget_3->verticles_paint = 2;
+    ui->widget_3->update();
+}
+
+
+
+void MainWindow::on_verticles_size_slider_sliderReleased()
+{
+    ui->widget_3->verticles_size = ui->verticles_size_slider->value();
+    ui->widget_3->update();
+}
+
+
+void MainWindow::on_edges_solid_clicked()
+{
+    ui->widget_3->lines_paint = 0;
+    ui->widget_3->update();
+}
+
+
+void MainWindow::on_edges_dashed_clicked()
+{
+    ui->widget_3->lines_paint = 1;
+    ui->widget_3->update();
+}
+
+
+
+
+
+void MainWindow::on_lines_sie_slider_sliderReleased()
+{
+    ui->widget_3->lines_size = ui->lines_sie_slider->value();
+    ui->widget_3->update();
+}
+
+
+
+void MainWindow::on_bg_color_button_clicked()
+{
+    QColor color = QColorDialog::getColor(Qt::white, this, "Choose color");
+      if (color.isValid()) {
+        ui->widget_3->backgroundColor = color;
+        ui->centralwidget->setStyleSheet("background-color:"+ color.name());
         ui->widget_3->update();
       }
 }

@@ -35,12 +35,12 @@
       <x>10</x>
       <y>19</y>
       <width>532</width>
-      <height>1141</height>
+      <height>945</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_7">
-     <item row="5" column="0">
-      <widget class="QWidget" name="vertices_widget" native="true">
+     <item row="1" column="0" colspan="2">
+      <widget class="QWidget" name="move_widget" native="true">
        <property name="styleSheet">
         <string notr="true">QWidget {
     background-color: #7FFFD4;
@@ -55,42 +55,47 @@
 }
 </string>
        </property>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="1" column="0" colspan="2">
-         <widget class="QRadioButton" name="vertices_no">
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="1" column="3">
+         <widget class="QLineEdit" name="movex_line">
           <property name="text">
-           <string>Нет</string>
+           <string>0</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="0" colspan="2">
-         <widget class="QRadioButton" name="vertices_circle">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
+        <item row="2" column="3">
+         <widget class="QLineEdit" name="movey_line">
           <property name="text">
-           <string>Круги</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
+           <string>0</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="2">
-         <widget class="QRadioButton" name="vertices_square">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
+        <item row="3" column="3">
+         <widget class="QLineEdit" name="movez_line">
           <property name="text">
-           <string>Квадраты</string>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
+           <string>0</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="0" colspan="2">
-         <widget class="QPushButton" name="pushButton_2">
+        <item row="3" column="0">
+         <widget class="QLabel" name="movez_label">
+          <property name="text">
+           <string>Z</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" colspan="4">
+         <widget class="QLabel" name="move_label">
+          <property name="text">
+           <string>Расположение</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0" colspan="4">
+         <widget class="QPushButton" name="move_apply">
           <property name="styleSheet">
            <string notr="true">QPushButton:pressed {
 	background-color: #FF6347;
@@ -99,153 +104,62 @@
 }</string>
           </property>
           <property name="text">
-           <string>Выбрать цвет...</string>
+           <string>Применить</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="0" colspan="2">
-         <widget class="QLabel" name="vertices_label">
+        <item row="2" column="0">
+         <widget class="QLabel" name="movey_label">
           <property name="text">
-           <string>Вершины</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="QWidget" name="Edges" native="true">
-       <property name="styleSheet">
-        <string notr="true">QWidget {
-    background-color: #7FFFD4;
-    border-style: outset;
-    border-width: 1px;
-    border-radius: 5px;
-    border-color: #2F4F4F;
-    font: 12px;
-    min-width: 10em;
-    padding: 3px;
-    color: #191970;
-}
-</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_5">
-        <item row="0" column="0" colspan="2">
-         <widget class="QLabel" name="edges_label">
-          <property name="text">
-           <string>Линии</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0" colspan="2">
-         <widget class="QRadioButton" name="edges_dashed">
-          <property name="text">
-           <string>Штриховой</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="2">
-         <widget class="QRadioButton" name="edges_solid">
-          <property name="text">
-           <string>Сплошной</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0" colspan="2">
-         <widget class="QPushButton" name="pushButton_3">
-          <property name="styleSheet">
-           <string notr="true">QPushButton:pressed {
-	background-color: #FF6347;
-	border: 1px solid gray;
-	padding: 5px;
-}</string>
-          </property>
-          <property name="text">
-           <string>Выбрать цвет...</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="4" column="0" colspan="2">
-      <widget class="QWidget" name="zoom_widget" native="true">
-       <property name="styleSheet">
-        <string notr="true">QWidget {
-    background-color: #7FFFD4;
-    border-style: outset;
-    border-width: 1px;
-    border-radius: 5px;
-    border-color: #2F4F4F;
-    font: 12px;
-    min-width: 10em;
-    padding: 3px;
-    color: #191970;
-}
-</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="4" column="0" colspan="2">
-         <widget class="QSlider" name="zoom_slider">
-          <property name="value">
-           <number>10</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="2">
-         <widget class="QLineEdit" name="zoom_line">
-          <property name="text">
-           <string>1</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="0" column="0" colspan="3">
-         <widget class="QLabel" name="zoom_label">
-          <property name="text">
-           <string>Масштаб</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <string>Y</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
-         <spacer name="horizontalSpacer">
+         <widget class="QLabel" name="movex_label">
+          <property name="text">
+           <string>X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1" colspan="2">
+         <widget class="QSlider" name="movey_slider">
+          <property name="minimum">
+           <number>-500</number>
+          </property>
+          <property name="maximum">
+           <number>500</number>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
+         </widget>
+        </item>
+        <item row="1" column="1" colspan="2">
+         <widget class="QSlider" name="movex_slider">
+          <property name="minimum">
+           <number>-500</number>
           </property>
-         </spacer>
+          <property name="maximum">
+           <number>500</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1" colspan="2">
+         <widget class="QSlider" name="movez_slider">
+          <property name="minimum">
+           <number>-500</number>
+          </property>
+          <property name="maximum">
+           <number>500</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -422,131 +336,6 @@
        </layout>
       </widget>
      </item>
-     <item row="1" column="0" colspan="2">
-      <widget class="QWidget" name="move_widget" native="true">
-       <property name="styleSheet">
-        <string notr="true">QWidget {
-    background-color: #7FFFD4;
-    border-style: outset;
-    border-width: 1px;
-    border-radius: 5px;
-    border-color: #2F4F4F;
-    font: 12px;
-    min-width: 10em;
-    padding: 3px;
-    color: #191970;
-}
-</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="1" column="3">
-         <widget class="QLineEdit" name="movex_line">
-          <property name="text">
-           <string>0</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="3">
-         <widget class="QLineEdit" name="movey_line">
-          <property name="text">
-           <string>0</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="3">
-         <widget class="QLineEdit" name="movez_line">
-          <property name="text">
-           <string>0</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="movez_label">
-          <property name="text">
-           <string>Z</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0" colspan="4">
-         <widget class="QLabel" name="move_label">
-          <property name="text">
-           <string>Расположение</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0" colspan="4">
-         <widget class="QPushButton" name="move_apply">
-          <property name="styleSheet">
-           <string notr="true">QPushButton:pressed {
-	background-color: #FF6347;
-	border: 1px solid gray;
-	padding: 5px;
-}</string>
-          </property>
-          <property name="text">
-           <string>Применить</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="movey_label">
-          <property name="text">
-           <string>Y</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="movex_label">
-          <property name="text">
-           <string>X</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1" colspan="2">
-         <widget class="QSlider" name="movey_slider">
-          <property name="minimum">
-           <number>-500</number>
-          </property>
-          <property name="maximum">
-           <number>500</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1" colspan="2">
-         <widget class="QSlider" name="movex_slider">
-          <property name="minimum">
-           <number>-500</number>
-          </property>
-          <property name="maximum">
-           <number>500</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1" colspan="2">
-         <widget class="QSlider" name="movez_slider">
-          <property name="minimum">
-           <number>-500</number>
-          </property>
-          <property name="maximum">
-           <number>500</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
      <item row="0" column="0" colspan="2">
       <widget class="QPushButton" name="pushButton">
        <property name="sizePolicy">
@@ -572,6 +361,282 @@
        <property name="text">
         <string>Открыть файл</string>
        </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QWidget" name="Edges" native="true">
+       <property name="styleSheet">
+        <string notr="true">QWidget {
+    background-color: #7FFFD4;
+    border-style: outset;
+    border-width: 1px;
+    border-radius: 5px;
+    border-color: #2F4F4F;
+    font: 12px;
+    min-width: 10em;
+    padding: 3px;
+    color: #191970;
+}
+</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="0" colspan="2">
+         <widget class="QLabel" name="edges_label">
+          <property name="text">
+           <string>Линии</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0" colspan="2">
+         <widget class="QPushButton" name="pushButton_3">
+          <property name="styleSheet">
+           <string notr="true">QPushButton:pressed {
+	background-color: #FF6347;
+	border: 1px solid gray;
+	padding: 5px;
+}</string>
+          </property>
+          <property name="text">
+           <string>Выбрать цвет...</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="2">
+         <widget class="QRadioButton" name="edges_dashed">
+          <property name="text">
+           <string>Штриховой</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QRadioButton" name="edges_solid">
+          <property name="text">
+           <string>Сплошной</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QSlider" name="lines_sie_slider">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="value">
+           <number>10</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QWidget" name="vertices_widget" native="true">
+       <property name="styleSheet">
+        <string notr="true">QWidget {
+    background-color: #7FFFD4;
+    border-style: outset;
+    border-width: 1px;
+    border-radius: 5px;
+    border-color: #2F4F4F;
+    font: 12px;
+    min-width: 10em;
+    padding: 3px;
+    color: #191970;
+}
+</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="1" column="0" colspan="2">
+         <widget class="QRadioButton" name="vertices_no">
+          <property name="text">
+           <string>Нет</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="2">
+         <widget class="QRadioButton" name="vertices_circle">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="text">
+           <string>Круги</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="2">
+         <widget class="QRadioButton" name="vertices_square">
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Квадраты</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0" colspan="2">
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="styleSheet">
+           <string notr="true">QPushButton:pressed {
+	background-color: #FF6347;
+	border: 1px solid gray;
+	padding: 5px;
+}</string>
+          </property>
+          <property name="text">
+           <string>Выбрать цвет...</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" colspan="2">
+         <widget class="QLabel" name="vertices_label">
+          <property name="text">
+           <string>Вершины</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QSlider" name="verticles_size_slider">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="value">
+           <number>10</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="4" column="0" colspan="2">
+      <widget class="QWidget" name="zoom_widget" native="true">
+       <property name="styleSheet">
+        <string notr="true">QWidget {
+    background-color: #7FFFD4;
+    border-style: outset;
+    border-width: 1px;
+    border-radius: 5px;
+    border-color: #2F4F4F;
+    font: 12px;
+    min-width: 10em;
+    padding: 3px;
+    color: #191970;
+}
+</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="4" column="0" colspan="2">
+         <widget class="QSlider" name="zoom_slider">
+          <property name="value">
+           <number>10</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="QLineEdit" name="zoom_line">
+          <property name="text">
+           <string>1</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="0" colspan="3">
+         <widget class="QLabel" name="zoom_label">
+          <property name="text">
+           <string>Масштаб</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="5" column="0" colspan="2">
+      <widget class="QWidget" name="widget" native="true">
+       <property name="styleSheet">
+        <string notr="true">QWidget {
+    background-color: #7FFFD4;
+    border-style: outset;
+    border-width: 1px;
+    border-radius: 5px;
+    border-color: #2F4F4F;
+    font: 12px;
+    min-width: 10em;
+    padding: 3px;
+    color: #191970;
+}</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_8">
+        <item row="0" column="0">
+         <widget class="QLabel" name="zoom_label_2">
+          <property name="text">
+           <string>Цвет фона</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QPushButton" name="bg_color_button">
+          <property name="text">
+           <string>Выбрать цвет...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
     </layout>

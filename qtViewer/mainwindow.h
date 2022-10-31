@@ -30,6 +30,23 @@ private slots:
 
     void on_pushButton_3_clicked();
 
+    void on_vertices_no_clicked();
+
+    void on_vertices_circle_clicked();
+
+    void on_vertices_square_clicked();
+
+    void on_verticles_size_slider_sliderReleased();
+
+    void on_edges_solid_clicked();
+
+    void on_edges_dashed_clicked();
+
+    void on_lines_sie_slider_sliderReleased();
+
+
+    void on_bg_color_button_clicked();
+
 private:
     Ui::MainWindow *ui;
 
