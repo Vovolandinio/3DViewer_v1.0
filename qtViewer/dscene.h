@@ -15,10 +15,19 @@ class DScene : public QOpenGLWidget {
   void paintGL();
   void resizeGL(int w, int h);
 
- private:
-  // Rotation amounts
+  QOpenGLShaderProgram * initialize_shaders();
+  QOpenGLShaderProgram * prog = NULL;
+
   GLfloat xRot;
   GLfloat yRot;
+
+  float * vertex_array;
+
+  int vertex_count = 0;
+  unsigned int * lines_array;
+  int lines_count = 0;
+
+
 };
 
 #endif  // SCENE_H

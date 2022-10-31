@@ -26,5 +26,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+    QString open_file();
 };
 #endif // MAINWINDOW_H

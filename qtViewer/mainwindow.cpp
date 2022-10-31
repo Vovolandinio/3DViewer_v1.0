@@ -13,7 +13,11 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
     ui->movex_slider->setRange(-RANGE_MAX, RANGE_MAX);
     ui->movex_slider->setTickInterval(0);
-    connect(ui->movex_slider,&QSlider::sliderMoved,this,[=]{double val=ui->movex_slider->value() / 100.0; ui->movex_line->setText(QString::number(val, 'f', 2));});
+    connect(ui->movex_slider,&QSlider::sliderMoved,this,[=]{double val=ui->movex_slider->value() / 100.0; ui->movex_line->setText(QString::number(val, 'f', 2));
+    });
+
+
+
     connect(ui->movex_line, &QLineEdit::textChanged, this, [=]{QString val = ui->movex_line->text(); double dval = val.toDouble() * 100; ui->movex_slider->setSliderPosition(dval);});
 
     ui->movey_slider->setRange(-RANGE_MAX, RANGE_MAX);
@@ -76,19 +80,28 @@ MainWindow::~MainWindow()
 }
 
 
+
+
+
+QString MainWindow::open_file() {
+    QString file = QFileDialog::getOpenFileName(this, "Выбрать файл для открытия", QDir::homePath(), "Text Files (*.obj)");
+    if (file.isEmpty()) return NULL;
+    return file;
+}
+
 void MainWindow::on_action_open_file_triggered()
 {
-   QString file = QFileDialog::getOpenFileName(this, "Выбрать файл для открытия", QDir::homePath(), "Text Files (*.obj)");
-   if (file.isEmpty()) return;
-// Здесь будет наш парсер.
+    QString file = this->open_file();
+    // Здесь будет наш парсер.
 
 }
 
 
 void MainWindow::on_pushButton_clicked()
 {
-    QString file = QFileDialog::getOpenFileName(this, "Выбрать файл для открытия", QDir::homePath(), "Text Files (*.obj)");
-    if (file.isEmpty()) return;
-// Здесь будет наш парсер.
+    QString file = this->open_file();
+    // Здесь будет наш парсер.
 
 }
+
+

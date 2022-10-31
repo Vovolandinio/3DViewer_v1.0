@@ -12,12 +12,10 @@ SOURCES += \
     dscene.cpp \
     main.cpp \
     mainwindow.cpp \
-    scene.cpp
 
 HEADERS += \
     dscene.h \
     mainwindow.h \
-    scene.h
 
 FORMS += \
     mainwindow.ui
