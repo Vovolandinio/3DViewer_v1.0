@@ -47,6 +47,8 @@ private slots:
 
     void on_bg_color_button_clicked();
 
+    void on_zoom_button_clicked();
+
 private:
     Ui::MainWindow *ui;
 

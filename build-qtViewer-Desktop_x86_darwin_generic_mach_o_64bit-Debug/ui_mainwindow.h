@@ -96,6 +96,7 @@ public:
     QSpacerItem *horizontalSpacer_2;
     QLabel *zoom_label;
     QSpacerItem *horizontalSpacer;
+    QPushButton *zoom_button;
     QWidget *widget;
     QGridLayout *gridLayout_8;
     QLabel *zoom_label_2;
@@ -135,7 +136,7 @@ public:
         widget_3->setGeometry(QRect(550, 30, 1081, 1131));
         layoutWidget = new QWidget(centralwidget);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(10, 19, 532, 945));
+        layoutWidget->setGeometry(QRect(10, 19, 532, 982));
         gridLayout_7 = new QGridLayout(layoutWidget);
         gridLayout_7->setObjectName(QString::fromUtf8("gridLayout_7"));
         gridLayout_7->setContentsMargins(0, 0, 0, 0);
@@ -510,6 +511,8 @@ public:
         gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
         zoom_slider = new QSlider(zoom_widget);
         zoom_slider->setObjectName(QString::fromUtf8("zoom_slider"));
+        zoom_slider->setMinimum(1);
+        zoom_slider->setMaximum(100);
         zoom_slider->setValue(10);
         zoom_slider->setOrientation(Qt::Horizontal);
 
@@ -533,6 +536,16 @@ public:
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         gridLayout_3->addItem(horizontalSpacer, 1, 0, 1, 1);
+
+        zoom_button = new QPushButton(zoom_widget);
+        zoom_button->setObjectName(QString::fromUtf8("zoom_button"));
+        zoom_button->setStyleSheet(QString::fromUtf8("QPushButton:pressed {\n"
+"	background-color: #FF6347;\n"
+"	border: 1px solid gray;\n"
+"	padding: 5px;\n"
+"}"));
+
+        gridLayout_3->addWidget(zoom_button, 5, 0, 1, 3);
 
 
         gridLayout_7->addWidget(zoom_widget, 4, 0, 1, 2);
@@ -630,6 +643,7 @@ public:
         vertices_label->setText(QCoreApplication::translate("MainWindow", "\320\222\320\265\321\200\321\210\320\270\320\275\321\213", nullptr));
         zoom_line->setText(QCoreApplication::translate("MainWindow", "1", nullptr));
         zoom_label->setText(QCoreApplication::translate("MainWindow", "\320\234\320\260\321\201\321\210\321\202\320\260\320\261", nullptr));
+        zoom_button->setText(QCoreApplication::translate("MainWindow", "\320\237\321\200\320\270\320\274\320\265\320\275\320\270\321\202\321\214", nullptr));
         zoom_label_2->setText(QCoreApplication::translate("MainWindow", "\320\246\320\262\320\265\321\202 \321\204\320\276\320\275\320\260", nullptr));
         bg_color_button->setText(QCoreApplication::translate("MainWindow", "\320\222\321\213\320\261\321\200\320\260\321\202\321\214 \321\206\320\262\320\265\321\202...", nullptr));
         menu->setTitle(QCoreApplication::translate("MainWindow", "\320\244\320\260\320\271\320\273", nullptr));

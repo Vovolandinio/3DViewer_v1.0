@@ -11,8 +11,8 @@ class DScene : public QOpenGLWidget {
   DScene(QWidget *parent = 0);
 
   float * vertex_array;
-
   int vertex_count = 0;
+  
   unsigned int * lines_array;
   int lines_count = 0;
 

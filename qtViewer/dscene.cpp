@@ -41,6 +41,14 @@ void DScene::initializeGL() {
   //включаем буфер глубины для отображения Z-координаты
   glEnable(GL_DEPTH_TEST);
 
+
+//  // устанавливаем текущей проекционную матрицу
+//  glMatrixMode(GL_PROJECTION);
+//  // присваиваем проекционной матрице единичную матрицу
+//  glLoadIdentity();
+//  glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0, 10.0);
+//  glOrtho(-1.0, 1.0, -1.0, 1.0, -10.0, 1.0);
+
   lineColor.setRgb(255,255,255);
   verticleColor.setRgb(255,0,0);
   backgroundColor.setRgb(0,0,0);

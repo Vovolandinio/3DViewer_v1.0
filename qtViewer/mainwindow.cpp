@@ -66,13 +66,13 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
 
     ui->zoom_slider->setRange(0, ZOOM_MAX);
-    ui->zoom_slider->setValue(10);
+    ui->zoom_slider->setValue(1000);
     ui->zoom_slider->setTickInterval(0);
     connect(ui->zoom_slider,&QSlider::sliderMoved,this,[=]{
-        double val=ui->zoom_slider->value() / 100.0;
+        double val=ui->zoom_slider->value() / 1000.0;
             ui->zoom_line->setText(QString::number(val, 'f', 2));
         });
-    connect(ui->zoom_line, &QLineEdit::textChanged, this, [=]{QString val = ui->zoom_line->text(); double dval = val.toDouble() * 100; ui->zoom_slider->setSliderPosition(dval);});
+    connect(ui->zoom_line, &QLineEdit::textChanged, this, [=]{QString val = ui->zoom_line->text(); double dval = val.toDouble() * 1000; ui->zoom_slider->setSliderPosition(dval);});
 
 
 
@@ -209,5 +209,16 @@ void MainWindow::on_bg_color_button_clicked()
         ui->centralwidget->setStyleSheet("background-color:"+ color.name());
         ui->widget_3->update();
       }
+}
+
+
+void MainWindow::on_zoom_button_clicked()
+{
+    double zoom = ui->zoom_line->text().toDouble();
+    for (int i = 0; i < ui->widget_3->vertex_count*3; i++) {
+        ui->widget_3->vertex_array[i] = ui->widget_3->vertex_array[i] * zoom;
+    }
+    ui->zoom_line->setText("1");
+    ui->widget_3->update();
 }
 
