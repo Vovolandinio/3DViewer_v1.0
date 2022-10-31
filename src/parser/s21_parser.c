@@ -8,6 +8,7 @@ void initialize(indexes *structure) {
     structure->indexF = 0;
     structure->array = NULL;
     structure->vertexes = NULL;
+    structure->indexess = NULL;
     structure->polygon = NULL;
     structure->maxV = 0;
     structure->maxF = 0;
@@ -53,7 +54,7 @@ int create_array_of_polygons(indexes* src, const char* filename) {
 
 void remove_array_of_polygons(indexes* src) {
     for (int i = src->indexF; i >= 0; i--) {
-        for (int j = (src->polygon + i)->numbers_of_vertexes_in_facets; j >= 0; j--) {
+        for (int j = (src->polygon + i)->numbers_of_vertexes_in_facets - 1; j >= 0; j--) {
                 free((src->polygon + i)->vertexes + j);
             if ((src->polygon + i)->is_texture)
                 free((src->polygon + i)->texture_coordinates + j);
@@ -61,9 +62,9 @@ void remove_array_of_polygons(indexes* src) {
                 free((src->polygon + i)->normal + j);
         }
     }
-    free(src->polygon);
-    free(src->array);
-    free(src->vertexes);
+    // free(src->polygon);
+    // free(src->array);
+    // free(src->vertexes);
 }
 
 void main_parser(const char* filename, indexes* src) {
@@ -88,6 +89,14 @@ void main_parser(const char* filename, indexes* src) {
         if(!src->indexV) free(src->array);
         if(!src->indexF) remove_array_of_polygons(src);
         fclose(file);
+        src->indexess = malloc (3 * src->indexF * sizeof(unsigned));
+        int k = 0;
+        for (int i = 0; i < src->indexF + 1; i++)
+            for (int j = 0; j < (src->polygon + i)->numbers_of_vertexes_in_facets + 1; j++) {
+                src->indexess[k] = (src->polygon + i)->vertexes[j];
+                k++;
+            }
+
     }
 }
 
@@ -125,9 +134,10 @@ int get_number(FILE *file, char *c) {
 }
 
 void full_array_in_polygon(unsigned *polyarray, FILE *file, char *c, int count_verticies) {
-    // if (count_verticies > 0)
-    polyarray[count_verticies] = get_number(file, c);
+    if (count_verticies > 0)
     polyarray = (unsigned *) realloc(polyarray, ((count_verticies) * sizeof (unsigned )));
+    polyarray[count_verticies] = get_number(file, c);
+    
 
 } 
 
@@ -167,19 +177,7 @@ int main() {
     indexes src;
     main_parser(filename, &src);
 
-    // for (int i = 0; i < src.indexV; i++)
-    //    printf("!count_array = %d: number_verticies = %f\n", i, (src.array)[i]);
-
-    // for (int i = 0; i < src.indexF; i++)
-    //     for (int j = 0; j < (src.polygon + i)->numbers_of_vertexes_in_facets; j++) {
-    //         printf("!count_verticies = %d: number_verticies = %u\n", i, (src.polygon + i)->vertexes[j]);
-    //         if ((src.polygon + i)->is_normal)
-    //             printf("!count_verticies = %d: normal = %d\n", i, (src.polygon + i)->normal[j]);
-    //         if ((src.polygon + i)->is_texture)
-    //             printf("!count_verticies = %d: texture_coordinates = %d\n", i, (src.polygon + i)->texture_coordinates[j]);
-    //     }
-
-    remove_array_of_polygons(&src);
+    // remove_array_of_polygons(&src);
 
     return 0;
 }

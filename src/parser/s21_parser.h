@@ -27,6 +27,7 @@ typedef struct Indexes {
     int indexF;
     int maxF;
     float* array;
+    unsigned int* indexess;
     unsigned int* vertexes;
     polygon_t *polygon;
 } indexes;
