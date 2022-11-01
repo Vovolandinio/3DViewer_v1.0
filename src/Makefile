@@ -21,10 +21,16 @@ OBJ_GCOV_DIR := obj_gcov
 OBJECTS_GCOV := $(addprefix obj_gcov/, $(notdir $(SOURCES_TEST:.c=.o)))
 HEADER = parser/s21_parser.h
 
-all: install run
+APP = qtViewer/qtViewer.app
+MK = mkdir -p
+
+all: install
 
 install:
-	sh scripts/install.sh $(QMAKE_PATH)
+	$(MK) ./build
+	cd ./build && qmake ../ && make && mv  qtViewer.app s21_qtViewer.app
+	@mkdir $(HOME)/Desktop/3DViewer_v1.0/
+	@cp -rf $(APP) $(HOME)/Desktop/3DViewer_v1.0/
 
 dist:
 	sh scripts/dist.sh
