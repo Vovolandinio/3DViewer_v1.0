@@ -4,85 +4,86 @@
 
 #define GL_PI 3.1415f
 
-DScene::DScene(QWidget *parent)
-    : QOpenGLWidget(parent) { 
-  this->setFocusPolicy(Qt::StrongFocus);
+extern "C" {
+#include "../src/parser/s21_parser.h"
 }
 
-QOpenGLShaderProgram * DScene::initialize_shaders() {
+DScene::DScene(QWidget *parent) : QOpenGLWidget(parent) {
+    this->setFocusPolicy(Qt::StrongFocus);
+}
 
+QOpenGLShaderProgram *DScene::initialize_shaders() {
     const char *vertexShaderSource =
-          "attribute vec3 position;\n"
-          "void main()\n"
-          "{\n"
-          "gl_Position = vec4(position.x, position.y, "
-          "position.z, "
-          "1.0);\n"
-          "}\0";
+        "attribute vec3 position;\n"
+        "void main()\n"
+        "{\n"
+        "gl_Position = vec4(position.x, position.y, "
+        "position.z, "
+        "1.0);\n"
+        "}\0";
 
-      const char *fragmentShaderSource =
-          "uniform vec3 color;\n"
-          "void main()\n"
-          "{\n"
-          "gl_FragColor = vec4(color.x, color.y, color.z, 1);\n"
-          "}\n\0";
+    const char *fragmentShaderSource =
+        "uniform vec3 color;\n"
+        "void main()\n"
+        "{\n"
+        "gl_FragColor = vec4(color.x, color.y, color.z, 1);\n"
+        "}\n\0";
 
-      QOpenGLShaderProgram *prog = new QOpenGLShaderProgram;
-      prog->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource);
-      prog->addShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShaderSource);
-      prog->bindAttributeLocation("position", 0);
-      prog->link();
+    QOpenGLShaderProgram *prog = new QOpenGLShaderProgram;
+    prog->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource);
+    prog->addShaderFromSourceCode(QOpenGLShader::Fragment,
+                                  fragmentShaderSource);
+    prog->bindAttributeLocation("position", 0);
+    prog->link();
 
-      return prog;
+    return prog;
 }
 
 void DScene::initializeGL() {
+    //включаем буфер глубины для отображения Z-координаты
+    glEnable(GL_DEPTH_TEST);
 
-  //включаем буфер глубины для отображения Z-координаты
-  glEnable(GL_DEPTH_TEST);
+    //  // устанавливаем текущей проекционную матрицу
+    //  glMatrixMode(GL_PROJECTION);
+    //  // присваиваем проекционной матрице единичную матрицу
+    //  glLoadIdentity();
+    //  glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0, 10.0);
+    //  glOrtho(-1.0, 1.0, -1.0, 1.0, -10.0, 1.0);
 
+    //  lineColor.setNamedColor("#ff0000");
+    //  verticleColor.setRgb(255,0,0);
+    //  backgroundColor.setRgb(0,0,0);
+    dl_settings();
 
-//  // устанавливаем текущей проекционную матрицу
-//  glMatrixMode(GL_PROJECTION);
-//  // присваиваем проекционной матрице единичную матрицу
-//  glLoadIdentity();
-//  glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0, 10.0);
-//  glOrtho(-1.0, 1.0, -1.0, 1.0, -10.0, 1.0);
+    prog = initialize_shaders();
 
-//  lineColor.setNamedColor("#ff0000");
-//  verticleColor.setRgb(255,0,0);
-//  backgroundColor.setRgb(0,0,0);
-  dl_settings();
+    vertex_count = 4;
+    vertex_array = new float[3 * vertex_count];
+    float buff_vertex[] = {-0.5, 0,   -0.5, 0.5, 0,    -0.5,
+                           0,    0.5, -0.5, 0,   -0.5, -1};
+    for (int i = 0; i < vertex_count * 3; i++) {
+        vertex_array[i] = buff_vertex[i];
+    }
 
-  prog = initialize_shaders();
-
-  vertex_count = 4;
-  vertex_array = new float[3 * vertex_count];
-  float buff_vertex[] = {-0.5, 0, -0.5, 0.5, 0, -0.5, 0, 0.5, -0.5, 0, -0.5, -1};
-  for (int i = 0; i < vertex_count * 3; i++) {
-      vertex_array[i] = buff_vertex[i];
-  }
-
-  lines_count = 6;
-  unsigned int buff_lines[] = {0,1,1,2,2,0,0,3,1,3,2,3};
-  lines_array = new unsigned int[2*lines_count];
-  for (int i = 0; i < 2*lines_count; i++) {
-      lines_array[i] = buff_lines[i];
-  }
+    lines_count = 6;
+    unsigned int buff_lines[] = {0, 1, 1, 2, 2, 0, 0, 3, 1, 3, 2, 3};
+    lines_array = new unsigned int[2 * lines_count];
+    for (int i = 0; i < 2 * lines_count; i++) {
+        lines_array[i] = buff_lines[i];
+    }
 }
 
 void DScene::paintGL() {
-
-    glClearColor(backgroundColor.redF(),backgroundColor.greenF(),backgroundColor.blueF(),1);
+    glClearColor(backgroundColor.redF(), backgroundColor.greenF(),
+                 backgroundColor.blueF(), 1);
 
     prog->bind();
-
 
     QOpenGLBuffer vbo(QOpenGLBuffer::VertexBuffer);
     vbo.create();
     vbo.bind();
     vbo.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-    vbo.allocate(vertex_array, vertex_count* 3 * sizeof(float));
+    vbo.allocate(vertex_array, vertex_count * 3 * sizeof(float));
 
     prog->setAttributeBuffer(0, GL_FLOAT, 0, 3, 0);
     prog->enableAttributeArray(0);
@@ -91,10 +92,9 @@ void DScene::paintGL() {
     ibo.create();
     ibo.bind();
     ibo.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-    ibo.allocate(lines_array, sizeof(unsigned int) * 2*lines_count);
+    ibo.allocate(lines_array, sizeof(unsigned int) * 2 * lines_count);
 
-
-    glClear( GL_COLOR_BUFFER_BIT );
+    glClear(GL_COLOR_BUFFER_BIT);
     lineColorV = {lineColor.redF(), lineColor.greenF(), lineColor.blueF()};
     prog->setUniformValue(prog->uniformLocation("color"), lineColorV);
 
@@ -103,127 +103,133 @@ void DScene::paintGL() {
         glLineStipple(3, 0x00FF);
     }
     glLineWidth(lines_size);
-    glDrawElements(GL_LINES, 2*lines_count, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_LINES, 2 * lines_count, GL_UNSIGNED_INT, 0);
 
     if (lines_paint) glDisable(GL_LINE_STIPPLE);
 
     if (verticles_paint) {
-        verticleColorV = {verticleColor.redF(), verticleColor.greenF(), verticleColor.blueF()};
+        verticleColorV = {verticleColor.redF(), verticleColor.greenF(),
+                          verticleColor.blueF()};
         prog->setUniformValue(prog->uniformLocation("color"), verticleColorV);
         glPointSize(verticles_size);
         if (verticles_paint == 1) glEnable(GL_POINT_SMOOTH);
-        glDrawArrays(GL_POINTS,0, vertex_count);
+        glDrawArrays(GL_POINTS, 0, vertex_count);
         if (verticles_paint == 1) glDisable(GL_POINT_SMOOTH);
     }
-  }
+}
 
 void DScene::resizeGL(int w, int h) {
-  // Prevent a divide by zero
-  if (h == 0) {
-    h = 1;
-  }
-  // Set Viewport to window dimensions
-  glViewport(0, 0, w, h);
-
+    // Prevent a divide by zero
+    if (h == 0) {
+        h = 1;
+    }
+    // Set Viewport to window dimensions
+    glViewport(0, 0, w, h);
 }
 
 void DScene::move_object(float x, float y, float z) {
-  for (int i = 0; i < vertex_count*3; i+=3) {
-    vertex_array[i] += x/100;
-    vertex_array[i+1] += y/100;
-    vertex_array[i+2] += z/100;
-  }
+    for (int i = 0; i < vertex_count * 3; i += 3) {
+        vertex_array[i] += x / 100;
+        vertex_array[i + 1] += y / 100;
+        vertex_array[i + 2] += z / 100;
+    }
 }
 
 void DScene::change_line_color() {
-  QColor color = QColorDialog::getColor(Qt::white, this, "Choose color");
-  if (color.isValid()) {
-    lineColor = color;
-    update();
-  }
+    QColor color = QColorDialog::getColor(Qt::white, this, "Choose color");
+    if (color.isValid()) {
+        lineColor = color;
+        update();
+    }
 }
 
 void DScene::change_verticles_color() {
-  QColor color = QColorDialog::getColor(Qt::white, this, "Choose color");
-  if (color.isValid()) {
-    verticleColor = color;
-    update();
-  }
+    QColor color = QColorDialog::getColor(Qt::white, this, "Choose color");
+    if (color.isValid()) {
+        verticleColor = color;
+        update();
+    }
 }
 
 void DScene::set_verticles_paint(int i) {
-  if (verticles_paint != i) {
-    verticles_paint = i;
-    update();
-  }
+    if (verticles_paint != i) {
+        verticles_paint = i;
+        update();
+    }
 }
 
 void DScene::set_lines_paint(int i) {
-  if (lines_paint != i) {
-    lines_paint = i;
-    update();
-  }
+    if (lines_paint != i) {
+        lines_paint = i;
+        update();
+    }
 }
 
 void DScene::set_verticles_size(double value) {
-  verticles_size = value;
-  update();
+    verticles_size = value;
+    update();
 }
 
-
 void DScene::change_line_size(double value) {
-  if (lines_size != value) {
-    lines_size = value;
-    update();
-  }
+    if (lines_size != value) {
+        lines_size = value;
+        update();
+    }
 }
 
 void DScene::change_bg_color(QColor color) {
-  backgroundColor = color;
-  update();
+    backgroundColor = color;
+    update();
 }
 
 void DScene::change_zoom(double zoom) {
-  for (int i = 0; i < vertex_count*3; i++) {
-    vertex_array[i] = vertex_array[i] * zoom;
-  }
-  update();
+    for (int i = 0; i < vertex_count * 3; i++) {
+        vertex_array[i] = vertex_array[i] * zoom;
+    }
+    update();
 }
 
 void DScene::save_settings() {
-  std::ofstream out;          // поток для записи
-  out.open("../../../../qtViewer/settings.txt"); // окрываем файл для записи
-  if (out.is_open()) {
-    out << lineColor.name().toStdString() << std::endl;
-    out << verticleColor.name().toStdString() << std::endl;
-    out << backgroundColor.name().toStdString() << std::endl;
+    std::ofstream out;  // поток для записи
+    out.open("../../../../qtViewer/settings.txt");  // окрываем файл для записи
+    if (out.is_open()) {
+        out << lineColor.name().toStdString() << std::endl;
+        out << verticleColor.name().toStdString() << std::endl;
+        out << backgroundColor.name().toStdString() << std::endl;
 
-    out << verticles_paint << std::endl;
-    out << verticles_size << std::endl;
-    out << lines_paint << std::endl;
-    out << lines_size << std::endl;
-  }
-  std::cout << "Settings saved" << std::endl;
-  out.close();
+        out << verticles_paint << std::endl;
+        out << verticles_size << std::endl;
+        out << lines_paint << std::endl;
+        out << lines_size << std::endl;
+    }
+    std::cout << "Settings saved" << std::endl;
+    out.close();
 }
 
 QString DScene::dl_settings() {
-  std::string line;
-  QString out;
+    std::string line;
+    QString out;
 
-
-  std::ifstream in("../../../../qtViewer/settings.txt"); // окрываем файл для чтения
+    std::ifstream in(
+        "../../../../qtViewer/settings.txt");  // окрываем файл для чтения
     if (in.is_open()) {
-      getline(in, line);
-      lineColor.setNamedColor(QString::fromStdString(line));
-      getline(in, line);
-      verticleColor.setNamedColor(QString::fromStdString(line));
-      getline(in, line);
-      out = QString::fromStdString(line);
-      backgroundColor.setNamedColor(out);
-      getline(in, line);
+        getline(in, line);
+        lineColor.setNamedColor(QString::fromStdString(line));
+        getline(in, line);
+        verticleColor.setNamedColor(QString::fromStdString(line));
+        getline(in, line);
+        out = QString::fromStdString(line);
+        backgroundColor.setNamedColor(out);
+        getline(in, line);
     }
-    in.close();     // закрываем файл
+    in.close();  // закрываем файл
     std::cout << "settings downloaded successfull" << std::endl;
     return out;
+}
+
+void DScene::rotate_object(double x, double y, double z) {
+    if (x != 0) rotate_x(vertex_array, vertex_count, x);
+    if (y != 0) rotate_y(vertex_array, vertex_count, y);
+    if (z != 0) rotate_z(vertex_array, vertex_count, z);
+    update();
 }

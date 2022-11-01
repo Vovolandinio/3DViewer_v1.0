@@ -661,6 +661,44 @@
      </item>
     </layout>
    </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>1020</y>
+      <width>521</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Copperplate</family>
+      <pointsize>-1</pointsize>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+    background-color: #7FFFD4;
+    border-style: outset;
+    border-width: 1px;
+    border-radius: 5px;
+    border-color: #2F4F4F;
+    font: 20px;
+    min-width: 10em;
+    padding: 3px;
+    color: #191970;
+}</string>
+    </property>
+    <property name="text">
+     <string>Название файла:&quot;File not open&quot; 
+
+
+ Количество вершин: 4 
+ Количество линий: 6</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

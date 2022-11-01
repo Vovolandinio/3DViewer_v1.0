@@ -54,10 +54,12 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../qtViewer/dscene.cpp \
 		../qtViewer/main.cpp \
-		../qtViewer/mainwindow.cpp moc_mainwindow.cpp
+		../qtViewer/mainwindow.cpp \
+		../src/parser/s21_rotate.c moc_mainwindow.cpp
 OBJECTS       = dscene.o \
 		main.o \
 		mainwindow.o \
+		s21_rotate.o \
 		moc_mainwindow.o
 DIST          = /usr/local/share/qt/mkspecs/features/spec_pre.prf \
 		/usr/local/share/qt/mkspecs/features/device_config.prf \
@@ -315,9 +317,11 @@ DIST          = /usr/local/share/qt/mkspecs/features/spec_pre.prf \
 		/usr/local/share/qt/mkspecs/features/yacc.prf \
 		/usr/local/share/qt/mkspecs/features/lex.prf \
 		../qtViewer/qtViewer.pro ../qtViewer/dscene.h \
-		../qtViewer/mainwindow.h ../qtViewer/dscene.cpp \
+		../qtViewer/mainwindow.h \
+		../src/parser/s21_parser.h ../qtViewer/dscene.cpp \
 		../qtViewer/main.cpp \
-		../qtViewer/mainwindow.cpp
+		../qtViewer/mainwindow.cpp \
+		../src/parser/s21_rotate.c
 QMAKE_TARGET  = qtViewer
 DESTDIR       = 
 TARGET        = qtViewer.app/Contents/MacOS/qtViewer
@@ -895,8 +899,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/local/share/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../qtViewer/dscene.h ../qtViewer/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../qtViewer/dscene.cpp ../qtViewer/main.cpp ../qtViewer/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../qtViewer/dscene.h ../qtViewer/mainwindow.h ../src/parser/s21_parser.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../qtViewer/dscene.cpp ../qtViewer/main.cpp ../qtViewer/mainwindow.cpp ../src/parser/s21_rotate.c $(DISTDIR)/
 	$(COPY_FILE) --parents ../qtViewer/mainwindow.ui $(DISTDIR)/
 
 
@@ -954,6 +958,8 @@ compiler_uic_clean:
 ui_mainwindow.h: ../qtViewer/mainwindow.ui \
 		/usr/local/share/qt/libexec/uic \
 		../qtViewer/dscene.h \
+		/usr/local/lib/QtWidgets.framework/Headers/QColorDialog \
+		/usr/local/lib/QtWidgets.framework/Headers/qcolordialog.h \
 		/usr/local/lib/QtGui.framework/Headers/QMouseEvent \
 		/usr/local/lib/QtGui.framework/Headers/qevent.h \
 		/usr/local/lib/QtOpenGLWidgets.framework/Headers/QOpenGLWidget \
@@ -992,6 +998,8 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 ####### Compile
 
 dscene.o: ../qtViewer/dscene.cpp ../qtViewer/dscene.h \
+		/usr/local/lib/QtWidgets.framework/Headers/QColorDialog \
+		/usr/local/lib/QtWidgets.framework/Headers/qcolordialog.h \
 		/usr/local/lib/QtGui.framework/Headers/QMouseEvent \
 		/usr/local/lib/QtGui.framework/Headers/qevent.h \
 		/usr/local/lib/QtOpenGLWidgets.framework/Headers/QOpenGLWidget \
@@ -1033,6 +1041,8 @@ mainwindow.o: ../qtViewer/mainwindow.cpp ../qtViewer/mainwindow.h \
 		/usr/local/lib/QtWidgets.framework/Headers/qfiledialog.h \
 		ui_mainwindow.h \
 		../qtViewer/dscene.h \
+		/usr/local/lib/QtWidgets.framework/Headers/QColorDialog \
+		/usr/local/lib/QtWidgets.framework/Headers/qcolordialog.h \
 		/usr/local/lib/QtGui.framework/Headers/QMouseEvent \
 		/usr/local/lib/QtGui.framework/Headers/qevent.h \
 		/usr/local/lib/QtOpenGLWidgets.framework/Headers/QOpenGLWidget \
@@ -1057,6 +1067,9 @@ mainwindow.o: ../qtViewer/mainwindow.cpp ../qtViewer/mainwindow.h \
 		/usr/local/lib/QtOpenGL.framework/Headers/qopenglwindow.h \
 		/usr/local/lib/QtOpenGL.framework/Headers/qtopenglversion.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../qtViewer/mainwindow.cpp
+
+s21_rotate.o: ../src/parser/s21_rotate.c ../src/parser/s21_parser.h
+	$(CC) -c $(CFLAGS) $(INCPATH) -o s21_rotate.o ../src/parser/s21_rotate.c
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

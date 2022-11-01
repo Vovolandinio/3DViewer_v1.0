@@ -1,6 +1,6 @@
-#f6ff3a
-#33ffe0
-#0b403e
+#4bff5f
+#eb33ff
+#0f3c1b
 0
 10
 0

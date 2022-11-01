@@ -12,10 +12,13 @@ SOURCES += \
     dscene.cpp \
     main.cpp \
     mainwindow.cpp \
+    ../src/parser/s21_rotate.c
 
 HEADERS += \
     dscene.h \
     mainwindow.h \
+    ../src/parser/s21_parser.h
+
 
 FORMS += \
     mainwindow.ui
