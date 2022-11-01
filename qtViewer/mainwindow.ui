@@ -692,11 +692,11 @@
 }</string>
     </property>
     <property name="text">
-     <string>Название файла:&quot;File not open&quot; 
+     <string>Название файла: File not open  
 
 
- Количество вершин: 4 
- Количество линий: 6</string>
+Количество вершин: 4 
+Количество линий: 6</string>
     </property>
    </widget>
   </widget>

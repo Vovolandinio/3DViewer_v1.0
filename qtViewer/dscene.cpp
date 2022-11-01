@@ -4,9 +4,6 @@
 
 #define GL_PI 3.1415f
 
-extern "C" {
-#include "../src/parser/s21_parser.h"
-}
 
 DScene::DScene(QWidget *parent) : QOpenGLWidget(parent) {
     this->setFocusPolicy(Qt::StrongFocus);
@@ -43,16 +40,6 @@ void DScene::initializeGL() {
     //включаем буфер глубины для отображения Z-координаты
     glEnable(GL_DEPTH_TEST);
 
-    //  // устанавливаем текущей проекционную матрицу
-    //  glMatrixMode(GL_PROJECTION);
-    //  // присваиваем проекционной матрице единичную матрицу
-    //  glLoadIdentity();
-    //  glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0, 10.0);
-    //  glOrtho(-1.0, 1.0, -1.0, 1.0, -10.0, 1.0);
-
-    //  lineColor.setNamedColor("#ff0000");
-    //  verticleColor.setRgb(255,0,0);
-    //  backgroundColor.setRgb(0,0,0);
     dl_settings();
 
     prog = initialize_shaders();
@@ -241,4 +228,18 @@ void DScene::rotate_object(double x, double y, double z) {
     if (y != 0) rotate_y(vertex_array, vertex_count, y);
     if (z != 0) rotate_z(vertex_array, vertex_count, z);
     update();
+}
+
+void DScene::clear_values() {
+  if (vertex_array) delete vertex_array;
+  if (lines_array) delete lines_array;
+}
+
+int DScene::get_verticles_count() {
+  return vertex_count;
+}
+
+
+int DScene::get_lines_count() {
+  return lines_count;
 }
