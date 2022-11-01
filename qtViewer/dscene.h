@@ -32,6 +32,9 @@ class DScene : public QOpenGLWidget {
     int get_verticles_count();
     int get_lines_count();
 
+    int get_verticles_paint();
+    int get_lines_paint();
+
     void save_settings();
     QString dl_settings();
 
