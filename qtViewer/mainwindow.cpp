@@ -211,9 +211,9 @@ void MainWindow::on_rotate_apply_clicked()
     double rotate_y = ui->rotatey_slider->value();
     double rotate_z = ui->rotatez_slider->value();
     ui->widget_3->rotate_object(rotate_x,rotate_y, rotate_z);
-    // ui->rotatex_line->setText("0");
-    // ui->rotatey_line->setText("0");
-    // ui->rotatez_line->setText("0");
+    ui->rotatex_line->setText("0");
+    ui->rotatey_line->setText("0");
+    ui->rotatez_line->setText("0");
 
 }
 

@@ -220,7 +220,16 @@ QString DScene::dl_settings() {
         getline(in, line);
         out = QString::fromStdString(line);
         backgroundColor.setNamedColor(out);
+
         getline(in, line);
+        verticles_paint = std::stoi(line);
+        getline(in, line);
+        verticles_size = std::stoi(line);
+        getline(in, line);
+        lines_paint = std::stoi(line);
+        getline(in, line);
+        lines_size = std::stoi(line);
+
     }
     in.close();  // закрываем файл
     std::cout << "settings downloaded successfull" << std::endl;
