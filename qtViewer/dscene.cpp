@@ -121,8 +121,70 @@ void DScene::resizeGL(int w, int h) {
   if (h == 0) {
     h = 1;
   }
-
   // Set Viewport to window dimensions
   glViewport(0, 0, w, h);
 
+}
+
+void DScene::move_object(float x, float y, float z) {
+  for (int i = 0; i < vertex_count*3; i+=3) {
+    vertex_array[i] += x/100;
+    vertex_array[i+1] += y/100;
+    vertex_array[i+2] += z/100;
+  }
+}
+
+void DScene::change_line_color() {
+  QColor color = QColorDialog::getColor(Qt::white, this, "Choose color");
+  if (color.isValid()) {
+    lineColor = color;
+    update();
+  }
+}
+
+void DScene::change_verticles_color() {
+  QColor color = QColorDialog::getColor(Qt::white, this, "Choose color");
+  if (color.isValid()) {
+    verticleColor = color;
+    update();
+  }
+}
+
+void DScene::set_verticles_paint(int i) {
+  if (verticles_paint != i) {
+    verticles_paint = i;
+    update();
+  }
+}
+
+void DScene::set_lines_paint(int i) {
+  if (lines_paint != i) {
+    lines_paint = i;
+    update();
+  }
+}
+
+void DScene::set_verticles_size(double value) {
+  verticles_size = value;
+  update();
+}
+
+
+void DScene::change_line_size(double value) {
+  if (lines_size != value) {
+    lines_size = value;
+    update();
+  }
+}
+
+void DScene::change_bg_color(QColor color) {
+  backgroundColor = color;
+  update();
+}
+
+void DScene::change_zoom(double zoom) {
+  for (int i = 0; i < vertex_count*3; i++) {
+    vertex_array[i] = vertex_array[i] * zoom;
+  }
+  update();
 }

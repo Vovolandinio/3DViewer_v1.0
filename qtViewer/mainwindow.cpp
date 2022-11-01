@@ -100,7 +100,6 @@ void MainWindow::on_action_open_file_triggered()
 
 }
 
-
 void MainWindow::on_pushButton_clicked()
 {
     QString file = this->open_file();
@@ -108,18 +107,12 @@ void MainWindow::on_pushButton_clicked()
 
 }
 
-
-
 void MainWindow::on_move_apply_clicked()
 {
     double move_x = ui->movex_line->text().toDouble();
     double move_y = ui->movey_line->text().toDouble();
     double move_z = ui->movez_line->text().toDouble();
-    for (int i = 0; i < ui->widget_3->vertex_count*3; i+=3) {
-        ui->widget_3->vertex_array[i] += move_x/100;
-        ui->widget_3->vertex_array[i+1] += move_y/100;
-        ui->widget_3->vertex_array[i+2] += move_z/100;
-    }
+    ui->widget_3->move_object(move_x, move_y, move_z);
     ui->movex_line->setText("0");
     ui->movey_line->setText("0");
     ui->movez_line->setText("0");
@@ -129,64 +122,51 @@ void MainWindow::on_move_apply_clicked()
 // Меняет цвет вершин
 void MainWindow::on_pushButton_2_clicked()
 {
-    QColor color = QColorDialog::getColor(Qt::white, this, "Choose color");
-      if (color.isValid()) {
-        ui->widget_3->verticleColor = color;
-        ui->widget_3->update();
-      }
+  ui->widget_3->change_verticles_color();
 }
 
 // меняет цвет линий
 void MainWindow::on_pushButton_3_clicked()
 {
-    QColor color = QColorDialog::getColor(Qt::white, this, "Choose color");
-      if (color.isValid()) {
-        ui->widget_3->lineColor = color;
-        ui->widget_3->update();
-      }
+  ui->widget_3->change_line_color();
 }
 
 
 void MainWindow::on_vertices_no_clicked()
 {
-    ui->widget_3->verticles_paint = 0;
-    ui->widget_3->update();
+    ui->widget_3->set_verticles_paint(0);
 }
 
 
 void MainWindow::on_vertices_circle_clicked()
 {
-    ui->widget_3->verticles_paint = 1;
-    ui->widget_3->update();
+    ui->widget_3->set_verticles_paint(1);
 }
 
 
 void MainWindow::on_vertices_square_clicked()
 {
-    ui->widget_3->verticles_paint = 2;
-    ui->widget_3->update();
+    ui->widget_3->set_verticles_paint(2);
 }
 
 
 
 void MainWindow::on_verticles_size_slider_sliderReleased()
 {
-    ui->widget_3->verticles_size = ui->verticles_size_slider->value();
-    ui->widget_3->update();
+    double value = ui->verticles_size_slider->value();
+    ui->widget_3->set_verticles_size(value);
 }
 
 
 void MainWindow::on_edges_solid_clicked()
 {
-    ui->widget_3->lines_paint = 0;
-    ui->widget_3->update();
+    ui->widget_3->set_lines_paint(0);
 }
 
 
 void MainWindow::on_edges_dashed_clicked()
 {
-    ui->widget_3->lines_paint = 1;
-    ui->widget_3->update();
+    ui->widget_3->set_lines_paint(1);
 }
 
 
@@ -195,8 +175,8 @@ void MainWindow::on_edges_dashed_clicked()
 
 void MainWindow::on_lines_sie_slider_sliderReleased()
 {
-    ui->widget_3->lines_size = ui->lines_sie_slider->value();
-    ui->widget_3->update();
+    double value = ui->lines_sie_slider->value();
+    ui->widget_3->change_line_size(value);
 }
 
 
@@ -204,21 +184,17 @@ void MainWindow::on_lines_sie_slider_sliderReleased()
 void MainWindow::on_bg_color_button_clicked()
 {
     QColor color = QColorDialog::getColor(Qt::white, this, "Choose color");
-      if (color.isValid()) {
-        ui->widget_3->backgroundColor = color;
+    if (color.isValid()) {
+        ui->widget_3->change_bg_color(color);
         ui->centralwidget->setStyleSheet("background-color:"+ color.name());
-        ui->widget_3->update();
-      }
+    }
 }
 
 
 void MainWindow::on_zoom_button_clicked()
 {
     double zoom = ui->zoom_line->text().toDouble();
-    for (int i = 0; i < ui->widget_3->vertex_count*3; i++) {
-        ui->widget_3->vertex_array[i] = ui->widget_3->vertex_array[i] * zoom;
-    }
+    ui->widget_3->change_zoom(zoom);
     ui->zoom_line->setText("1");
-    ui->widget_3->update();
 }
 
