@@ -15,6 +15,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void set_file_name(QString filename, int verticles, int lines);
 
 private slots:
 
@@ -48,6 +49,8 @@ private slots:
     void on_bg_color_button_clicked();
 
     void on_zoom_button_clicked();
+
+    void on_rotate_apply_clicked();
 
 private:
     Ui::MainWindow *ui;

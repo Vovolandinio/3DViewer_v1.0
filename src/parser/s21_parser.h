@@ -4,11 +4,10 @@
 
 #ifndef INC_3DVIEWER_V1_0_PARSER_H
 #define INC_3DVIEWER_V1_0_PARSER_H
+#include <bootstrap.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
-#include <bootstrap.h>
-
 
 // bool notEOF = true;
 
@@ -26,14 +25,18 @@ typedef struct Indexes {
     unsigned int maxV;
     unsigned long indexF;
     unsigned int maxF;
-    float* array;
-    unsigned int* vertexes;
+    float *array;
+    unsigned int *vertexes;
     polygon_t *polygon;
 } indexes;
 
 void initialize(indexes *structure);
-void main_parser(const char* filename, indexes* src);
+void main_parser(const char *filename, indexes *src);
+
+void rotate_x(float *array, int indexV, double x);
+void rotate_y(float *array, int indexV, double x);
+void rotate_z(float *array, int indexV, double x);
 // static void parser_v(FILE *file, index* src);
 // static polygon_t parser_f(FILE *file, index* src);
 
-#endif //SRC/PARSER/INC_3DVIEWER_V1_0_PARSER_H
+#endif  // SRC/PARSER/INC_3DVIEWER_V1_0_PARSER_H

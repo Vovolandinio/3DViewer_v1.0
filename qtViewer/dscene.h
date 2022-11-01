@@ -10,6 +10,10 @@
 #include <iostream>
 #include <fstream>
 
+extern "C" {
+#include "../src/parser/s21_parser.h"
+}
+
 class DScene : public QOpenGLWidget {
    public:
     DScene(QWidget *parent = 0);
@@ -23,6 +27,7 @@ class DScene : public QOpenGLWidget {
     void change_line_size(double value);
     void change_bg_color(QColor color);
     void change_zoom(double zoom);
+    void rotate_object(double x, double y, double z);
 
     void save_settings();
     QString dl_settings();
@@ -34,7 +39,6 @@ class DScene : public QOpenGLWidget {
 
     QOpenGLShaderProgram *initialize_shaders();
     QOpenGLShaderProgram *prog = NULL;
-
     QOpenGLBuffer vbo;
     QOpenGLBuffer ibo;
 

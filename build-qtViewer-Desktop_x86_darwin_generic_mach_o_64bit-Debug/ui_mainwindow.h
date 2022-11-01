@@ -101,6 +101,7 @@ public:
     QGridLayout *gridLayout_8;
     QLabel *zoom_label_2;
     QPushButton *bg_color_button;
+    QLabel *label;
     QMenuBar *menubar;
     QMenu *menu;
     QMenu *menu_2;
@@ -579,6 +580,25 @@ public:
 
         gridLayout_7->addWidget(widget, 5, 0, 1, 2);
 
+        label = new QLabel(centralwidget);
+        label->setObjectName(QString::fromUtf8("label"));
+        label->setGeometry(QRect(20, 1020, 521, 141));
+        QFont font;
+        font.setFamilies({QString::fromUtf8("Copperplate")});
+        font.setBold(false);
+        font.setItalic(false);
+        label->setFont(font);
+        label->setStyleSheet(QString::fromUtf8("QLabel {\n"
+"    background-color: #7FFFD4;\n"
+"    border-style: outset;\n"
+"    border-width: 1px;\n"
+"    border-radius: 5px;\n"
+"    border-color: #2F4F4F;\n"
+"    font: 20px;\n"
+"    min-width: 10em;\n"
+"    padding: 3px;\n"
+"    color: #191970;\n"
+"}"));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -646,6 +666,11 @@ public:
         zoom_button->setText(QCoreApplication::translate("MainWindow", "\320\237\321\200\320\270\320\274\320\265\320\275\320\270\321\202\321\214", nullptr));
         zoom_label_2->setText(QCoreApplication::translate("MainWindow", "\320\246\320\262\320\265\321\202 \321\204\320\276\320\275\320\260", nullptr));
         bg_color_button->setText(QCoreApplication::translate("MainWindow", "\320\222\321\213\320\261\321\200\320\260\321\202\321\214 \321\206\320\262\320\265\321\202...", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "\320\235\320\260\320\267\320\262\320\260\320\275\320\270\320\265 \321\204\320\260\320\271\320\273\320\260:\"File not open\" \n"
+"\n"
+"\n"
+" \320\232\320\276\320\273\320\270\321\207\320\265\321\201\321\202\320\262\320\276 \320\262\320\265\321\200\321\210\320\270\320\275: 4 \n"
+" \320\232\320\276\320\273\320\270\321\207\320\265\321\201\321\202\320\262\320\276 \320\273\320\270\320\275\320\270\320\271: 6", nullptr));
         menu->setTitle(QCoreApplication::translate("MainWindow", "\320\244\320\260\320\271\320\273", nullptr));
         menu_2->setTitle(QCoreApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\272\320\260\320\272...", nullptr));
     } // retranslateUi
