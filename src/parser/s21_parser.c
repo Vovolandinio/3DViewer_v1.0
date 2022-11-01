@@ -68,6 +68,7 @@ void remove_array_of_polygons(indexes* src) {
 }
 
 void main_parser(const char* filename, indexes* src) {
+    printf("meow\n");
     initialize(src);
     FILE *file;
     if ((file = fopen(filename, "r")) == NULL){
@@ -77,6 +78,7 @@ void main_parser(const char* filename, indexes* src) {
         int count_fields = 0;
         int code = create_array_of_polygons(src, filename);
         src->array = (float *)calloc(1, sizeof(float));
+        printf("meow\n");
         while((c = fgetc(file)) != EOF) {
             if (c == 'f') {
                 parser_f(file, src, count_fields);
@@ -86,12 +88,13 @@ void main_parser(const char* filename, indexes* src) {
                 parser_v(file, src);
             
         }
-        if(!src->indexV) free(src->array);
-        if(!src->indexF) remove_array_of_polygons(src);
+        printf("meow\n");
+        // if(!src->indexV) free(src->array);
+        // if(!src->indexF) remove_array_of_polygons(src);
         fclose(file);
         src->indexess = malloc (3 * src->indexF * sizeof(unsigned));
         int k = 0;
-        for (int i = 0; i < src->indexF + 1; i++)
+        for (int i = 0; i < src->indexF; i++)
             for (int j = 0; j < (src->polygon + i)->numbers_of_vertexes_in_facets + 1; j++) {
                 src->indexess[k] = (src->polygon + i)->vertexes[j];
                 k++;
@@ -135,10 +138,8 @@ int get_number(FILE *file, char *c) {
 
 void full_array_in_polygon(unsigned *polyarray, FILE *file, char *c, int count_verticies) {
     if (count_verticies > 0)
-    polyarray = (unsigned *) realloc(polyarray, ((count_verticies) * sizeof (unsigned )));
+        polyarray = (unsigned *) realloc(polyarray, ((count_verticies) * sizeof (unsigned )));
     polyarray[count_verticies] = get_number(file, c);
-    
-
 } 
 
 static void parser_f(FILE *file, indexes* src, int count_fields) {
@@ -176,6 +177,13 @@ int main() {
     const char filename[50] = "../objectfiles/minicooper.obj";
     indexes src;
     main_parser(filename, &src);
+
+    int k = 0;
+    for (int i = 0; i < src.indexF; i++)
+        for (int j = 0; j < (src.polygon + i)->numbers_of_vertexes_in_facets + 1; j++) {
+            printf("%u\n", src.indexess[k]);
+            k++;
+        }
 
     // remove_array_of_polygons(&src);
 

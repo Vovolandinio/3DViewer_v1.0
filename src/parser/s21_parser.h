@@ -26,8 +26,8 @@ typedef struct Indexes {
     unsigned int maxV;
     int indexF;
     int maxF;
-    float* array; // координаты
-    unsigned int* indexess; // индексы вершин
+    float* array;
+    unsigned int* indexess;
     unsigned int* vertexes;
     polygon_t *polygon;
 } indexes;
