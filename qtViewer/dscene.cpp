@@ -243,3 +243,11 @@ int DScene::get_verticles_count() {
 int DScene::get_lines_count() {
   return lines_count;
 }
+
+int DScene::get_verticles_paint() {
+  return verticles_paint;
+}
+
+int DScene::get_lines_paint() {
+  return lines_paint;
+}
