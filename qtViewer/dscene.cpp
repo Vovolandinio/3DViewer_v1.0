@@ -5,7 +5,7 @@
 #define GL_PI 3.1415f
 
 DScene::DScene(QWidget *parent)
-    : QOpenGLWidget(parent) {
+    : QOpenGLWidget(parent) { 
   this->setFocusPolicy(Qt::StrongFocus);
 }
 
@@ -49,9 +49,10 @@ void DScene::initializeGL() {
 //  glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0, 10.0);
 //  glOrtho(-1.0, 1.0, -1.0, 1.0, -10.0, 1.0);
 
-  lineColor.setRgb(255,255,255);
-  verticleColor.setRgb(255,0,0);
-  backgroundColor.setRgb(0,0,0);
+//  lineColor.setNamedColor("#ff0000");
+//  verticleColor.setRgb(255,0,0);
+//  backgroundColor.setRgb(0,0,0);
+  dl_settings();
 
   prog = initialize_shaders();
 
@@ -187,4 +188,42 @@ void DScene::change_zoom(double zoom) {
     vertex_array[i] = vertex_array[i] * zoom;
   }
   update();
+}
+
+void DScene::save_settings() {
+  std::ofstream out;          // поток для записи
+  out.open("../../../../qtViewer/settings.txt"); // окрываем файл для записи
+  if (out.is_open()) {
+    out << lineColor.name().toStdString() << std::endl;
+    out << verticleColor.name().toStdString() << std::endl;
+    out << backgroundColor.name().toStdString() << std::endl;
+
+    out << verticles_paint << std::endl;
+    out << verticles_size << std::endl;
+    out << lines_paint << std::endl;
+    out << lines_size << std::endl;
+  }
+  std::cout << "Settings saved" << std::endl;
+  out.close();
+}
+
+QString DScene::dl_settings() {
+  std::string line;
+  QString out;
+
+
+  std::ifstream in("../../../../qtViewer/settings.txt"); // окрываем файл для чтения
+    if (in.is_open()) {
+      getline(in, line);
+      lineColor.setNamedColor(QString::fromStdString(line));
+      getline(in, line);
+      verticleColor.setNamedColor(QString::fromStdString(line));
+      getline(in, line);
+      out = QString::fromStdString(line);
+      backgroundColor.setNamedColor(out);
+      getline(in, line);
+    }
+    in.close();     // закрываем файл
+    std::cout << "settings downloaded successfull" << std::endl;
+    return out;
 }

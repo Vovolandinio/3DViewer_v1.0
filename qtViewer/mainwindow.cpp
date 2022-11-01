@@ -3,16 +3,22 @@
 
 #include <QFileDialog>
 #include <QColorDialog>
+#include <QColorDialog>
+#include <QMouseEvent>
+#include <QOpenGLWidget>
+#include <QTimer>
+#include <QtOpenGL>
 
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow) {
 
     ui->setupUi(this);
     this->setWindowTitle("3D Viewer");
-    this->setStyleSheet("background-color: black;");
     int RANGE_MAX = 25000;
     int ROTATE_MAX = 36000;
     int ZOOM_MAX = 10000;
+    QString bg_color = ui->widget_3->dl_settings();
+    this->setStyleSheet("background-color: "+ bg_color);
 
 
     ui->movex_slider->setRange(-RANGE_MAX, RANGE_MAX);
@@ -80,6 +86,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
 MainWindow::~MainWindow()
 {
+    ui->widget_3->save_settings();
     delete ui;
 }
 
@@ -163,15 +170,10 @@ void MainWindow::on_edges_solid_clicked()
     ui->widget_3->set_lines_paint(0);
 }
 
-
 void MainWindow::on_edges_dashed_clicked()
 {
     ui->widget_3->set_lines_paint(1);
 }
-
-
-
-
 
 void MainWindow::on_lines_sie_slider_sliderReleased()
 {
@@ -196,5 +198,6 @@ void MainWindow::on_zoom_button_clicked()
     double zoom = ui->zoom_line->text().toDouble();
     ui->widget_3->change_zoom(zoom);
     ui->zoom_line->setText("1");
+    
 }
 

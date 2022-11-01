@@ -7,6 +7,9 @@
 #include <QTimer>
 #include <QtOpenGL>
 
+#include <iostream>
+#include <fstream>
+
 class DScene : public QOpenGLWidget {
    public:
     DScene(QWidget *parent = 0);
@@ -20,6 +23,9 @@ class DScene : public QOpenGLWidget {
     void change_line_size(double value);
     void change_bg_color(QColor color);
     void change_zoom(double zoom);
+
+    void save_settings();
+    QString dl_settings();
 
    private:
     void initializeGL();
@@ -37,7 +43,6 @@ class DScene : public QOpenGLWidget {
 
     float *vertex_array;
     int vertex_count = 0;
-
     unsigned int *lines_array;
     int lines_count = 0;
 
