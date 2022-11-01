@@ -29,8 +29,13 @@ class DScene : public QOpenGLWidget {
     void change_zoom(double zoom);
     void rotate_object(double x, double y, double z);
 
+    int get_verticles_count();
+    int get_lines_count();
+
     void save_settings();
     QString dl_settings();
+
+    void clear_values();
 
    private:
     void initializeGL();

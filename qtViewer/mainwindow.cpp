@@ -86,6 +86,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
 MainWindow::~MainWindow()
 {
+    ui->widget_3->clear_values();
     ui->widget_3->save_settings();
     delete ui;
 }
@@ -205,15 +206,13 @@ void MainWindow::set_file_name(QString filename, int verticles, int lines) {
     ui->label->setText("Название файла: " + filename + "\n\n\n Количество вершин:" + QString::number(verticles) + "\n Количество линий: " + QString::number(lines));
 }
 
-void MainWindow::on_rotate_apply_clicked()
-{
-    double rotate_x = ui->rotatex_slider->value();
-    double rotate_y = ui->rotatey_slider->value();
-    double rotate_z = ui->rotatez_slider->value();
+void MainWindow::on_rotate_apply_clicked() {
+    double rotate_x = ui->rotatex_slider->value()/100;
+    double rotate_y = ui->rotatey_slider->value()/100;
+    double rotate_z = ui->rotatez_slider->value()/100;
     ui->widget_3->rotate_object(rotate_x,rotate_y, rotate_z);
-    // ui->rotatex_line->setText("0");
-    // ui->rotatey_line->setText("0");
-    // ui->rotatez_line->setText("0");
-
+    ui->rotatex_line->setText("0");
+    ui->rotatey_line->setText("0");
+    ui->rotatez_line->setText("0");
 }
 
