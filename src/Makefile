@@ -66,4 +66,4 @@ clean:
 	@rm -rf *.dSYM
 
 
-.PHONY: all install run uninstall dist dvi test clean
+.PHONY: all install run uninstall dist dvi clean_dvi test clean
