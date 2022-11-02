@@ -1,19 +1,16 @@
-//
-// Created by Warbird Ozell on 10/11/22.
-//
-
 #ifndef INC_3DVIEWER_V1_0_PARSER_H
 #define INC_3DVIEWER_V1_0_PARSER_H
-#include <bootstrap.h>
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <bootstrap.h>
+#include <string.h>
 
 // bool notEOF = true;
 
 typedef struct facets {
     unsigned *vertexes;
-    unsigned numbers_of_vertexes_in_facets;
+    int numbers_of_vertexes_in_facets;
     unsigned *texture_coordinates;
     unsigned is_texture;
     unsigned is_normal;
@@ -23,20 +20,24 @@ typedef struct facets {
 typedef struct Indexes {
     unsigned int indexV;
     unsigned int maxV;
-    unsigned long indexF;
-    unsigned int maxF;
-    float *array;
-    unsigned int *vertexes;
+    int indexF;
+    int maxF;
+    float* array;
+    unsigned int* indexess;
     polygon_t *polygon;
 } indexes;
 
+
+
 void initialize(indexes *structure);
-void main_parser(const char *filename, indexes *src);
+void main_parser(const char* filename, indexes* src);
+void remove_array_of_polygons(indexes* src);
+int count_fields_in_file(const char *filename);
+int create_array_of_polygons(indexes* src, const char* filename);
+void from_struct_to_array(indexes* src);
+void main_parser(const char* filename, indexes* src);
+int get_number(FILE *file, char *c);
+void full_array_in_polygon(unsigned *polyarray, FILE *file, char *c, int count_verticies);
 
-void rotate_x(float *array, int indexV, double x);
-void rotate_y(float *array, int indexV, double x);
-void rotate_z(float *array, int indexV, double x);
-// static void parser_v(FILE *file, index* src);
-// static polygon_t parser_f(FILE *file, index* src);
 
-#endif  // SRC/PARSER/INC_3DVIEWER_V1_0_PARSER_H
+#endif //SRC/PARSER/INC_3DVIEWER_V1_0_PARSER_H

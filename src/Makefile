@@ -33,6 +33,9 @@ install:
 run:
 	open build/s21_qtViewer.app/Contents/MacOS/qtViewer
 
+uninstall:
+	rm -rf build
+
 dist:
 	sh scripts/dist.sh
 	rm -rf qtViewer/3D_viewer_dist
@@ -51,4 +54,5 @@ clean:
 	rm -rf obj_gcov
 	rm -rf test *gcda *gcno
 	rm -rf out
+	rm a.out
 	rm -rf *.dSYM
