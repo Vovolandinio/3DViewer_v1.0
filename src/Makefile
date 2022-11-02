@@ -36,9 +36,11 @@ uninstall:
 	rm -rf build/build
 
 dist:
-	sh scripts/dist.sh
-	rm -rf qtViewer/3D_viewer_dist
+	sh dist/dist.sh
 
+clean_dist:
+	@rm -rf dist/3D_viewer_dist.tar
+	@rm -rf dist/3D_viewer_dist
 
 test: parser/tests/test.c $(HEADER) $(OBJECTS_GCOV)
 	$(CC) $< $(OBJ_GCOV_DIR)/*.o -o $@ $(LCHECK) $(LDFLAGS) $(GCOVFLAGS)
@@ -50,7 +52,10 @@ $(OBJECTS_GCOV): $(OBJ_GCOV_DIR)%.o: parser%.c $(HEADER)
 	$(CC) -o $@ -c $<
 
 clean:
-	rm -rf obj_gcov
-	rm -rf test *gcda *gcno
-	rm -rf out
-	rm -rf *.dSYM
+	@rm -rf obj_gcov
+	@rm -rf test *gcda *gcno
+	@rm -rf out
+	@rm -rf *.dSYM
+
+
+.PHONY: all install run uninstall dist test clean
