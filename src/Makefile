@@ -39,7 +39,12 @@ dist:
 	sh dist/dist.sh
 
 dvi:
+	doxygen doxygen/Doxyfile
+	@mv html doxygen
 	open doxygen/html/index.html
+
+clean_dvi:
+	@rm -rf doxygen/html
 
 clean_dist:
 	@rm -rf dist/3D_viewer_dist.tar
