@@ -47,6 +47,8 @@ void from_struct_to_array(indexes* src);
 void main_parser(const char* filename, indexes* src);
 int get_number(FILE *file, char *c);
 void full_array_in_polygon(unsigned *polyarray, FILE *file, char *c, int count_verticies);
-
+void rotate_x(float* array, int indexV, double x);
+void rotate_y(float* array, int indexV, double y);
+void rotate_z(float* array, int indexV, double z);
 
 #endif //SRC/PARSER/INC_3DVIEWER_V1_0_PARSER_H

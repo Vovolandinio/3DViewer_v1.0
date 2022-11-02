@@ -9,19 +9,19 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    qtViewer/dscene.cpp \
-    qtViewer/main.cpp \
-    qtViewer/mainwindow.cpp \
-    parser/s21_rotate.c
+    dscene.cpp \
+    main.cpp \
+    mainwindow.cpp \
+    ../parser/s21_rotate.c
 
 HEADERS += \
     dscene.h \
-    qtViewer/mainwindow.h \
-    parser/s21_parser.h
+    mainwindow.h \
+    ../parser/s21_parser.h
 
 
 FORMS += \
-    qtViewer/mainwindow.ui
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

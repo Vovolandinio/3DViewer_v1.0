@@ -27,14 +27,13 @@ MK = mkdir -p
 all: install run
 
 install:
-	$(MK) ./build
-	cd ./build && qmake ../ && make && mv qtViewer.app s21_qtViewer.app
+	sh build/build.sh qmake
 
 run:
-	open build/s21_qtViewer.app/Contents/MacOS/qtViewer
+	open build/build/qtViewer.app/Contents/MacOS/qtViewer
 
 uninstall:
-	rm -rf build
+	rm -rf build/build
 
 dist:
 	sh scripts/dist.sh

@@ -1,4 +1,4 @@
-#include "../dscene.h"
+#include "dscene.h"
 
 #include <math.h>
 
