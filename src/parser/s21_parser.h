@@ -28,27 +28,59 @@ typedef struct Indexes {
 } indexes;
 
 
-/**
- * .
- * @param structure
- * Pupi
- */
+///
+/// @brief Struct initialization.
+/// @param structure indexes.
+///
 void initialize(indexes *structure);
-/**
- *
- * @param filename
- * @param src
- */
+
+///
+/// @brief Accepts a file and redirects to other functions depending on the flag.
+/// @param filename file .obj.
+/// @param src structure.
+///
 void main_parser(const char* filename, indexes* src);
+
+///
+/// @brief This function is used to free memory.
+/// @param src structure
+///
 void remove_array_of_polygons(indexes* src);
+
 int count_fields_in_file(const char *filename);
+
 int create_array_of_polygons(indexes* src, const char* filename);
+
 void from_struct_to_array(indexes* src);
-void main_parser(const char* filename, indexes* src);
+
 int get_number(FILE *file, char *c);
+
 void full_array_in_polygon(unsigned *polyarray, FILE *file, char *c, int count_verticies);
+
+
+///
+/// @brief Affine transformation for the x-axis.
+/// @param array is Vertices.
+/// @param indexV count of Vertices.
+/// @param x coordinate.
+///
+
 void rotate_x(float* array, int indexV, double x);
+///
+/// @brief Affine transformation for the y-axis.
+/// @param array is Vertices.
+/// @param indexV count of Vertices.
+/// @param y coordinate.
+///
+
 void rotate_y(float* array, int indexV, double y);
+
+///
+///@brief Affine transformation for the z-axis.
+///@param array is Vertices.
+///@param indexV count of Vertices.
+///@param z coordinate.
+///
 void rotate_z(float* array, int indexV, double z);
 
 #endif //SRC/PARSER/INC_3DVIEWER_V1_0_PARSER_H
