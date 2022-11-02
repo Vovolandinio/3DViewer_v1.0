@@ -54,5 +54,4 @@ clean:
 	rm -rf obj_gcov
 	rm -rf test *gcda *gcno
 	rm -rf out
-	rm a.out
 	rm -rf *.dSYM

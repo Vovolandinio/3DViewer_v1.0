@@ -28,8 +28,17 @@ typedef struct Indexes {
 } indexes;
 
 
-
+/**
+ * .
+ * @param structure
+ * Pupi
+ */
 void initialize(indexes *structure);
+/**
+ *
+ * @param filename
+ * @param src
+ */
 void main_parser(const char* filename, indexes* src);
 void remove_array_of_polygons(indexes* src);
 int count_fields_in_file(const char *filename);

@@ -1,4 +1,5 @@
 #include "s21_parser.h"
+#include <string.h>
 static void parser_v(FILE *file, indexes* src);
 static void parser_f(FILE *file, indexes* src, int count_fields);
 
@@ -43,15 +44,21 @@ int create_array_of_polygons(indexes* src, const char* filename) {
 void from_struct_to_array(indexes* src) {
     src->indexess = malloc (src->maxF * sizeof(unsigned));
     int k = 0;
-    for (int i = 0; i < src->indexF; i++)
+    for (int i = 0; i < src->indexF; i++) {
+        int remember_k = k;
         for (int j = 0; j < (src->polygon + i)->numbers_of_vertexes_in_facets + 1; j++) {
-            src->indexess[k] = (src->polygon + i)->vertexes[j] - 1;
-            if (k != 0) {
+
+            src->indexess[k] = (src->polygon + i)->vertexes[j];
+            if (j != 0) {
                 k++;
-                src->indexess[k] = (src->polygon + i)->vertexes[j] - 1;
+                src->indexess[k] = (src->polygon + i)->vertexes[j];
             }
             k++;
         }
+        src->indexess[k] =  src->indexess[remember_k];
+        k++;
+    }
+    src->maxF = k;
 }
 
 void main_parser(const char* filename, indexes* src) {
@@ -148,27 +155,25 @@ static void parser_f(FILE *file, indexes* src, int count_fields) {
     (src->polygon + count_fields)->numbers_of_vertexes_in_facets = count_verticies - 1;
 }
 
+
+//int main() {
+//    const char filename[50] = "tests/cub.obj";
+//    indexes src;
+//    main_parser(filename, &src);
 //
-// int main() {
-//     const char filename[50] = "tests/cub.obj";
-//     indexes src;
-//     main_parser(filename, &src);
+//    // int k = 0;
+//    // for (int i = 0; i < src.maxF - 1; i++)
+//    //         printf("%u\n", src.indexess[i]);
 //
-//     int k = 0;
-//     for (int i = 0; i < src.indexF; i++)
-//         for (int j = 0; j < (src.polygon + i)->numbers_of_vertexes_in_facets + 1; j++) {
-//             printf("%u\n", src.indexess[k]);
-//             k++;
-//         }
 //
-//     remove_array_of_polygons(&src);
+//    remove_array_of_polygons(&src);
 //
-//     return 0;
-// }
+//    return 0;
+//}
 
 void remove_array_of_polygons(indexes* src) {
     for (int i = src->indexF - 1; i >= 0; i--) {
-            free((src->polygon + i)->vertexes);
+        free((src->polygon + i)->vertexes);
     }
 
     free(src->array);
