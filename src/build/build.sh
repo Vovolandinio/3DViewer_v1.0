@@ -1,7 +1,5 @@
 #!/bin/sh
 
-OS=$(uname)
-
 cd build
 $1 ../qtViewer/*.pro
 make
