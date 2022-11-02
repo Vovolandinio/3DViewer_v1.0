@@ -28,7 +28,6 @@ typedef struct Indexes {
     int maxF;
     float* array;
     unsigned int* indexess;
-    unsigned int* vertexes;
     polygon_t *polygon;
 } indexes;
 
@@ -36,7 +35,13 @@ typedef struct Indexes {
 
 void initialize(indexes *structure);
 void main_parser(const char* filename, indexes* src);
-// static void parser_v(FILE *file, index* src);
-// static polygon_t parser_f(FILE *file, index* src);
+void remove_array_of_polygons(indexes* src);
+int count_fields_in_file(const char *filename);
+int create_array_of_polygons(indexes* src, const char* filename);
+void from_struct_to_array(indexes* src);
+void main_parser(const char* filename, indexes* src);
+int get_number(FILE *file, char *c);
+void full_array_in_polygon(unsigned *polyarray, FILE *file, char *c, int count_verticies);
+
 
 #endif //SRC/PARSER/INC_3DVIEWER_V1_0_PARSER_H
