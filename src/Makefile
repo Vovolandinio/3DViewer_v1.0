@@ -38,6 +38,9 @@ uninstall:
 dist:
 	sh dist/dist.sh
 
+dvi:
+	open doxygen/html/index.html
+
 clean_dist:
 	@rm -rf dist/3D_viewer_dist.tar
 	@rm -rf dist/3D_viewer_dist

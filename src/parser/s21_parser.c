@@ -1,5 +1,4 @@
 #include "s21_parser.h"
-#include <string.h>
 static void parser_v(FILE *file, indexes* src);
 static void parser_f(FILE *file, indexes* src, int count_fields);
 
