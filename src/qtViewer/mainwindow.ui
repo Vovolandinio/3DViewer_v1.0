@@ -664,9 +664,9 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>1020</y>
-      <width>521</width>
+      <x>10</x>
+      <y>1010</y>
+      <width>531</width>
       <height>141</height>
      </rect>
     </property>
@@ -719,6 +719,7 @@
      </property>
      <addaction name="actionJPG_2"/>
      <addaction name="actionPNG_2"/>
+     <addaction name="separator"/>
      <addaction name="actionGIF_2"/>
     </widget>
     <addaction name="action_open_file"/>

@@ -24,9 +24,11 @@ public:
 
 private slots:
 
-//    void on_pushButton_clicked();
-
     void on_action_open_file_triggered();
+
+    void on_actionJPG_2_triggered();
+
+    void on_actionPNG_2_triggered();
 
     void on_pushButton_clicked();
 
@@ -65,5 +67,7 @@ private:
     Ui::MainWindow *ui;
 
     QString open_file();
+    QDateTime dateTime;
+    QString currentDateTime;
 };
 #endif // MAINWINDOW_H

@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
     QString bg_color = ui->widget_3->dl_settings();
     this->setStyleSheet("background-color: " + bg_color);
 
+
+
     if (ui->widget_3->get_lines_paint()) ui->edges_dashed->setChecked(true);
     if (ui->widget_3->get_verticles_paint() == 1) ui->vertices_circle->setChecked(true);
     if (ui->widget_3->get_verticles_paint() == 2) ui->vertices_square->setChecked(true);
@@ -115,14 +117,15 @@ MainWindow::~MainWindow() {
 }
 
 QString MainWindow::open_file() {
-    std::cout << "norm start";
+    std::cout << "norm start"<< std::endl;
 
     QString file =
         QFileDialog::getOpenFileName(this, "Выбрать файл для открытия",
                                      QDir::homePath(), "Text Files (*.obj)");
     if (file.isEmpty()) return NULL;
-    ui->label->setText(file);
-    std::cout << "name ok";
+    set_file_name(file, ui->widget_3->get_verticles_count(), ui->widget_3->get_lines_count());
+//            QFile::filename()
+    std::cout << "name ok"<< std::endl;
     parser_work(file);
 
     ui->widget_3->update();
@@ -131,12 +134,22 @@ QString MainWindow::open_file() {
 
 void MainWindow::on_action_open_file_triggered() {
     QString file = this->open_file();
-    // Здесь будет наш парсер.
+}
+
+void MainWindow::on_actionJPG_2_triggered() {
+    dateTime = dateTime.currentDateTime();
+    currentDateTime = dateTime.toString("yyyy_MM_dd_HHmmss_zzz");
+    ui->widget_3->grab().save(QDir::homePath() + "/screenshots/" + currentDateTime +".jpg");
+}
+
+void MainWindow::on_actionPNG_2_triggered() {
+    dateTime = dateTime.currentDateTime();
+    currentDateTime = dateTime.toString("yyyy_MM_dd_HHmmss_zzz");
+    ui->widget_3->grab().save(QDir::homePath() + "/screenshots/" + currentDateTime +".png");
 }
 
 void MainWindow::on_pushButton_clicked() {
     QString file = this->open_file();
-    // Здесь будет наш парсер.
 }
 
 void MainWindow::on_move_apply_clicked() {
@@ -202,7 +215,7 @@ void MainWindow::on_zoom_button_clicked() {
 
 void MainWindow::set_file_name(QString filename, int verticles, int lines) {
     ui->label->setText(
-        "Название файла: " + filename +
+        "Название файла:\n" + filename +
         "\n\n\n Количество вершин:" + QString::number(verticles) +
         "\n Количество линий: " + QString::number(lines));
 }
@@ -221,9 +234,9 @@ void MainWindow::parser_work(QString filename) {
     indexes out;
     QByteArray ba = filename.toLocal8Bit();
     const char *fname = ba.data();
-    std::cout << "parser start";
+    std::cout << "parser start"<< std::endl;
     main_parser(fname, &out);
-    std::cout << "parser ok";
+    std::cout << "parser ok"<< std::endl;
     ui->widget_3->set_obj_params(&out);
 }
 

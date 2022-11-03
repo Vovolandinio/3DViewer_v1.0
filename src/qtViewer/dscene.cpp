@@ -47,20 +47,7 @@ void DScene::initializeGL() {
 
 
 void DScene::resizeGL(int w, int h) {
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
 
-  GLfloat w_h_ratio = (GLfloat)w / h;
-  float out_width = w;
-  float out_height = h;
-
-  if (projection == 1) {
-    glFrustum(-0.7 * w_h_ratio, 0.7 * w_h_ratio, -0.7, 0.7, 2, 20);
-  } else if (projection == 0) {
-    glOrtho(-1.0 * w_h_ratio, 1.0 * w_h_ratio, -1, 1, 0, 20);
-  }
-  glTranslatef(0, 0, -3);
-  glViewport(0, 0, (GLint)(w * 2), (GLint)h * 2);
 }
 
 void DScene::paintGL() {

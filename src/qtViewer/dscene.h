@@ -1,6 +1,9 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+
+#define GL_SILENCE_DEPRECATION
+
 #include <QColorDialog>
 #include <QMouseEvent>
 #include <QOpenGLWidget>
@@ -11,6 +14,14 @@
 
 #include <iostream>
 #include <fstream>
+
+#include <QMessageBox>
+#include <QMouseEvent>
+#include <QOpenGLBuffer>
+#include <QOpenGLFunctions>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLVertexArrayObject>
+#include <QOpenGLWidget>
 
 extern "C" {
 #include "../parser/s21_parser.h"
@@ -47,9 +58,9 @@ class DScene : public QOpenGLWidget {
     void set_projection(int value);
 
    private:
-    void initializeGL();
-    void paintGL();
-    void resizeGL(int w, int h);
+    void initializeGL() ;
+    void paintGL() ;
+    void resizeGL(int w, int h) ;
 
     QOpenGLShaderProgram *initialize_shaders();
     QOpenGLShaderProgram *prog = NULL;
@@ -86,7 +97,7 @@ class DScene : public QOpenGLWidget {
     QPoint _r;
 
   protected:
-    void mousePressEvent(QMouseEvent* event) override {
+    void mousePressEvent(QMouseEvent* event)  {
             if ( event->button() == Qt::LeftButton ) {
                 _p = event->pos();
             } else if ( event->button() == Qt::RightButton ) {
@@ -94,9 +105,8 @@ class DScene : public QOpenGLWidget {
             }
         }
 
-        // В принципе, для перемещения окна можно обойтись и без этого метода,
-        // но раз в вопросе сказано про отпускание км, то
-        void mouseReleaseEvent(QMouseEvent* event) override {
+
+        void mouseMoveEvent(QMouseEvent* event)  {
             if (_p != QPoint()) {
                 mx = (float)(_p.x() - event->pos().x());
                 mx /= -5;
@@ -105,7 +115,7 @@ class DScene : public QOpenGLWidget {
                 move_object(mx, my, 0);
                 update();
             // устанавливаем _p в null-объект QPoint()
-                _p = QPoint();
+                _p = event->pos();
             }
             if (_r != QPoint()) {
                 mrx = (float)(_r.x() - event->pos().x());
@@ -114,6 +124,19 @@ class DScene : public QOpenGLWidget {
                 mry /= 5;
                 rotate_object(mry, mrx, 0);
                 update();
+                _r = event->pos();
+            }
+        }
+        // В принципе, для перемещения окна можно обойтись и без этого метода,
+        // но раз в вопросе сказано про отпускание км, то
+        void mouseReleaseEvent()  {
+            if (_p != QPoint()) {
+
+            // устанавливаем _p в null-объект QPoint()
+                _p = QPoint();
+            }
+            if (_r != QPoint()) {
+
                 _r = QPoint();
             }
         }
