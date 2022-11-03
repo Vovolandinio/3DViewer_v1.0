@@ -80,28 +80,42 @@ class DScene : public QOpenGLWidget {
     QPointF mouse_up;
     float mx = 0;
     float my = 0;
+    float mrx = 0;
+    float mry = 0;
     QPoint _p;
+    QPoint _r;
 
   protected:
     void mousePressEvent(QMouseEvent* event) override {
             if ( event->button() == Qt::LeftButton ) {
                 _p = event->pos();
-            }
-        }
-        void mouseMoveEvent(QMouseEvent* event) override {
-            // Если _p - не null, значит он был установлен, а это значит,
-            // что была нажата лкм, значит можно двигать окно относительно _p
-            if( !_p.isNull() ) {
-                _p = event->pos() - _p;
-                move_object(_p.x(), _p.y(), 0);
+            } else if ( event->button() == Qt::RightButton ) {
+                _r = event->pos();
             }
         }
 
         // В принципе, для перемещения окна можно обойтись и без этого метода,
         // но раз в вопросе сказано про отпускание км, то
         void mouseReleaseEvent(QMouseEvent* event) override {
+            if (_p != QPoint()) {
+                mx = (float)(_p.x() - event->pos().x());
+                mx /= -5;
+                my = (float)(_p.y() - event->pos().y());
+                my /= 5;
+                move_object(mx, my, 0);
+                update();
             // устанавливаем _p в null-объект QPoint()
-            _p = QPoint();
+                _p = QPoint();
+            }
+            if (_r != QPoint()) {
+                mrx = (float)(_r.x() - event->pos().x());
+                mrx /= -5;
+                mry = (float)(_r.y() - event->pos().y());
+                mry /= 5;
+                rotate_object(mry, mrx, 0);
+                update();
+                _r = QPoint();
+            }
         }
 
 };
