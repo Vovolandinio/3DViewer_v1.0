@@ -6,14 +6,6 @@
 #include <bootstrap.h>
 #include <string.h>
 
-typedef struct facets {
-    unsigned *vertexes;
-    int numbers_of_vertexes_in_facets;
-    unsigned *texture_coordinates;
-    unsigned is_texture;
-    unsigned is_normal;
-    unsigned *normal;
-} polygon_t;
 
 typedef struct Indexes {
     //! Number of vertices.
@@ -26,7 +18,8 @@ typedef struct Indexes {
     float* array;
     //! Pointer on polygons.
     unsigned int* indexess;
-    polygon_t *polygon;
+    unsigned int lines_count;
+
 } indexes;
 
 /**
@@ -48,7 +41,7 @@ void main_parser(const char* filename, indexes* src);
 */
 void remove_array_of_polygons(indexes* src);
 
-int count_fields_in_file(const char *filename);
+int count_fields_in_file(const char *filename, indexes* src);
 
 /**
  * @brief Memory allocation for a polygons.

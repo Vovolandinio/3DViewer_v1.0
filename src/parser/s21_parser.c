@@ -1,64 +1,39 @@
 #include "s21_parser.h"
 static void parser_v(FILE *file, indexes* src);
-static void parser_f(FILE *file, indexes* src, int count_fields);
+static void parser_f(FILE *file, indexes* src, int count_fields, int *k );
 
 void initialize(indexes *structure) {
     structure->indexV = 0;
     structure->indexF = 0;
     structure->array = NULL;
     structure->indexess = NULL;
-    structure->polygon = NULL;
     structure->maxV = 0;
     structure->maxF = 0;
+    structure->lines_count = 0;
 }
 
-int count_fields_in_file(const char *filename) {
-    int count = 0;
+int count_fields_in_file(const char *filename, indexes *src) {
+    int count = 0, count_numbers = 0;
     char c = '\0';
     FILE *file;
     if ((file = fopen(filename, "r")) == NULL){
         printf("Cannot open file");
     } else {
         while((c = fgetc(file)) != EOF) {
-            if (c == 'f')
+            if (c == 'f') {
                 count++;
+                while((c = fgetc(file)) != '\n' && c  != EOF)
+                    if (c == ' ')
+                        count_numbers++;
+            }
         }
         fclose(file);
     }
+    printf("!!!count numbers: %d\n", count_numbers);
+    src->maxF = count_numbers * 2;
     return count;
 }
 
-int create_array_of_polygons(indexes* src, const char* filename) {
-    int code = 0, count_fields_file = count_fields_in_file(filename);
-    src->polygon = (polygon_t *)malloc((count_fields_file) * sizeof(polygon_t));
-    if (src->polygon)
-        for (int i = 0; i < count_fields_file; i ++)
-            (src->polygon + i)->vertexes = (unsigned *)malloc(1 * sizeof(unsigned));
-    else
-        code = 1;
-    src->indexF = count_fields_file;
-    return code;
-}
-
-void from_struct_to_array(indexes* src) {
-    src->indexess = malloc (src->maxF * sizeof(unsigned));
-    int k = 0;
-    for (int i = 0; i < src->indexF; i++) {
-        int remember_k = k;
-        for (int j = 0; j < (src->polygon + i)->numbers_of_vertexes_in_facets + 1; j++) {
-
-            src->indexess[k] = (src->polygon + i)->vertexes[j];
-            if (j != 0) {
-                k++;
-                src->indexess[k] = (src->polygon + i)->vertexes[j];
-            }
-            k++;
-        }
-        src->indexess[k] =  src->indexess[remember_k];
-        k++;
-    }
-    src->maxF = k;
-}
 
 void main_parser(const char* filename, indexes* src) {
     initialize(src);
@@ -67,13 +42,12 @@ void main_parser(const char* filename, indexes* src) {
         printf("Cannot open file");
     } else {
         char c = '0';
-        int count_fields = 0;
-        int code = create_array_of_polygons(src, filename);
+        int count_fields = count_fields_in_file(filename, src), k = 0;
         src->array = (float *)calloc(1, sizeof(float));
+        src->indexess = (unsigned*) malloc (src->maxF * sizeof(unsigned));
         while((c = fgetc(file)) != EOF) {
             if (c == 'f') {
-                parser_f(file, src, count_fields);
-                src->maxF += (src->polygon + count_fields)->numbers_of_vertexes_in_facets;
+                parser_f(file, src, count_fields, &k);
                 count_fields++;
             }
             if (c == 'v')
@@ -81,8 +55,8 @@ void main_parser(const char* filename, indexes* src) {
 
         }
         fclose(file);
-        from_struct_to_array(src);
-        if(!src->indexV || !src->indexF) remove_array_of_polygons(src);
+        src->lines_count--;
+        // if(!src->indexV || !src->indexF) remove_arrays(src);
     }
 }
 
@@ -119,20 +93,27 @@ int get_number(FILE *file, char *c) {
     return number_verticies;
 }
 
-void full_array_in_polygon(unsigned *polyarray, FILE *file, char *c, int count_verticies) {
-    if (count_verticies > 0)
-        polyarray = (unsigned *) realloc(polyarray, ((count_verticies) * sizeof (unsigned )));
-    polyarray[count_verticies] = get_number(file, c);
-}
-
-static void parser_f(FILE *file, indexes* src, int count_fields) {
+static void parser_f(FILE *file, indexes* src, int count_fields, int *k ) {
     char c = '\0';
     int count_verticies = 0;
-
+    int remember_k = *k;
     while((c = fgetc(file)) != EOF) {
         if (c != ' ' && c != 'f' && c != '\n') {
-            full_array_in_polygon((src->polygon + count_fields)->vertexes, file, &c, count_verticies);
-            if (c == '/') {
+            if (*k == remember_k) {
+                src->indexess[*k] = get_number(file, &c);
+                *k += 1;
+            }
+            else if (*k != remember_k) {
+                src->indexess[*k] = get_number(file, &c);
+                *k += 1;
+                src->indexess[*k] = src->indexess[*k - 1];
+                *k += 1;
+
+
+            }
+        }
+
+            if (c == '/') {   /* этот кусок я позже уберу но пока он ОЧЕНЬ НУЖЕН */
                 c = fgetc(file);
                 if (c == '/') {
                     c = fgetc(file);
@@ -146,36 +127,30 @@ static void parser_f(FILE *file, indexes* src, int count_fields) {
                     }
                 }
             }
-            count_verticies++;
             if (c == '\n' || c == EOF)
                 break;
         }
-    }
-    (src->polygon + count_fields)->numbers_of_vertexes_in_facets = count_verticies - 1;
+    src->indexess[*k] = src->indexess[remember_k];
+    src->lines_count += (*k - remember_k + 1) / 2;
+    *k += 1;
 }
 
 
-//int main() {
-//    const char filename[50] = "tests/cub.obj";
+// int main() {
+//    const char filename[50] = "tests.obj";
 //    indexes src;
 //    main_parser(filename, &src);
-//
-//    // int k = 0;
-//    // for (int i = 0; i < src.maxF - 1; i++)
-//    //         printf("%u\n", src.indexess[i]);
-//
-//
-//    remove_array_of_polygons(&src);
-//
+//    printf("!!!!!!!!!!!!!!!!!%d\n", src.lines_count);
+//    for (int i = 0; i < src.maxF; i++)
+//            printf("%u\n", src.indexess[i]);
+
+// //    remove_arrays(&src);
+
 //    return 0;
-//}
+// }
 
-void remove_array_of_polygons(indexes* src) {
-    for (int i = src->indexF - 1; i >= 0; i--) {
-        free((src->polygon + i)->vertexes);
-    }
+// void remove_arrays(indexes* src) {
+//     free(src->array);
+//     free(src->indexess);
 
-    free(src->array);
-    free(src->indexess);
-    free(src->polygon);
-}
+// }
