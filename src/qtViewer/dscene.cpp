@@ -40,24 +40,27 @@ void DScene::initializeGL() {
     //включаем буфер глубины для отображения Z-координаты
     glEnable(GL_DEPTH_TEST);
 
-    dl_settings();
-
     prog = initialize_shaders();
 
-    vertex_count = 4;
-    vertex_array = new float[3 * vertex_count];
-    float buff_vertex[] = {-0.5, 0,   -0.5, 0.5, 0,    -0.5,
-                           0,    0.5, -0.5, 0,   -0.5, -1};
-    for (int i = 0; i < vertex_count * 3; i++) {
-        vertex_array[i] = buff_vertex[i];
-    }
+    add_example();
+}
 
-    lines_count = 6;
-    unsigned int buff_lines[] = {0, 1, 1, 2, 2, 0, 0, 3, 1, 3, 2, 3};
-    lines_array = new unsigned int[2 * lines_count];
-    for (int i = 0; i < 2 * lines_count; i++) {
-        lines_array[i] = buff_lines[i];
-    }
+
+void DScene::resizeGL(int w, int h) {
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+
+  GLfloat w_h_ratio = (GLfloat)w / h;
+  float out_width = w;
+  float out_height = h;
+
+  if (projection == 1) {
+    glFrustum(-0.7 * w_h_ratio, 0.7 * w_h_ratio, -0.7, 0.7, 2, 20);
+  } else if (projection == 0) {
+    glOrtho(-1.0 * w_h_ratio, 1.0 * w_h_ratio, -1, 1, 0, 20);
+  }
+  glTranslatef(0, 0, -3);
+  glViewport(0, 0, (GLint)(w * 2), (GLint)h * 2);
 }
 
 void DScene::paintGL() {
@@ -105,14 +108,6 @@ void DScene::paintGL() {
     }
 }
 
-void DScene::resizeGL(int w, int h) {
-    // Prevent a divide by zero
-    if (h == 0) {
-        h = 1;
-    }
-    // Set Viewport to window dimensions
-    glViewport(0, 0, w, h);
-}
 
 void DScene::move_object(float x, float y, float z) {
     for (int i = 0; i < vertex_count * 3; i += 3) {
@@ -250,4 +245,35 @@ int DScene::get_verticles_paint() {
 
 int DScene::get_lines_paint() {
   return lines_paint;
+}
+
+void DScene::add_example() {
+    vertex_count = 4;
+    vertex_array = new float[3 * vertex_count];
+    float buff_vertex[] = {-0.5, 0,   -0.5, 0.5, 0,    -0.5,
+                           0,    0.5, -0.5, 0,   -0.5, -1};
+    for (int i = 0; i < vertex_count * 3; i++) {
+        vertex_array[i] = buff_vertex[i];
+    }
+
+    lines_count = 6;
+    unsigned int buff_lines[] = {0, 1, 1, 2, 2, 0, 0, 3, 1, 3, 2, 3};
+    lines_array = new unsigned int[2 * lines_count];
+    for (int i = 0; i < 2 * lines_count; i++) {
+        lines_array[i] = buff_lines[i];
+    }
+}
+
+void DScene::set_obj_params(indexes * in) {
+    vertex_count = in->indexV/3;
+    vertex_array = in->array;
+    lines_count = in->lines_count;
+    lines_array = in->indexess;
+}
+
+void DScene::set_projection(int value) {
+    if (projection != value) {
+        projection = value;
+        update();
+    }
 }

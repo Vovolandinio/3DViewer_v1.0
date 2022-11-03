@@ -7,6 +7,8 @@
 #include <QTimer>
 #include <QtOpenGL>
 
+#include <QGraphicsSceneMouseEvent>
+
 #include <iostream>
 #include <fstream>
 
@@ -28,6 +30,7 @@ class DScene : public QOpenGLWidget {
     void change_bg_color(QColor color);
     void change_zoom(double zoom);
     void rotate_object(double x, double y, double z);
+    void set_obj_params(indexes * in);
 
     int get_verticles_count();
     int get_lines_count();
@@ -38,7 +41,10 @@ class DScene : public QOpenGLWidget {
     void save_settings();
     QString dl_settings();
 
+    void add_example();
+
     void clear_values();
+    void set_projection(int value);
 
    private:
     void initializeGL();
@@ -67,6 +73,37 @@ class DScene : public QOpenGLWidget {
 
     int lines_paint = 0;
     float lines_size = 1;
+
+    int projection = 0;
+
+    QPointF mouse_down;
+    QPointF mouse_up;
+    float mx = 0;
+    float my = 0;
+    QPoint _p;
+
+  protected:
+    void mousePressEvent(QMouseEvent* event) override {
+            if ( event->button() == Qt::LeftButton ) {
+                _p = event->pos();
+            }
+        }
+        void mouseMoveEvent(QMouseEvent* event) override {
+            // Если _p - не null, значит он был установлен, а это значит,
+            // что была нажата лкм, значит можно двигать окно относительно _p
+            if( !_p.isNull() ) {
+                _p = event->pos() - _p;
+                move_object(_p.x(), _p.y(), 0);
+            }
+        }
+
+        // В принципе, для перемещения окна можно обойтись и без этого метода,
+        // но раз в вопросе сказано про отпускание км, то
+        void mouseReleaseEvent(QMouseEvent* event) override {
+            // устанавливаем _p в null-объект QPoint()
+            _p = QPoint();
+        }
+
 };
 
 #endif  // SCENE_H

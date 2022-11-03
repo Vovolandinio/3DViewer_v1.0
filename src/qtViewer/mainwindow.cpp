@@ -115,10 +115,17 @@ MainWindow::~MainWindow() {
 }
 
 QString MainWindow::open_file() {
+    std::cout << "norm start";
+
     QString file =
         QFileDialog::getOpenFileName(this, "Выбрать файл для открытия",
                                      QDir::homePath(), "Text Files (*.obj)");
     if (file.isEmpty()) return NULL;
+    ui->label->setText(file);
+    std::cout << "name ok";
+    parser_work(file);
+
+    ui->widget_3->update();
     return file;
 }
 
@@ -209,3 +216,25 @@ void MainWindow::on_rotate_apply_clicked() {
     ui->rotatey_line->setText("0");
     ui->rotatez_line->setText("0");
 }
+
+void MainWindow::parser_work(QString filename) {
+    indexes out;
+    QByteArray ba = filename.toLocal8Bit();
+    const char *fname = ba.data();
+    std::cout << "parser start";
+    main_parser(fname, &out);
+    std::cout << "parser ok";
+    ui->widget_3->set_obj_params(&out);
+}
+
+void MainWindow::on_proection_central_clicked()
+{
+    ui->widget_3->set_projection(1);
+}
+
+
+void MainWindow::on_proection_parallel_clicked()
+{
+    ui->widget_3->set_projection(0);
+}
+

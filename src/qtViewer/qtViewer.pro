@@ -12,7 +12,9 @@ SOURCES += \
     dscene.cpp \
     main.cpp \
     mainwindow.cpp \
-    ../parser/s21_rotate.c
+    ../parser/s21_rotate.c \
+    ../parser/s21_parser.c
+
 
 HEADERS += \
     dscene.h \

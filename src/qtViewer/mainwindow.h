@@ -4,6 +4,10 @@
 #include <QMainWindow>
 #include <QFileDialog>
 
+extern "C" {
+#include "../parser/s21_parser.h"
+}
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -16,6 +20,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void set_file_name(QString filename, int verticles, int lines);
+    void parser_work(QString filename);
 
 private slots:
 
@@ -51,6 +56,10 @@ private slots:
     void on_zoom_button_clicked();
 
     void on_rotate_apply_clicked();
+
+    void on_proection_central_clicked();
+
+    void on_proection_parallel_clicked();
 
 private:
     Ui::MainWindow *ui;
