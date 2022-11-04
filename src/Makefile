@@ -30,10 +30,10 @@ install:
 	sh build/build.sh qmake
 
 run:
-	open build/build/qtViewer.app/Contents/MacOS/qtViewer
+	@open ${HOME}/Applications/build/qtViewer.app/Contents/MacOS/qtViewer
 
 uninstall:
-	rm -rf build/build
+	@rm -rf ${HOME}/Applications/build
 
 dist:
 	sh dist/dist.sh
