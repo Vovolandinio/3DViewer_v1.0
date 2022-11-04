@@ -13,7 +13,7 @@ void initialize(indexes *structure) {
 }
 
 int count_fields_in_file(const char *filename, indexes *src) {
-    int count = 0, count_numbers = 0;
+    int count = 0, count_numbers = 0, count_slash = 0;
     char c = '\0';
     FILE *file;
     if ((file = fopen(filename, "r")) == NULL){
@@ -22,15 +22,24 @@ int count_fields_in_file(const char *filename, indexes *src) {
         while((c = fgetc(file)) != EOF) {
             if (c == 'f') {
                 count++;
-                while((c = fgetc(file)) != '\n' && c  != EOF)
-                    if (c == ' ')
+                printf("count: %d\n", count);
+                while((c = fgetc(file)) != '\n' && c  != EOF) {
+                    if (c == '/') count_slash++;
+                    if (c == ' ') {
                         count_numbers++;
+                        printf("count_numbers: %d\n", count_numbers);
+                    }
+                }
             }
         }
         fclose(file);
     }
     printf("!!!count numbers: %d\n", count_numbers);
-    src->maxF = count_numbers * 2;
+    printf("!!!count slash: %d\n", count_slash);
+    src->maxF = count_numbers;
+    if (count_slash == 0)
+        src->maxF *= 2;
+
     return count;
 }
 
@@ -47,12 +56,15 @@ void main_parser(const char* filename, indexes* src) {
         src->indexess = (unsigned*) malloc (src->maxF * sizeof(unsigned));
         while((c = fgetc(file)) != EOF) {
             if (c == 'f') {
-                parser_f(file, src, count_fields, &k);
-                count_fields++;
+                if ((c = fgetc(file)) == ' ') {
+                    parser_f(file, src, count_fields, &k);
+                    count_fields++;
+                }
             }
             if (c == 'v')
-                parser_v(file, src);
-
+                if ((c = fgetc(file)) == ' ') {
+                    parser_v(file, src);
+                }
         }
         fclose(file);
         src->lines_count--;
@@ -63,7 +75,6 @@ void main_parser(const char* filename, indexes* src) {
 static void parser_v(FILE *file, indexes* src) {
     if(src->array != NULL) {
         char c = '\0';
-        if ((c = fgetc(file)) == 'n') c = fgetc(file);
         src->array = (float*)realloc(src->array, (src->indexV + 3) * sizeof(float));
         for (size_t i = 0; i < 3; i++) {
             src->array[src->indexV + i] = 0;
@@ -100,11 +111,11 @@ static void parser_f(FILE *file, indexes* src, int count_fields, int *k ) {
     while((c = fgetc(file)) != EOF) {
         if (c != ' ' && c != 'f' && c != '\n') {
             if (*k == remember_k) {
-                src->indexess[*k] = get_number(file, &c);
+                src->indexess[*k] = get_number(file, &c) - 1;
                 *k += 1;
             }
             else if (*k != remember_k) {
-                src->indexess[*k] = get_number(file, &c);
+                src->indexess[*k] = get_number(file, &c) - 1;
                 *k += 1;
                 src->indexess[*k] = src->indexess[*k - 1];
                 *k += 1;
@@ -137,10 +148,12 @@ static void parser_f(FILE *file, indexes* src, int count_fields, int *k ) {
 
 
 // int main() {
-//    const char filename[50] = "tests.obj";
+//    const char filename[50] = "test.obj";
 //    indexes src;
 //    main_parser(filename, &src);
-//    printf("!!!!!!!!!!!!!!!!!%d\n", src.lines_count);
+//    printf("!!!!!!!!!!!!!!!!!%d\n", src.maxF);
+//    for (int i = 0; i < src.indexV; i++)
+//            printf("%f\n", src.array[i]);
 //    for (int i = 0; i < src.maxF; i++)
 //            printf("%u\n", src.indexess[i]);
 
@@ -149,8 +162,8 @@ static void parser_f(FILE *file, indexes* src, int count_fields, int *k ) {
 //    return 0;
 // }
 
-// void remove_arrays(indexes* src) {
-//     free(src->array);
-//     free(src->indexess);
+void remove_arrays(indexes* src) {
+    free(src->array);
+    free(src->indexess);
 
-// }
+}
