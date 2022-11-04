@@ -70,9 +70,9 @@ class DScene : public QOpenGLWidget {
     QVector3D lineColorV = {1, 1, 1};
     QVector3D verticleColorV = {1, 0, 0};
 
-    float *vertex_array;
+    float *vertex_array = NULL;
     int vertex_count = 0;
-    unsigned int *lines_array;
+    unsigned int *lines_array = NULL;
     int lines_count = 0;
 
     QColor lineColor;
@@ -114,7 +114,6 @@ class DScene : public QOpenGLWidget {
                 my /= 5;
                 move_object(mx, my, 0);
                 update();
-            // устанавливаем _p в null-объект QPoint()
                 _p = event->pos();
             }
             if (_r != QPoint()) {
@@ -129,15 +128,20 @@ class DScene : public QOpenGLWidget {
         }
         // В принципе, для перемещения окна можно обойтись и без этого метода,
         // но раз в вопросе сказано про отпускание км, то
-        void mouseReleaseEvent()  {
+        void mouseReleaseEvent(QMouseEvent* event)  {
             if (_p != QPoint()) {
-
-            // устанавливаем _p в null-объект QPoint()
                 _p = QPoint();
             }
             if (_r != QPoint()) {
-
                 _r = QPoint();
+            }
+        }
+
+        void wheelEvent(QWheelEvent *event) {
+            if (event->angleDelta().y() < 0) {
+                change_zoom(1.1);
+            } else {
+                change_zoom(0.9);
             }
         }
 

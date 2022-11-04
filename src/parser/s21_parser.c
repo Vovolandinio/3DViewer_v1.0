@@ -22,20 +22,16 @@ int count_fields_in_file(const char *filename, indexes *src) {
         while((c = fgetc(file)) != EOF) {
             if (c == 'f') {
                 count++;
-                printf("count: %d\n", count);
                 while((c = fgetc(file)) != '\n' && c  != EOF) {
                     if (c == '/') count_slash++;
                     if (c == ' ') {
                         count_numbers++;
-                        printf("count_numbers: %d\n", count_numbers);
                     }
                 }
             }
         }
         fclose(file);
     }
-    printf("!!!count numbers: %d\n", count_numbers);
-    printf("!!!count slash: %d\n", count_slash);
     src->maxF = count_numbers;
     if (count_slash == 0)
         src->maxF *= 2;

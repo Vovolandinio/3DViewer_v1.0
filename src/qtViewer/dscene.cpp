@@ -252,6 +252,8 @@ void DScene::add_example() {
 }
 
 void DScene::set_obj_params(indexes * in) {
+    if (vertex_array) free(vertex_array);
+    if (lines_array) free(lines_array);
     vertex_count = in->indexV/3;
     vertex_array = in->array;
     lines_count = in->lines_count;

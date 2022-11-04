@@ -121,13 +121,13 @@ QString MainWindow::open_file() {
 
     QString file =
         QFileDialog::getOpenFileName(this, "Выбрать файл для открытия",
-                                     QDir::homePath(), "Text Files (*.obj)");
+                                     0, "Text Files (*.obj)");
     if (file.isEmpty()) return NULL;
-    set_file_name(file, ui->widget_3->get_verticles_count(), ui->widget_3->get_lines_count());
+
 //            QFile::filename()
     std::cout << "name ok"<< std::endl;
     parser_work(file);
-
+    set_file_name(file, ui->widget_3->get_verticles_count(), ui->widget_3->get_lines_count());
     ui->widget_3->update();
     return file;
 }
