@@ -30,6 +30,8 @@ private slots:
 
     void on_actionPNG_2_triggered();
 
+    void on_actionGIF_2_triggered();
+
     void on_pushButton_clicked();
 
     void on_move_apply_clicked();
@@ -62,6 +64,7 @@ private slots:
     void on_proection_central_clicked();
 
     void on_proection_parallel_clicked();
+    void oneGif();
 
 private:
     Ui::MainWindow *ui;
@@ -69,5 +72,11 @@ private:
     QString open_file();
     QDateTime dateTime;
     QString currentDateTime;
+
+    const int GifFps = 10, GifLength = 5;
+    QTimer *timer;
+    void createGif();
+    int startTime, tmpTime;
+    int counter = 1;
 };
 #endif // MAINWINDOW_H

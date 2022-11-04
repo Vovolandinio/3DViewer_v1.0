@@ -6,8 +6,10 @@
 #include <QOpenGLWidget>
 #include <QTimer>
 #include <QtOpenGL>
+#include "../gif/gif.h"
 
 #include "ui_mainwindow.h"
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -148,6 +150,17 @@ void MainWindow::on_actionPNG_2_triggered() {
     ui->widget_3->grab().save(QDir::homePath() + "/screenshots/" + currentDateTime +".png");
 }
 
+void MainWindow::on_actionGIF_2_triggered() {
+    ui->actionGIF_2->setEnabled(false);
+    QDir *pathDir = new QDir();
+    pathDir->mkdir(QDir::homePath() + "/screenshots/gif_obj/");
+    startTime = 0, tmpTime = 1000 / GifFps;
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(oneGif()));
+    timer->start(1000 / GifFps);
+}
+
+
 void MainWindow::on_pushButton_clicked() {
     QString file = this->open_file();
 }
@@ -251,3 +264,67 @@ void MainWindow::on_proection_parallel_clicked()
     ui->widget_3->set_projection(0);
 }
 
+void MainWindow::oneGif() {
+  if (startTime == tmpTime) {
+    ui->widget_3->grab().scaled(640, 480, Qt::IgnoreAspectRatio).save(QDir::homePath() + "/screenshots/gif_obj/" + QString::number(counter) +".bmp");
+    counter++;
+    tmpTime += 1000 / GifFps;
+  }
+  if (startTime == 1000 * GifLength) {
+    createGif();
+    timer->stop();
+    counter = 1;
+  }
+  startTime += 1000 / GifFps;
+}
+
+
+void MainWindow::createGif() {
+  QDir pathFile;
+  QDateTime dateTime = dateTime.currentDateTime();
+  QString currentDateTime = dateTime.toString("yyyy_MM_dd_HHmmss_zzz");
+  QString gif_name = QDir::homePath() + "/screenshots/" + currentDateTime + ".gif";
+  QByteArray ga = gif_name.toLocal8Bit();
+  GifWriter writer = {};
+  int err = 0;
+
+  if (GifBegin(&writer, ga.data(), 640, 480, 10, 8, false)) {
+    for (int i = 1; i <= 50; i++) {
+      if (err == 1) {
+        break;
+      }
+      QImage img(QDir::homePath() + "/screenshots/gif_obj/" + QString::number(i) +
+                 ".bmp");
+      if (!img.isNull()) {
+        if (GifWriteFrame(&writer,
+                          img.convertToFormat(QImage::Format_Indexed8)
+                              .convertToFormat(QImage::Format_RGBA8888)
+                              .constBits(),
+                          640, 480, 10, 8, false)) {
+        } else {
+          QMessageBox::critical(0, "Error", "0Gif file can not be create!d");
+          err = 1;
+        }
+      } else {
+        QMessageBox::critical(0, "Error", "1Gif file can not be created!");
+        err = 1;
+      }
+    }
+    if (err == 0) {
+      GifEnd(&writer);
+    }
+  } else {
+    err = 1;
+    QMessageBox::critical(0, "Error", "2Gif file can not be created!");
+  }
+
+  if (err == 1) {
+    if (QFile::exists(gif_name)) {
+      QFile::remove(gif_name);
+    }
+  }
+
+  pathFile.setPath(QDir::homePath() + "/screenshots/gif_obj/");
+  pathFile.removeRecursively();
+  ui->actionGIF_2->setEnabled(true);
+}
