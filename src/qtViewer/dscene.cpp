@@ -160,7 +160,7 @@ void DScene::change_zoom(double zoom) {
 
 void DScene::save_settings() {
     std::ofstream out;  // поток для записи
-    out.open("../../../../qtViewer/settings.txt");  // окрываем файл для записи
+    out.open(QDir::homePath().toStdString() + "/settings.cfg");  // окрываем файл для записи
     if (out.is_open()) {
         out << lineColor.name().toStdString() << std::endl;
         out << verticleColor.name().toStdString() << std::endl;
@@ -180,7 +180,7 @@ QString DScene::dl_settings() {
     QString out;
 
     std::ifstream in(
-        "../../../../qtViewer/settings.txt");  // окрываем файл для чтения
+        QDir::homePath().toStdString() + "/settings.cfg");  // окрываем файл для чтения
     if (in.is_open()) {
         getline(in, line);
         lineColor.setNamedColor(QString::fromStdString(line));
