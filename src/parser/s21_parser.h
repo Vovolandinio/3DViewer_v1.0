@@ -13,14 +13,14 @@ typedef struct Indexes {
     unsigned int maxV;
     //! Number of polygons.
     int indexF;
-    int maxF;
     //! Pointer on vertices.
     float* array;
     //! Pointer on polygons.
     unsigned int* indexess;
-    unsigned int lines_count;
-
 } indexes;
+
+
+int isnum(char *c);
 
 /**
 * @brief Struct initialization.

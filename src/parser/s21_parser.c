@@ -1,6 +1,6 @@
 #include "s21_parser.h"
 static void parser_v(FILE *file, indexes* src);
-static void parser_f(FILE *file, indexes* src, int count_fields, int *k );
+static void parser_f(FILE *file, indexes* src);
 
 void initialize(indexes *structure) {
     structure->indexV = 0;
@@ -12,33 +12,6 @@ void initialize(indexes *structure) {
     structure->lines_count = 0;
 }
 
-int count_fields_in_file(const char *filename, indexes *src) {
-    int count = 0, count_numbers = 0, count_slash = 0;
-    char c = '\0';
-    FILE *file;
-    if ((file = fopen(filename, "r")) == NULL){
-        printf("Cannot open file");
-    } else {
-        while((c = fgetc(file)) != EOF) {
-            if (c == 'f') {
-                count++;
-                while((c = fgetc(file)) != '\n' && c  != EOF) {
-                    if (c == '/') count_slash++;
-                    if (c == ' ') {
-                        count_numbers++;
-                    }
-                }
-            }
-        }
-        fclose(file);
-    }
-    src->maxF = count_numbers;
-    if (count_slash == 0)
-        src->maxF *= 2;
-
-    return count;
-}
-
 
 void main_parser(const char* filename, indexes* src) {
     initialize(src);
@@ -47,14 +20,12 @@ void main_parser(const char* filename, indexes* src) {
         printf("Cannot open file");
     } else {
         char c = '0';
-        int count_fields = count_fields_in_file(filename, src), k = 0;
         src->array = (float *)calloc(1, sizeof(float));
-        src->indexess = (unsigned*) malloc (src->maxF * sizeof(unsigned));
+        src->indexess = (unsigned *)calloc(1, sizeof(unsigned));
         while((c = fgetc(file)) != EOF) {
             if (c == 'f') {
                 if ((c = fgetc(file)) == ' ') {
-                    parser_f(file, src, count_fields, &k);
-                    count_fields++;
+                    parser_f(file, src);
                 }
             }
             if (c == 'v')
@@ -63,7 +34,6 @@ void main_parser(const char* filename, indexes* src) {
                 }
         }
         fclose(file);
-        src->lines_count--;
         // if(!src->indexV || !src->indexF) remove_arrays(src);
     }
 }
@@ -84,64 +54,14 @@ static void parser_v(FILE *file, indexes* src) {
     }
 }
 
-int get_number(FILE *file, char *c) {
-    int number_verticies = 0, i = 0, k = 0;
-    char str[50] = "";
-    while(*c != ' ' && *c != '/' && *c != '\n' && *c != EOF && *c != '\0') {
-        str[i] = *c;
-        *c = fgetc(file);
-        i++;
-    }
-    while(k < i) {
-        number_verticies += (str[k] - '0') * pow(10, i - k - 1);
-        k++;
-    }
-    memset(str, '\0', 50);
-    return number_verticies;
+
+static void parser_f(FILE *file, indexes* src) {
+
 }
 
-static void parser_f(FILE *file, indexes* src, int count_fields, int *k ) {
-    char c = '\0';
-    int count_verticies = 0;
-    int remember_k = *k;
-    while((c = fgetc(file)) != EOF) {
-        if (c != ' ' && c != 'f' && c != '\n') {
-            if (*k == remember_k) {
-                src->indexess[*k] = get_number(file, &c) - 1;
-                *k += 1;
-            }
-            else if (*k != remember_k) {
-                src->indexess[*k] = get_number(file, &c) - 1;
-                *k += 1;
-                src->indexess[*k] = src->indexess[*k - 1];
-                *k += 1;
-
-
-            }
-        }
-
-            if (c == '/') {   /* этот кусок я позже уберу но пока он ОЧЕНЬ НУЖЕН */
-                c = fgetc(file);
-                if (c == '/') {
-                    c = fgetc(file);
-                    get_number(file, &c);
-                } else {
-                    c = fgetc(file);
-                    get_number(file, &c);
-                    if (c == '/') {
-                        c = fgetc(file);
-                        get_number(file, &c);
-                    }
-                }
-            }
-            if (c == '\n' || c == EOF)
-                break;
-        }
-    src->indexess[*k] = src->indexess[remember_k];
-    src->lines_count += (*k - remember_k + 1) / 2;
-    *k += 1;
+int isnum(char *c) {
+    return (c > 47 && c < 58);
 }
-
 
 // int main() {
 //    const char filename[50] = "test.obj";
@@ -157,9 +77,3 @@ static void parser_f(FILE *file, indexes* src, int count_fields, int *k ) {
 
 //    return 0;
 // }
-
-void remove_arrays(indexes* src) {
-    free(src->array);
-    free(src->indexess);
-
-}
