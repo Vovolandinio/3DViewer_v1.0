@@ -22,6 +22,8 @@ typedef struct Indexes {
 
 } indexes;
 
+void remove_arrays(indexes* src);
+
 /**
 * @brief Struct initialization.
 * @param structure indexes.
