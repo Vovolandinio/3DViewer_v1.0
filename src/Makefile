@@ -24,7 +24,7 @@ HEADER = parser/s21_parser.h
 APP = build/qtViewer.app
 MK = mkdir -p
 
-all: install run
+all: $(OBJECTS_GCOV)
 
 install:
 	sh build/build.sh qmake
@@ -52,12 +52,14 @@ clean_dist:
 
 test: parser/tests/test.c $(HEADER) $(OBJECTS_GCOV)
 	$(CC) $< $(OBJ_GCOV_DIR)/*.o -o $@ $(LCHECK) $(LDFLAGS) $(GCOVFLAGS)
-	./$@
-	@rm -f *tests*
+	- ./test
+	gcovr	-r	.	--html	--html-details	-o	coverage_report.html
+	rm	-rf	*.o	*.out	*.gcno	*.gcna	*gcda
+	open	./coverage_report.html
 
 $(OBJECTS_GCOV): $(OBJ_GCOV_DIR)%.o: parser%.c $(HEADER)
 	@mkdir -p obj_gcov
-	$(CC) -o $@ -c $<
+	$(CC) -o $@ -c $< $(LDFLAGS) $(GCOVFLAGS)
 
 clean:
 	@rm -rf obj_gcov
