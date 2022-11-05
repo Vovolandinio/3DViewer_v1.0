@@ -55,8 +55,7 @@ void main_parser(const char* filename, indexes* src) {
                 if ((c = fgetc(file)) == ' ') {
                     parser_f(file, src, count_fields, &k);
                     count_fields++;
-                }
-            }
+                } 
             if (c == 'v')
                 if ((c = fgetc(file)) == ' ') {
                     parser_v(file, src);
@@ -64,8 +63,8 @@ void main_parser(const char* filename, indexes* src) {
         }
 
         fclose(file);
-        // if (src->lines_count != 0)
-        //     src->lines_count--;
+        if (src->lines_count != 0)
+            src->lines_count--;
         // if(!src->indexV || !src->indexF) remove_arrays(src);
     }
 }
