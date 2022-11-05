@@ -55,7 +55,8 @@ void main_parser(const char* filename, indexes* src) {
                 if ((c = fgetc(file)) == ' ') {
                     parser_f(file, src, count_fields, &k);
                     count_fields++;
-                } 
+                }
+            }
             if (c == 'v')
                 if ((c = fgetc(file)) == ' ') {
                     parser_v(file, src);
