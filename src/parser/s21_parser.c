@@ -1,6 +1,6 @@
 #include "s21_parser.h"
 static void parser_v(FILE *file, indexes* src);
-static void parser_f(FILE *file, indexes* src, int count_fields, int *k );
+static void parser_f(FILE *file, indexes* src, unsigned *k);
 
 void initialize(indexes *structure) {
     structure->indexV = 0;
@@ -53,7 +53,7 @@ void main_parser(const char* filename, indexes* src) {
         while((c = fgetc(file)) != EOF) {
             if (c == 'f') {
                 if ((c = fgetc(file)) == ' ') {
-                    parser_f(file, src, count_fields, &k);
+                    parser_f(file, src, &k);
                     count_fields++;
                 }
             }
@@ -64,15 +64,14 @@ void main_parser(const char* filename, indexes* src) {
         }
 
         fclose(file);
-        if (src->lines_count != 0)
-            src->lines_count--;
+        // if (src->lines_count != 0)
+        //     src->lines_count--;
         // if(!src->indexV || !src->indexF) remove_arrays(src);
     }
 }
 
 static void parser_v(FILE *file, indexes* src) {
     if(src->array != NULL) {
-        char c = '\0';
         src->array = (float*)realloc(src->array, (src->indexV + 3) * sizeof(float));
         for (size_t i = 0; i < 3; i++) {
             src->array[src->indexV + i] = 0;
@@ -102,9 +101,8 @@ int get_number(FILE *file, char *c) {
     return number_verticies;
 }
 
-static void parser_f(FILE *file, indexes* src, int count_fields, int *k ) {
+static void parser_f(FILE *file, indexes* src, unsigned *k ) {
     char c = '\0';
-    unsigned count_verticies = 0;
     unsigned remember_k = *k;
     while((c = fgetc(file)) != EOF) {
         if (c != ' ' && c != 'f' && c != '\n') {
@@ -117,23 +115,20 @@ static void parser_f(FILE *file, indexes* src, int count_fields, int *k ) {
                 *k += 1;
                 src->indexess[*k] = src->indexess[*k - 1];
                 *k += 1;
-
-
             }
         }
-
-            if (c == '/') {   /* этот кусок я позже уберу но пока он ОЧЕНЬ НУЖЕН */
+        if (c == '/') {   /* этот кусок я позже уберу но пока он ОЧЕНЬ НУЖЕН */
+            c = fgetc(file);
+            if (c == '/') {
                 c = fgetc(file);
+                get_number(file, &c);
+            } else {
+                c = fgetc(file);
+                get_number(file, &c);
                 if (c == '/') {
                     c = fgetc(file);
                     get_number(file, &c);
-                } else {
-                    c = fgetc(file);
-                    get_number(file, &c);
-                    if (c == '/') {
-                        c = fgetc(file);
-                        get_number(file, &c);
-                    }
+                }
                 }
             }
             if (c == '\n' || c == EOF)
