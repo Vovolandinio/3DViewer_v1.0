@@ -64,7 +64,8 @@ void main_parser(const char* filename, indexes* src) {
         }
 
         fclose(file);
-        src->lines_count--;
+        // if (src->lines_count != 0)
+        //     src->lines_count--;
         // if(!src->indexV || !src->indexF) remove_arrays(src);
     }
 }
@@ -138,7 +139,6 @@ static void parser_f(FILE *file, indexes* src, int count_fields, int *k ) {
             if (c == '\n' || c == EOF)
                 break;
         }
-    printf("%d\n", c);
     src->indexess[*k] = src->indexess[remember_k];
     src->lines_count += (*k - remember_k + 1) / 2;
     *k += 1;
