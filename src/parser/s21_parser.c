@@ -12,8 +12,8 @@ void initialize(indexes *structure) {
     structure->lines_count = 0;
 }
 
-int count_fields_in_file(const char *filename, indexes *src) {
-    int count = 0, count_numbers = 0, count_slash = 0;
+unsigned count_fields_in_file(const char *filename, indexes *src) {
+    unsigned count = 0, count_numbers = 0, count_slash = 0;
     char c = '\0';
     FILE *file;
     if ((file = fopen(filename, "r")) == NULL){
@@ -47,9 +47,9 @@ void main_parser(const char* filename, indexes* src) {
         printf("Cannot open file");
     } else {
         char c = '0';
-        int count_fields = count_fields_in_file(filename, src), k = 0;
+        unsigned count_fields = count_fields_in_file(filename, src), k = 0;
         src->array = (float *)calloc(1, sizeof(float));
-        src->indexess = (unsigned*) malloc (src->maxF * sizeof(unsigned));
+        src->indexess = (unsigned*)calloc (src->maxF * 100000, sizeof(unsigned));
         while((c = fgetc(file)) != EOF) {
             if (c == 'f') {
                 if ((c = fgetc(file)) == ' ') {
@@ -62,6 +62,7 @@ void main_parser(const char* filename, indexes* src) {
                     parser_v(file, src);
                 }
         }
+
         fclose(file);
         src->lines_count--;
         // if(!src->indexV || !src->indexF) remove_arrays(src);
@@ -85,9 +86,9 @@ static void parser_v(FILE *file, indexes* src) {
 }
 
 int get_number(FILE *file, char *c) {
-    int number_verticies = 0, i = 0, k = 0;
+    unsigned number_verticies = 0, i = 0, k = 0;
     char str[50] = "";
-    while(*c != ' ' && *c != '/' && *c != '\n' && *c != EOF && *c != '\0') {
+    while(*c != ' ' && *c != '/' && *c != '\n' && *c != EOF) {
         str[i] = *c;
         *c = fgetc(file);
         i++;
@@ -102,8 +103,8 @@ int get_number(FILE *file, char *c) {
 
 static void parser_f(FILE *file, indexes* src, int count_fields, int *k ) {
     char c = '\0';
-    int count_verticies = 0;
-    int remember_k = *k;
+    unsigned count_verticies = 0;
+    unsigned remember_k = *k;
     while((c = fgetc(file)) != EOF) {
         if (c != ' ' && c != 'f' && c != '\n') {
             if (*k == remember_k) {
@@ -137,6 +138,7 @@ static void parser_f(FILE *file, indexes* src, int count_fields, int *k ) {
             if (c == '\n' || c == EOF)
                 break;
         }
+    printf("%d\n", c);
     src->indexess[*k] = src->indexess[remember_k];
     src->lines_count += (*k - remember_k + 1) / 2;
     *k += 1;
@@ -144,14 +146,14 @@ static void parser_f(FILE *file, indexes* src, int count_fields, int *k ) {
 
 
 // int main() {
-//    const char filename[50] = "test.obj";
+//    const char filename[200] = "/Users/gloriagi/Desktop/3DViewer_v1.0/src/objectfiles/_cube 2.obj";
 //    indexes src;
 //    main_parser(filename, &src);
 //    printf("!!!!!!!!!!!!!!!!!%d\n", src.maxF);
-//    for (int i = 0; i < src.indexV; i++)
-//            printf("%f\n", src.array[i]);
-//    for (int i = 0; i < src.maxF; i++)
-//            printf("%u\n", src.indexess[i]);
+// //    for (int i = 0; i < src.indexV; i++)
+// //            printf("%f\n", src.array[i]);
+//    for (unsigned i = 0; i < src.maxF; i++)
+//            printf("i: %u %u\n", i, src.indexess[i]);
 
 // //    remove_arrays(&src);
 
@@ -161,5 +163,4 @@ static void parser_f(FILE *file, indexes* src, int count_fields, int *k ) {
 void remove_arrays(indexes* src) {
     free(src->array);
     free(src->indexess);
-
 }

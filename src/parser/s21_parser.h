@@ -13,7 +13,7 @@ typedef struct Indexes {
     unsigned int maxV;
     //! Number of polygons.
     int indexF;
-    int maxF;
+    unsigned maxF;
     //! Pointer on vertices.
     float* array;
     //! Pointer on polygons.
@@ -41,7 +41,7 @@ void main_parser(const char* filename, indexes* src);
 */
 void remove_array_of_polygons(indexes* src);
 
-int count_fields_in_file(const char *filename, indexes* src);
+unsigned count_fields_in_file(const char *filename, indexes *src);
 
 /**
  * @brief Memory allocation for a polygons.
