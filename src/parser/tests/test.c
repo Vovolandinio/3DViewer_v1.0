@@ -5,6 +5,20 @@
 
 #include "../s21_parser.h"
 
+START_TEST(incorrect_input) {
+    indexes a;
+    main_parser("o.obj", &a);
+    ck_assert_int_eq(a.code, 1);
+}
+END_TEST
+
+START_TEST(correct_input) {
+    indexes a;
+    main_parser("objectfiles/minicooper.obj", &a);
+    ck_assert_int_eq(a.code, 0);
+}
+END_TEST
+
 START_TEST(parser_array) {
     indexes a;
     main_parser("parser/tests/test.obj", &a);
@@ -184,6 +198,8 @@ Suite *s21_3d_suite(void) {
     suite = suite_create("s21_3d");
     TCase *tcase_core = tcase_create("Core");
 
+    tcase_add_test(tcase_core, incorrect_input);
+    tcase_add_test(tcase_core, correct_input);
     tcase_add_test(tcase_core, parser_array);
     tcase_add_test(tcase_core, parser_polygon);
     tcase_add_test(tcase_core, rotateX);
