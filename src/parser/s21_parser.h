@@ -82,7 +82,7 @@ void full_array_in_polygon(unsigned *polyarray, FILE *file, char *c, int count_v
 * @param indexV count of Vertices.
 * @param x coordinate.
 */
-void rotate_x(float* array, int indexV, double x);
+void rotate_x(float* array,unsigned int indexV, double x);
 
 /**
 * @brief Affine transformation for the y-axis.
@@ -90,7 +90,7 @@ void rotate_x(float* array, int indexV, double x);
 * @param indexV count of Vertices.
 * @param y coordinate.
 */
-void rotate_y(float* array, int indexV, double y);
+void rotate_y(float* array,unsigned int indexV, double y);
 
 /**
 * @brief Affine transformation for the z-axis.
@@ -98,6 +98,6 @@ void rotate_y(float* array, int indexV, double y);
 * @param indexV count of Vertices.
 * @param z coordinate.
 */
-void rotate_z(float* array, int indexV, double z);
+void rotate_z(float* array,unsigned int indexV, double z);
 
 #endif //SRC/PARSER/INC_3DVIEWER_V1_0_PARSER_H

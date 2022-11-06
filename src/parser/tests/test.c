@@ -5,6 +5,20 @@
 
 #include "../s21_parser.h"
 
+START_TEST(incorrect_input) {
+    indexes a;
+    main_parser("o.obj", &a);
+    ck_assert_int_eq(a.code, 1);
+}
+END_TEST
+
+START_TEST(correct_input) {
+    indexes a;
+    main_parser("objectfiles/minicooper.obj", &a);
+    ck_assert_int_eq(a.code, 0);
+}
+END_TEST
+
 START_TEST(parser_array) {
     indexes a;
     main_parser("parser/tests/test.obj", &a);
@@ -78,34 +92,32 @@ END_TEST
 
 START_TEST(rotateX) {
     indexes a;
-    float* array = a.array;
-    int indexV = a.indexV;
     main_parser("parser/tests/test.obj", &a);
-    rotate_x(array,indexV,-2);
+    rotate_x(a.array, a.indexV,-2);
     ck_assert_float_eq_tol(a.array[0], 0, 1e-6);
     ck_assert_float_eq_tol(a.array[1], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[2], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[3], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[4], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[5], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[6], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[7], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[8], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[9], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[10], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[11], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[12], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[13], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[14], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[15], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[16], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[17], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[18], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[19], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[20], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[21], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[22],1, 1e-6);
-    ck_assert_float_eq_tol(a.array[23], 1, 1e-6);
+  ck_assert_float_eq_tol(a.array[2], 0, 1e-6);
+  ck_assert_float_eq_tol(a.array[3], 0, 1e-6);
+  ck_assert_float_eq_tol(a.array[4], 0.034899, 1e-6);
+  ck_assert_float_eq_tol(a.array[5], 0.999391, 1e-6);
+  ck_assert_float_eq_tol(a.array[6], 0, 1e-6);
+  ck_assert_float_eq_tol(a.array[7], 0.999391, 1e-6);
+  ck_assert_float_eq_tol(a.array[8], -0.0348995, 1e-6);
+  ck_assert_float_eq_tol(a.array[9], 0, 1e-6);
+  ck_assert_float_eq_tol(a.array[10], 1.03429, 1e-6);
+  ck_assert_float_eq_tol(a.array[11], 0.964491, 1e-6);
+  ck_assert_float_eq_tol(a.array[12], 1, 1e-6);
+  ck_assert_float_eq_tol(a.array[13], 0, 1e-6);
+  ck_assert_float_eq_tol(a.array[14], 0, 1e-6);
+  ck_assert_float_eq_tol(a.array[15], 1, 1e-6);
+  ck_assert_float_eq_tol(a.array[16], 0.0348995, 1e-6);
+  ck_assert_float_eq_tol(a.array[17], 0.999391, 1e-6);
+  ck_assert_float_eq_tol(a.array[18], 1, 1e-6);
+  ck_assert_float_eq_tol(a.array[19], 0.999391, 1e-6);
+  ck_assert_float_eq_tol(a.array[20], -0.0348995, 1e-6);
+  ck_assert_float_eq_tol(a.array[21], 1, 1e-6);
+  ck_assert_float_eq_tol(a.array[22], 1.03429, 1e-6);
+  ck_assert_float_eq_tol(a.array[23], 0.964491, 1e-6);
     free(a.array);
     free(a.indexess);
 }
@@ -114,68 +126,65 @@ END_TEST
 
 START_TEST(rotateY) {
     indexes a;
-    float* array = a.array;
-    int indexV = a.indexV;
+
     main_parser("parser/tests/test.obj", &a);
-    rotate_y(array,indexV,1);
+    rotate_y(a.array, a.indexV,-2);
     ck_assert_float_eq_tol(a.array[0], 0, 1e-6);
     ck_assert_float_eq_tol(a.array[1], 0, 1e-6);
     ck_assert_float_eq_tol(a.array[2], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[3], 0, 1e-6);
+    ck_assert_float_eq_tol(a.array[3], 0.0348995, 1e-6);
     ck_assert_float_eq_tol(a.array[4], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[5], 1, 1e-6);
+    ck_assert_float_eq_tol(a.array[5], 0.999391, 1e-6);
     ck_assert_float_eq_tol(a.array[6], 0, 1e-6);
     ck_assert_float_eq_tol(a.array[7], 1, 1e-6);
     ck_assert_float_eq_tol(a.array[8], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[9], 0, 1e-6);
+    ck_assert_float_eq_tol(a.array[9], 0.0348995, 1e-6);
     ck_assert_float_eq_tol(a.array[10], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[11], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[12], 1, 1e-6);
+    ck_assert_float_eq_tol(a.array[11], 0.999391, 1e-6);
+    ck_assert_float_eq_tol(a.array[12], 0.999391, 1e-6);
     ck_assert_float_eq_tol(a.array[13], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[14], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[15], 1, 1e-6);
+    ck_assert_float_eq_tol(a.array[14], -0.0348995, 1e-6);
+    ck_assert_float_eq_tol(a.array[15], 1.03429, 1e-6);
     ck_assert_float_eq_tol(a.array[16], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[17], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[18], 1, 1e-6);
+    ck_assert_float_eq_tol(a.array[17], 0.964491, 1e-6);
+    ck_assert_float_eq_tol(a.array[18], 0.999391, 1e-6);
     ck_assert_float_eq_tol(a.array[19], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[20], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[21], 1, 1e-6);
+    ck_assert_float_eq_tol(a.array[20], -0.0348995, 1e-6);
+    ck_assert_float_eq_tol(a.array[21], 1.03429, 1e-6);
     ck_assert_float_eq_tol(a.array[22], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[23], 1, 1e-6);
+    ck_assert_float_eq_tol(a.array[23], 0.964491, 1e-6);
     free(a.array);
     free(a.indexess);
 }
 END_TEST
 
 START_TEST(rotateZ) {
-    indexes a;
-    float* array = a.array;
-    int indexV = a.indexV;
+    indexes a; 
     main_parser("parser/tests/test.obj", &a);
-    rotate_z(array,indexV, 2.5);
+    rotate_z(a.array, a.indexV,-2);
     ck_assert_float_eq_tol(a.array[0], 0, 1e-6);
     ck_assert_float_eq_tol(a.array[1], 0, 1e-6);
     ck_assert_float_eq_tol(a.array[2], 0, 1e-6);
     ck_assert_float_eq_tol(a.array[3], 0, 1e-6);
     ck_assert_float_eq_tol(a.array[4], 0, 1e-6);
     ck_assert_float_eq_tol(a.array[5], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[6], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[7], 1, 1e-6);
+    ck_assert_float_eq_tol(a.array[6], 0.0348995, 1e-6);
+    ck_assert_float_eq_tol(a.array[7], 0.999391, 1e-6);
     ck_assert_float_eq_tol(a.array[8], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[9], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[10], 1, 1e-6);
+    ck_assert_float_eq_tol(a.array[9], 0.0348995, 1e-6);
+    ck_assert_float_eq_tol(a.array[10], 0.999391, 1e-6);
     ck_assert_float_eq_tol(a.array[11], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[12], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[13], 0, 1e-6);
+    ck_assert_float_eq_tol(a.array[12], 0.999391, 1e-6);
+    ck_assert_float_eq_tol(a.array[13], -0.0348995, 1e-6);
     ck_assert_float_eq_tol(a.array[14], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[15], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[16], 0, 1e-6);
+    ck_assert_float_eq_tol(a.array[15], 0.999391, 1e-6);
+    ck_assert_float_eq_tol(a.array[16], -0.0348995, 1e-6);
     ck_assert_float_eq_tol(a.array[17], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[18], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[19],1, 1e-6);
+    ck_assert_float_eq_tol(a.array[18], 1.03429, 1e-6);
+    ck_assert_float_eq_tol(a.array[19],0.964491, 1e-6);
     ck_assert_float_eq_tol(a.array[20], 0, 1e-6);
-    ck_assert_float_eq_tol(a.array[21], 1, 1e-6);
-    ck_assert_float_eq_tol(a.array[22], 1, 1e-6);
+    ck_assert_float_eq_tol(a.array[21], 1.03429, 1e-6);
+    ck_assert_float_eq_tol(a.array[22], 0.964491, 1e-6);
     ck_assert_float_eq_tol(a.array[23], 1, 1e-6);
     free(a.array);
     free(a.indexess);
@@ -189,6 +198,8 @@ Suite *s21_3d_suite(void) {
     suite = suite_create("s21_3d");
     TCase *tcase_core = tcase_create("Core");
 
+    tcase_add_test(tcase_core, incorrect_input);
+    tcase_add_test(tcase_core, correct_input);
     tcase_add_test(tcase_core, parser_array);
     tcase_add_test(tcase_core, parser_polygon);
     tcase_add_test(tcase_core, rotateX);
