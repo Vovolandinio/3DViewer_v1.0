@@ -333,7 +333,7 @@ void MainWindow::null_sliders() {
     ui->widget_3->rotatex = 0;
     ui->widget_3->rotatey = 0;
     ui->widget_3->rotatez = 0;
-    ui->widget_3->zoom = 0;
+    ui->widget_3->zoom = 1;
 }
 
 void MainWindow::on_movex_slider_sliderMoved(int position)
@@ -379,7 +379,7 @@ void MainWindow::on_rotatex_slider_sliderMoved(int position)
     double rotate_x = ui->rotatex_slider->value() / 100;
     double rotate_y = ui->rotatey_slider->value() / 100;
     double rotate_z = ui->rotatez_slider->value() / 100;
-    ui->widget_3->rotate_object(rotate_x-ui->widget_3->rotatex, rotate_y-ui->widget_3->rotatey, rotate_z);
+    ui->widget_3->rotate_object(rotate_x-ui->widget_3->rotatex, rotate_y-ui->widget_3->rotatey, 0);
     ui->widget_3->rotatex = rotate_x;
     ui->widget_3->rotatey = rotate_y;
 }
@@ -387,22 +387,22 @@ void MainWindow::on_rotatex_slider_sliderMoved(int position)
 
 void MainWindow::on_rotatey_slider_sliderMoved(int position)
 {
-    double rotate_x = ui->rotatex_slider->value() / 100;
-    double rotate_y = ui->rotatey_slider->value() / 100;
-    double rotate_z = ui->rotatez_slider->value() / 100;
-    ui->widget_3->rotate_object(rotate_x-ui->widget_3->rotatex, rotate_y-ui->widget_3->rotatey, rotate_z);
-    ui->widget_3->rotatex = rotate_x;
-    ui->widget_3->rotatey = rotate_y;
+    double rot_x = ui->rotatex_slider->value() / 100;
+    double rot_y = ui->rotatey_slider->value() / 100;
+    double rot_z = ui->rotatez_slider->value() / 100;
+    ui->widget_3->rotate_object(rot_x-ui->widget_3->rotatex, rot_y-ui->widget_3->rotatey, 0);
+    ui->widget_3->rotatex = rot_x;
+    ui->widget_3->rotatey = rot_y;
 }
 
 
 void MainWindow::on_rotatez_slider_sliderMoved(int position)
 {
-    double rotate_x = ui->rotatex_slider->value() / 100;
-    double rotate_y = ui->rotatey_slider->value() / 100;
-    double rotate_z = ui->rotatez_slider->value() / 100;
-    ui->widget_3->rotate_object(rotate_x-ui->widget_3->rotatex, rotate_y-ui->widget_3->rotatey, rotate_z-ui->widget_3->rotatez);
-    ui->widget_3->rotatez = rotate_z;
+    double rot_x = ui->rotatex_slider->value() / 100;
+    double rot_y = ui->rotatey_slider->value() / 100;
+    double rot_z = ui->rotatez_slider->value() / 100;
+    ui->widget_3->rotate_object(rot_x-ui->widget_3->rotatex, rot_y-ui->widget_3->rotatey, rot_z-ui->widget_3->rotatez);
+    ui->widget_3->rotatez = rot_z;
 }
 
 void MainWindow::update_zoom() {
