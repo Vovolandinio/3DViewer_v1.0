@@ -227,8 +227,10 @@ void MainWindow::on_zoom_button_clicked() {
 }
 
 void MainWindow::set_file_name(QString filename, int verticles, int lines) {
+    QStringList pieces = filename.split( "/" );
+
     ui->label->setText(
-        "Название файла:\n" + filename +
+        "Название файла:\n" + pieces[pieces.length() - 1] +
         "\n\n\n Количество вершин:" + QString::number(verticles) +
         "\n Количество линий: " + QString::number(lines));
 }
