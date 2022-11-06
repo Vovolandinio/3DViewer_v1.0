@@ -51,10 +51,14 @@ class DScene : public QOpenGLWidget {
 
     void save_settings();
     QString dl_settings();
+    void setupProjection(int w, int h);
 
     void add_example();
 
     void clear_values();
+
+    QMatrix4x4 projectionMatrix;
+    QMatrix4x4 cameraMatrix;
     void set_projection(int value);
 
    private:
@@ -86,6 +90,7 @@ class DScene : public QOpenGLWidget {
     float lines_size = 1;
 
     int projection = 0;
+    int m_coeffMatrixLoc = 0;
 
     QPointF mouse_down;
     QPointF mouse_up;

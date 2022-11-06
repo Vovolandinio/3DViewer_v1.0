@@ -12,9 +12,10 @@ DScene::DScene(QWidget *parent) : QOpenGLWidget(parent) {
 QOpenGLShaderProgram *DScene::initialize_shaders() {
     const char *vertexShaderSource =
         "attribute vec3 position;\n"
+        "uniform mat4 coeffMatrix;\n"
         "void main()\n"
         "{\n"
-        "gl_Position = vec4(position.x, position.y, "
+        "gl_Position = coeffMatrix * vec4(position.x, position.y, "
         "position.z, "
         "1.0);\n"
         "}\0";
@@ -41,20 +42,59 @@ void DScene::initializeGL() {
     glEnable(GL_DEPTH_TEST);
 
     prog = initialize_shaders();
+    m_coeffMatrixLoc = prog->uniformLocation("coeffMatrix");
 
     add_example();
 }
 
 
 void DScene::resizeGL(int w, int h) {
+    setupProjection(w,h);
+}
 
+
+void DScene::setupProjection(int w, int h) {
+  if (w < 1 || h < 1) {
+    w = width();
+    h = height();
+  }
+
+  cameraMatrix.setToIdentity();
+  projectionMatrix.setToIdentity();
+  if (projection) {
+    projectionMatrix.perspective(45.0f, GLfloat(w) / h, 0.01f, 100.0f);
+    cameraMatrix.translate(0, 0, -4);
+  } else {
+    float top, bottom, right, left, aratio;
+    aratio = (GLfloat)w / h;
+
+    if (w > h) {
+      top = 1.5f;
+      bottom = -top;
+      right = top * aratio;
+      left = -right;
+    } else {
+      right = 1.5f;
+      left = -right;
+      top = right / aratio;
+      bottom = -top;
+    }
+
+    cameraMatrix.ortho(left, right, bottom, top, -100.0f, 100.0f);
+  }
 }
 
 void DScene::paintGL() {
     glClearColor(backgroundColor.redF(), backgroundColor.greenF(),
                  backgroundColor.blueF(), 1);
 
+
+
     prog->bind();
+
+    setupProjection(0,0);
+
+    prog->setUniformValue(m_coeffMatrixLoc, projectionMatrix * cameraMatrix);
 
     QOpenGLBuffer vbo(QOpenGLBuffer::VertexBuffer);
     vbo.create();
@@ -65,7 +105,7 @@ void DScene::paintGL() {
     prog->setAttributeBuffer(0, GL_FLOAT, 0, 3, 0);
     prog->enableAttributeArray(0);
 
-    QOpenGLBuffer ibo(QOpenGLBuffer::IndexBuffer);
+    QOpenGLBuffer ibo(QOpenGLBuffer::IndexBuffer);  
     ibo.create();
     ibo.bind();
     ibo.setUsagePattern(QOpenGLBuffer::DynamicDraw);
