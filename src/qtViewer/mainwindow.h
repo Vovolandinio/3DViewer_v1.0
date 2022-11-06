@@ -34,8 +34,6 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void on_move_apply_clicked();
-
     void on_pushButton_2_clicked();
 
     void on_pushButton_3_clicked();
@@ -57,14 +55,27 @@ private slots:
 
     void on_bg_color_button_clicked();
 
-    void on_zoom_button_clicked();
-
-    void on_rotate_apply_clicked();
+//    void on_zoom_button_clicked();
 
     void on_proection_central_clicked();
 
     void on_proection_parallel_clicked();
     void oneGif();
+    void null_sliders();
+
+    void on_movex_slider_sliderMoved(int position);
+
+    void on_movey_slider_sliderMoved(int position);
+
+    void on_movez_slider_sliderMoved(int position);
+
+    void on_rotatex_slider_sliderMoved(int position);
+
+    void on_rotatey_slider_sliderMoved(int position);
+
+    void on_rotatez_slider_sliderMoved(int position);
+
+    void on_zoom_slider_sliderMoved(int position);
 
 private:
     Ui::MainWindow *ui;
@@ -78,5 +89,12 @@ private:
     void createGif();
     int startTime, tmpTime;
     int counter = 1;
+
+
+
+public slots:
+    void update_sliders();
+    void update_rotate_sliders();
+    void update_zoom();
 };
 #endif // MAINWINDOW_H

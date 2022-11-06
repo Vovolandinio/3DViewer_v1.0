@@ -335,10 +335,23 @@
 </string>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="3" column="3">
-          <widget class="QLineEdit" name="rotatez_line">
+         <item row="3" column="2">
+          <widget class="QSlider" name="rotatez_slider">
+           <property name="minimum">
+            <number>-500</number>
+           </property>
+           <property name="maximum">
+            <number>500</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="rotatey_labe">
            <property name="text">
-            <string>0</string>
+            <string>Y</string>
            </property>
           </widget>
          </item>
@@ -349,10 +362,13 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="3">
-          <widget class="QLineEdit" name="rotatey_line">
+         <item row="0" column="0" colspan="4">
+          <widget class="QLabel" name="rotate_label">
            <property name="text">
-            <string>0</string>
+            <string>Вращение</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
@@ -376,33 +392,10 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="2">
-          <widget class="QSlider" name="rotatez_slider">
-           <property name="minimum">
-            <number>-500</number>
-           </property>
-           <property name="maximum">
-            <number>500</number>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0" colspan="4">
-          <widget class="QLabel" name="rotate_label">
+         <item row="2" column="3">
+          <widget class="QLineEdit" name="rotatey_line">
            <property name="text">
-            <string>Вращение</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="rotatey_labe">
-           <property name="text">
-            <string>Y</string>
+            <string>0</string>
            </property>
           </widget>
          </item>
@@ -419,24 +412,17 @@
            </property>
           </widget>
          </item>
+         <item row="3" column="3">
+          <widget class="QLineEdit" name="rotatez_line">
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
          <item row="3" column="0">
           <widget class="QLabel" name="rotatez_label">
            <property name="text">
             <string>Z</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0" colspan="4">
-          <widget class="QPushButton" name="rotate_apply">
-           <property name="styleSheet">
-            <string notr="true">QPushButton:pressed {
-	background-color: #FF6347;
-	border: 1px solid gray;
-	padding: 5px;
-}</string>
-           </property>
-           <property name="text">
-            <string>Применить</string>
            </property>
           </widget>
          </item>
@@ -534,17 +520,23 @@
 </string>
         </property>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="1" column="3">
-          <widget class="QLineEdit" name="movex_line">
+         <item row="3" column="0">
+          <widget class="QLabel" name="movez_label">
            <property name="text">
-            <string>0</string>
+            <string>Z</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="3">
-          <widget class="QLineEdit" name="movey_line">
-           <property name="text">
-            <string>0</string>
+         <item row="1" column="1" colspan="2">
+          <widget class="QSlider" name="movex_slider">
+           <property name="minimum">
+            <number>-500</number>
+           </property>
+           <property name="maximum">
+            <number>500</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
            </property>
           </widget>
          </item>
@@ -555,10 +547,10 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="movez_label">
+         <item row="1" column="3">
+          <widget class="QLineEdit" name="movex_line">
            <property name="text">
-            <string>Z</string>
+            <string>0</string>
            </property>
           </widget>
          </item>
@@ -572,24 +564,17 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="0" colspan="4">
-          <widget class="QPushButton" name="move_apply">
-           <property name="styleSheet">
-            <string notr="true">QPushButton:pressed {
-	background-color: #FF6347;
-	border: 1px solid gray;
-	padding: 5px;
-}</string>
-           </property>
-           <property name="text">
-            <string>Применить</string>
-           </property>
-          </widget>
-         </item>
          <item row="2" column="0">
           <widget class="QLabel" name="movey_label">
            <property name="text">
             <string>Y</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3">
+          <widget class="QLineEdit" name="movey_line">
+           <property name="text">
+            <string>0</string>
            </property>
           </widget>
          </item>
@@ -602,19 +587,6 @@
          </item>
          <item row="2" column="1" colspan="2">
           <widget class="QSlider" name="movey_slider">
-           <property name="minimum">
-            <number>-500</number>
-           </property>
-           <property name="maximum">
-            <number>500</number>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1" colspan="2">
-          <widget class="QSlider" name="movex_slider">
            <property name="minimum">
             <number>-500</number>
            </property>

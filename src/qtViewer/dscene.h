@@ -10,6 +10,7 @@
 #include <QTimer>
 #include <QtOpenGL>
 
+
 #include <QGraphicsSceneMouseEvent>
 
 #include <iostream>
@@ -21,13 +22,14 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLVertexArrayObject>
-#include <QOpenGLWidget>
 
 extern "C" {
 #include "../parser/s21_parser.h"
 }
 
 class DScene : public QOpenGLWidget {
+    Q_OBJECT
+
    public:
     DScene(QWidget *parent = 0);
 
@@ -62,7 +64,18 @@ class DScene : public QOpenGLWidget {
     QMatrix4x4 cameraMatrix;
     void set_projection(int value);
 
+    float movex = 0;
+    float movey = 0;
+    float movez = 0;
+    float rotatex = 0;
+    float rotatey = 0;
+    float rotatez = 0;
+    float zoom = 1;
+
+
    private:
+    void mouseMoveEvent(QMouseEvent* event);
+
     void initializeGL() ;
     void paintGL() ;
     void resizeGL(int w, int h) ;
@@ -102,54 +115,15 @@ class DScene : public QOpenGLWidget {
     QPoint _p;
     QPoint _r;
 
+
   protected:
-    void mousePressEvent(QMouseEvent* event)  {
-            if ( event->button() == Qt::LeftButton ) {
-                _p = event->pos();
-            } else if ( event->button() == Qt::RightButton ) {
-                _r = event->pos();
-            }
-        }
-
-
-        void mouseMoveEvent(QMouseEvent* event)  {
-            if (_p != QPoint()) {
-                mx = (float)(_p.x() - event->pos().x());
-                mx /= -5;
-                my = (float)(_p.y() - event->pos().y());
-                my /= 5;
-                move_object(mx, my, 0);
-                update();
-                _p = event->pos();
-            }
-            if (_r != QPoint()) {
-                mrx = (float)(_r.x() - event->pos().x());
-                mrx /= -5;
-                mry = (float)(_r.y() - event->pos().y());
-                mry /= 5;
-                rotate_object(mry, mrx, 0);
-                update();
-                _r = event->pos();
-            }
-        }
-        // В принципе, для перемещения окна можно обойтись и без этого метода,
-        // но раз в вопросе сказано про отпускание км, то
-        void mouseReleaseEvent(QMouseEvent* event)  {
-            if (_p != QPoint()) {
-                _p = QPoint();
-            }
-            if (_r != QPoint()) {
-                _r = QPoint();
-            }
-        }
-
-        void wheelEvent(QWheelEvent *event) {
-            if (event->angleDelta().y() < 0) {
-                change_zoom(1.1);
-            } else {
-                change_zoom(0.9);
-            }
-        }
+    void mousePressEvent(QMouseEvent* event);
+        void mouseReleaseEvent(QMouseEvent* event);
+        void wheelEvent(QWheelEvent *event);
+signals:
+        void aboba();
+        void beba();
+        void pepe();
 
 };
 

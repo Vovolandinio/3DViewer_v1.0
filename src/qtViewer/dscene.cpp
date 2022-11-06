@@ -193,9 +193,11 @@ void DScene::change_bg_color(QColor color) {
     update();
 }
 
-void DScene::change_zoom(double zoom) {
-    for (int i = 0; i < vertex_count * 3; i++) {
-        vertex_array[i] = vertex_array[i] * zoom;
+void DScene::change_zoom(double zom) {
+    if (zoom > 0.1) {
+        for (int i = 0; i < vertex_count * 3; i++) {
+            vertex_array[i] = vertex_array[i] * zom;
+        }
     }
     update();
 }
@@ -308,3 +310,65 @@ void DScene::set_projection(int value) {
         update();
     }
 }
+
+void DScene::mouseMoveEvent(QMouseEvent* event) {
+    if (_p != QPoint()) {
+        mx = (float)(_p.x() - event->pos().x());
+        mx /= -5;
+        my = (float)(_p.y() - event->pos().y());
+        my /= 5;
+        move_object(mx, my, 0);
+        movex+=mx;
+        movey+=my;
+        update();
+        _p = event->pos();
+        emit aboba();
+    }
+    if (_r != QPoint()) {
+        mrx = (float)(_r.x() - event->pos().x());
+        mrx /= -5;
+        mry = (float)(_r.y() - event->pos().y());
+        mry /= 5;
+        rotate_object(mry, mrx, 0);
+        rotatex+=mry;
+        if (rotatex > 180) rotatex = -1 * (360 - rotatex);
+        if (rotatex < -180) rotatex = -1 * (-360 - rotatex);
+        rotatey+=mrx;
+        if (rotatey > 180) rotatey = -1 * (360 - rotatey);
+        if (rotatey < -180) rotatey = -1 * (-360 - rotatey);
+        update();
+        _r = event->pos();
+        emit beba();
+    }
+
+}
+
+void DScene::mousePressEvent(QMouseEvent* event)  {
+        if ( event->button() == Qt::LeftButton ) {
+            _p = event->pos();
+        } else if ( event->button() == Qt::RightButton ) {
+            _r = event->pos();
+        }
+    }
+
+    void DScene::mouseReleaseEvent(QMouseEvent* event)  {
+        if (_p != QPoint()) {
+            _p = QPoint();
+        }
+        if (_r != QPoint()) {
+            _r = QPoint();
+        }
+    }
+    void DScene::wheelEvent(QWheelEvent *event) {
+        if (event->angleDelta().y() < 0) {
+            change_zoom(1.1);
+            zoom+=0.1;
+        } else {
+            if (zoom > 0.1) {
+                change_zoom(0.9);
+                zoom-=0.1;
+            }
+        }
+
+        pepe();
+    }

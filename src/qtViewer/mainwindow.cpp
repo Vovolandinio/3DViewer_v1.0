@@ -17,10 +17,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     this->setWindowTitle("3D Viewer");
     int RANGE_MAX = 25000;
-    int ROTATE_MAX = 36000;
+    int ROTATE_MAX = 18000;
     int ZOOM_MAX = 10000;
-    QString bg_color = ui->widget_3->dl_settings();
-    this->setStyleSheet("background-color: " + bg_color);
+    ui->widget_3->dl_settings();
 
     QScrollArea* scrollArea = new QScrollArea();
     scrollArea->setWidget(ui->centralwidget);
@@ -28,7 +27,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     scrollArea->setVisible(true);
 
-
+    connect(ui->widget_3, SIGNAL(aboba()), this, SLOT(update_sliders()));
+    connect(ui->widget_3, SIGNAL(beba()), this, SLOT(update_rotate_sliders()));
+    connect(ui->widget_3, SIGNAL(pepe()), this, SLOT(update_zoom()));
 
     if (ui->widget_3->get_lines_paint()) ui->edges_dashed->setChecked(true);
     if (ui->widget_3->get_verticles_paint() == 1) ui->vertices_circle->setChecked(true);
@@ -126,17 +127,13 @@ MainWindow::~MainWindow() {
 }
 
 QString MainWindow::open_file() {
-    std::cout << "norm start"<< std::endl;
-
     QString file =
         QFileDialog::getOpenFileName(this, "Выбрать файл для открытия",
                                      0, "Text Files (*.obj)");
     if (file.isEmpty()) return NULL;
-
-//            QFile::filename()
-    std::cout << "name ok"<< std::endl;
     parser_work(file);
     set_file_name(file, ui->widget_3->get_verticles_count(), ui->widget_3->get_lines_count());
+    null_sliders();
     ui->widget_3->update();
     return file;
 }
@@ -170,17 +167,6 @@ void MainWindow::on_actionGIF_2_triggered() {
 
 void MainWindow::on_pushButton_clicked() {
     QString file = this->open_file();
-}
-
-void MainWindow::on_move_apply_clicked() {
-    double move_x = ui->movex_line->text().toDouble();
-    double move_y = ui->movey_line->text().toDouble();
-    double move_z = ui->movez_line->text().toDouble();
-    ui->widget_3->move_object(move_x, move_y, move_z);
-    ui->movex_line->setText("0");
-    ui->movey_line->setText("0");
-    ui->movez_line->setText("0");
-    ui->widget_3->update();
 }
 
 // Меняет цвет вершин
@@ -227,11 +213,11 @@ void MainWindow::on_bg_color_button_clicked() {
     }
 }
 
-void MainWindow::on_zoom_button_clicked() {
-    double zoom = ui->zoom_line->text().toDouble();
-    ui->widget_3->change_zoom(zoom);
-    ui->zoom_line->setText("1");
-}
+//void MainWindow::on_zoom_button_clicked() {
+//    double zoom = ui->zoom_line->text().toDouble();
+//    ui->widget_3->change_zoom(zoom);
+//    ui->zoom_line->setText("1");
+//}
 
 void MainWindow::set_file_name(QString filename, int verticles, int lines) {
     QStringList pieces = filename.split( "/" );
@@ -242,15 +228,7 @@ void MainWindow::set_file_name(QString filename, int verticles, int lines) {
         "\n Количество линий: " + QString::number(lines));
 }
 
-void MainWindow::on_rotate_apply_clicked() {
-    double rotate_x = ui->rotatex_slider->value() / 100;
-    double rotate_y = ui->rotatey_slider->value() / 100;
-    double rotate_z = ui->rotatez_slider->value() / 100;
-    ui->widget_3->rotate_object(rotate_x, rotate_y, rotate_z);
-    ui->rotatex_line->setText("0");
-    ui->rotatey_line->setText("0");
-    ui->rotatez_line->setText("0");
-}
+
 
 void MainWindow::parser_work(QString filename) {
     indexes out;
@@ -311,11 +289,11 @@ void MainWindow::createGif() {
                               .constBits(),
                           640, 480, 10, 8, false)) {
         } else {
-          QMessageBox::critical(0, "Error", "0Gif file can not be create!d");
+          QMessageBox::critical(0, "Error", "Gif file can not be created...");
           err = 1;
         }
       } else {
-        QMessageBox::critical(0, "Error", "1Gif file can not be created!");
+        QMessageBox::critical(0, "Error", "Gif file can not be created...");
         err = 1;
       }
     }
@@ -324,7 +302,7 @@ void MainWindow::createGif() {
     }
   } else {
     err = 1;
-    QMessageBox::critical(0, "Error", "2Gif file can not be created!");
+    QMessageBox::critical(0, "Error", "Gif file can not be created...");
   }
 
   if (err == 1) {
@@ -337,3 +315,103 @@ void MainWindow::createGif() {
   pathFile.removeRecursively();
   ui->actionGIF_2->setEnabled(true);
 }
+
+void MainWindow::update_sliders() {
+    ui->movex_line->setText(QString::number(ui->widget_3->movex));
+    ui->movey_line->setText(QString::number(ui->widget_3->movey));
+}
+
+void MainWindow::update_rotate_sliders() {
+    ui->rotatex_line->setText(QString::number(ui->widget_3->rotatex));
+    ui->rotatey_line->setText(QString::number(ui->widget_3->rotatey));
+}
+
+void MainWindow::null_sliders() {
+    ui->widget_3->movex = 0;
+    ui->widget_3->movey = 0;
+    ui->widget_3->movez = 0;
+    ui->widget_3->rotatex = 0;
+    ui->widget_3->rotatey = 0;
+    ui->widget_3->rotatez = 0;
+    ui->widget_3->zoom = 0;
+}
+
+void MainWindow::on_movex_slider_sliderMoved(int position)
+{
+    double move_x = ui->movex_line->text().toDouble();
+    double move_y = ui->movey_line->text().toDouble();
+    double move_z = ui->movez_line->text().toDouble();
+    ui->widget_3->move_object(move_x-ui->widget_3->movex, move_y-ui->widget_3->movey, move_z-ui->widget_3->movez);
+    ui->widget_3->movex = move_x;
+    ui->widget_3->movey = move_y;
+    ui->widget_3->movez = move_z;
+    ui->widget_3->update();
+}
+
+
+void MainWindow::on_movey_slider_sliderMoved(int position)
+{
+    double move_x = ui->movex_line->text().toDouble();
+    double move_y = ui->movey_line->text().toDouble();
+    double move_z = ui->movez_line->text().toDouble();
+    ui->widget_3->move_object(move_x-ui->widget_3->movex, move_y-ui->widget_3->movey, move_z-ui->widget_3->movez);
+    ui->widget_3->movex = move_x;
+    ui->widget_3->movey = move_y;
+    ui->widget_3->movez = move_z;
+    ui->widget_3->update();
+}
+
+
+void MainWindow::on_movez_slider_sliderMoved(int position)
+{
+    double move_x = ui->movex_line->text().toDouble();
+    double move_y = ui->movey_line->text().toDouble();
+    double move_z = ui->movez_line->text().toDouble();
+    ui->widget_3->move_object(move_x-ui->widget_3->movex, move_y-ui->widget_3->movey, move_z-ui->widget_3->movez);
+
+    ui->widget_3->movez = move_z;
+    ui->widget_3->update();
+}
+
+
+void MainWindow::on_rotatex_slider_sliderMoved(int position)
+{
+    double rotate_x = ui->rotatex_slider->value() / 100;
+    double rotate_y = ui->rotatey_slider->value() / 100;
+    double rotate_z = ui->rotatez_slider->value() / 100;
+    ui->widget_3->rotate_object(rotate_x-ui->widget_3->rotatex, rotate_y-ui->widget_3->rotatey, rotate_z);
+    ui->widget_3->rotatex = rotate_x;
+    ui->widget_3->rotatey = rotate_y;
+}
+
+
+void MainWindow::on_rotatey_slider_sliderMoved(int position)
+{
+    double rotate_x = ui->rotatex_slider->value() / 100;
+    double rotate_y = ui->rotatey_slider->value() / 100;
+    double rotate_z = ui->rotatez_slider->value() / 100;
+    ui->widget_3->rotate_object(rotate_x-ui->widget_3->rotatex, rotate_y-ui->widget_3->rotatey, rotate_z);
+    ui->widget_3->rotatex = rotate_x;
+    ui->widget_3->rotatey = rotate_y;
+}
+
+
+void MainWindow::on_rotatez_slider_sliderMoved(int position)
+{
+    double rotate_x = ui->rotatex_slider->value() / 100;
+    double rotate_y = ui->rotatey_slider->value() / 100;
+    double rotate_z = ui->rotatez_slider->value() / 100;
+    ui->widget_3->rotate_object(rotate_x-ui->widget_3->rotatex, rotate_y-ui->widget_3->rotatey, rotate_z-ui->widget_3->rotatez);
+    ui->widget_3->rotatez = rotate_z;
+}
+
+void MainWindow::update_zoom() {
+    ui->zoom_line->setText(QString::number(ui->widget_3->zoom, 'f', 2));
+}
+void MainWindow::on_zoom_slider_sliderMoved(int position)
+{
+    double zoomq = ui->zoom_line->text().toDouble();
+    ui->widget_3->change_zoom(zoomq-ui->widget_3->zoom);
+
+}
+
