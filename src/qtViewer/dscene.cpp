@@ -63,7 +63,8 @@ void DScene::setupProjection(int w, int h) {
   projectionMatrix.setToIdentity();
   if (projection) {
     projectionMatrix.perspective(45.0f, GLfloat(w) / h, 0.01f, 100.0f);
-    cameraMatrix.translate(0, 0, -4);
+    cameraMatrix.translate(0, 0, -25);
+    move_rotate = 1;
   } else {
     float top, bottom, right, left, aratio;
     aratio = (GLfloat)w / h;
@@ -80,7 +81,8 @@ void DScene::setupProjection(int w, int h) {
       bottom = -top;
     }
 
-    cameraMatrix.ortho(left, right, bottom, top, -100.0f, 100.0f);
+    cameraMatrix.ortho(left*10, right*10, bottom*10, top*10, -100.0f, 100.0f);
+    move_rotate = 10;
   }
 }
 
@@ -138,9 +140,9 @@ void DScene::paintGL() {
 
 void DScene::move_object(float x, float y, float z) {
     for (int i = 0; i < vertex_count * 3; i += 3) {
-        vertex_array[i] += x / 100;
-        vertex_array[i + 1] += y / 100;
-        vertex_array[i + 2] += z / 100;
+        vertex_array[i] += x*move_rotate / 100;
+        vertex_array[i + 1] += y*move_rotate / 100;
+        vertex_array[i + 2] += z*move_rotate / 100;
     }
 }
 

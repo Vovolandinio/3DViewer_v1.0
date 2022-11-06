@@ -7,6 +7,7 @@
 #include <QTimer>
 #include <QtOpenGL>
 #include "../gif/gif.h"
+#include <QScrollArea>
 
 #include "ui_mainwindow.h"
 
@@ -20,6 +21,12 @@ MainWindow::MainWindow(QWidget *parent)
     int ZOOM_MAX = 10000;
     QString bg_color = ui->widget_3->dl_settings();
     this->setStyleSheet("background-color: " + bg_color);
+
+    QScrollArea* scrollArea = new QScrollArea();
+    scrollArea->setWidget(ui->centralwidget);
+    setCentralWidget(scrollArea);
+
+    scrollArea->setVisible(true);
 
 
 

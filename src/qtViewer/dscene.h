@@ -54,6 +54,7 @@ class DScene : public QOpenGLWidget {
     void setupProjection(int w, int h);
 
     void add_example();
+    float move_rotate = 1;
 
     void clear_values();
 
